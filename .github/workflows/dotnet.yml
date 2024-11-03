@@ -1,10 +1,12 @@
-name: .NET Core CI
+name: .NET Tests
 
 on:
   push:
-    branches: [ lab1 ]
+    branches:
+      - main
   pull_request:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -12,20 +14,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
+    - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Setup .NET Core
+    - name: Setup .NET
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: '8.0.x'
+        dotnet-version: '8.0.x' # Убедитесь, что версия соответствует вашей в csproj
 
     - name: Restore dependencies
       run: dotnet restore
 
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build --no-restore
 
-    - name: Test
+    - name: Run tests
       run: dotnet test --no-build --verbosity normal
-
