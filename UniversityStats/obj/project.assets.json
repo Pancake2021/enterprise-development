@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats/UniversityStats.csproj",
+      "projectUniqueName": "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats/UniversityStats.csproj",
       "projectName": "UniversityStats",
-      "projectPath": "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats/UniversityStats.csproj",
+      "projectPath": "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats/UniversityStats.csproj",
       "packagesPath": "/Users/glebpankeev/.nuget/packages/",
-      "outputPath": "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats/obj/",
+      "outputPath": "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/Users/glebpankeev/.nuget/NuGet/NuGet.Config"
