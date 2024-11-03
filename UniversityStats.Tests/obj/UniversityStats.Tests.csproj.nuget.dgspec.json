@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats.Tests/UniversityStats.Tests.csproj": {}
+    "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats.Tests/UniversityStats.Tests.csproj": {}
   },
   "projects": {
-    "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats.Tests/UniversityStats.Tests.csproj": {
+    "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats.Tests/UniversityStats.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats.Tests/UniversityStats.Tests.csproj",
+        "projectUniqueName": "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats.Tests/UniversityStats.Tests.csproj",
         "projectName": "UniversityStats.Tests",
-        "projectPath": "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats.Tests/UniversityStats.Tests.csproj",
+        "projectPath": "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats.Tests/UniversityStats.Tests.csproj",
         "packagesPath": "/Users/glebpankeev/.nuget/packages/",
-        "outputPath": "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats.Tests/obj/",
+        "outputPath": "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats.Tests/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/glebpankeev/.nuget/NuGet/NuGet.Config"
@@ -26,8 +26,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats/UniversityStats.csproj": {
-                "projectPath": "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats/UniversityStats.csproj"
+              "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats/UniversityStats.csproj": {
+                "projectPath": "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats/UniversityStats.csproj"
               }
             }
           }
@@ -84,14 +84,14 @@
         }
       }
     },
-    "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats/UniversityStats.csproj": {
+    "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats/UniversityStats.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats/UniversityStats.csproj",
+        "projectUniqueName": "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats/UniversityStats.csproj",
         "projectName": "UniversityStats",
-        "projectPath": "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats/UniversityStats.csproj",
+        "projectPath": "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats/UniversityStats.csproj",
         "packagesPath": "/Users/glebpankeev/.nuget/packages/",
-        "outputPath": "/Users/glebpankeev/labcsharp/UniversitySolution/UniversityStats/obj/",
+        "outputPath": "/Users/glebpankeev/Desktop/enterprise-development 14.16.36/UniversityStats/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "/Users/glebpankeev/.nuget/NuGet/NuGet.Config"

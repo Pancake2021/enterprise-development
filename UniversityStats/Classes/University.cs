@@ -1,4 +1,3 @@
-// University.cs
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,34 +13,52 @@ namespace UniversityStats.Classes
         public required OwnershipType BuildingOwnership { get; set; }
         public required List<Faculty> Faculties { get; set; } = new List<Faculty>();
 
-        // Метод: Получить все факультеты с количеством групп больше заданного числа
-        public IEnumerable<Faculty> GetFacultiesWithGroupCountGreaterThan(int minGroupCount)
+        // Запрос 1: Получить информацию о выбранном вузе (возвращает все свойства текущего экземпляра)
+        public University GetUniversityInfo() => this;
+
+        // Запрос 2: Получить информацию о факультетах, кафедрах и специальностях вуза
+        public IEnumerable<(string Faculty, string Department, string Specialty)> GetFacultyDepartmentSpecialtyInfo()
         {
-            return Faculties.Where(f => f.GroupCount > minGroupCount);
+            return Faculties.SelectMany(faculty =>
+                faculty.Departments.SelectMany(department =>
+                    faculty.Specialties.Select(specialty =>
+                        (Faculty: faculty.Name, Department: department.Name, Specialty: specialty.Name))));
         }
 
-        // Метод: Получить все специальности определённого факультета
-        public IEnumerable<Specialty> GetSpecialtiesByFaculty(string facultyName)
+        // Запрос 3: Получить топ 5 популярных специальностей (по количеству групп)
+        public IEnumerable<Specialty> GetTop5PopularSpecialties()
         {
-            var faculty = Faculties.FirstOrDefault(f => f.Name == facultyName);
-            return faculty != null ? faculty.Specialties : Enumerable.Empty<Specialty>();
+            return Faculties.SelectMany(f => f.Specialties)
+                .GroupBy(s => s)
+                .OrderByDescending(g => g.Count())
+                .Take(5)
+                .Select(g => g.Key);
         }
 
-        // Метод: Получить всех ректоратов университетов с определённым статусом собственности
-        public IEnumerable<Rector> GetRectorsByOwnershipType(OwnershipType ownershipType)
+        // Запрос 4: Получить вузы с максимальным количеством кафедр, упорядоченные по названию
+        public static IEnumerable<University> GetUniversitiesWithMaxDepartments(List<University> universities)
         {
-            if (InstitutionOwnership == ownershipType)
-            {
-                yield return RectorInfo;
-            }
-
-            foreach (var faculty in Faculties)
-            {
-                // Допустим, факультеты могут иметь своих ректоратов (если это применимо)
-                // Здесь можно добавить дополнительную логику, если в модели есть ректорат факультетов
-            }
+            var maxDepartments = universities.Max(u => u.Faculties.Sum(f => f.Departments.Count));
+            return universities.Where(u => u.Faculties.Sum(f => f.Departments.Count) == maxDepartments)
+                               .OrderBy(u => u.Name);
         }
 
-        // Добавьте другие методы по заданию
+        // Запрос 5: Получить вузы с заданной собственностью учреждения и количеством групп в вузе
+        public static IEnumerable<University> GetUniversitiesByOwnershipAndGroupCount(List<University> universities, OwnershipType ownershipType)
+        {
+            return universities
+                .Where(u => u.InstitutionOwnership == ownershipType)
+                .OrderByDescending(u => u.Faculties.Sum(f => f.GroupCount));
+        }
+
+        // Запрос 6: Получить количество факультетов, кафедр, специальностей по каждому типу собственности
+        public static IEnumerable<(OwnershipType Ownership, int FacultyCount, int DepartmentCount, int SpecialtyCount)> GetOwnershipStatistics(List<University> universities)
+        {
+            return universities.GroupBy(u => u.InstitutionOwnership)
+                .Select(g => (Ownership: g.Key,
+                    FacultyCount: g.Sum(u => u.Faculties.Count),
+                    DepartmentCount: g.Sum(u => u.Faculties.Sum(f => f.Departments.Count)),
+                    SpecialtyCount: g.Sum(u => u.Faculties.Sum(f => f.Specialties.Count))));
+        }
     }
 }

@@ -17,10 +17,12 @@ namespace UniversityStats
                 Console.Clear();
                 Console.WriteLine("=== Меню Университета ===");
                 Console.WriteLine("1. Показать информацию об университете");
-                Console.WriteLine("2. Показать факультеты с количеством групп больше заданного");
-                Console.WriteLine("3. Показать специальности факультета");
-                Console.WriteLine("4. Показать ректора по типу собственности университета");
-                Console.WriteLine("5. Выйти");
+                Console.WriteLine("2. Показать информацию о факультетах, кафедрах и специальностях");
+                Console.WriteLine("3. Показать топ 5 популярных специальностей");
+                Console.WriteLine("4. Показать университеты с максимальным количеством кафедр");
+                Console.WriteLine("5. Показать университеты по типу собственности и количеству групп");
+                Console.WriteLine("6. Показать статистику по типу собственности");
+                Console.WriteLine("7. Выйти");
                 Console.Write("Выберите действие: ");
 
                 var choice = Console.ReadLine();
@@ -30,19 +32,25 @@ namespace UniversityStats
                         ShowUniversityInfo(university);
                         break;
                     case "2":
-                        ShowFacultiesWithGroupCountGreaterThan(university);
+                        ShowFacultyDepartmentSpecialtyInfo(university);
                         break;
                     case "3":
-                        ShowSpecialtiesByFaculty(university);
+                        ShowTop5PopularSpecialties(university);
                         break;
                     case "4":
-                        ShowRectorByOwnershipType(university);
+                        ShowUniversitiesWithMaxDepartments(new List<University> { university });
                         break;
                     case "5":
+                        ShowUniversitiesByOwnershipAndGroupCount(new List<University> { university });
+                        break;
+                    case "6":
+                        ShowOwnershipStatistics(new List<University> { university });
+                        break;
+                    case "7":
                         exit = true;
                         break;
                     default:
-                        Console.WriteLine("Некорректный ввод. Пожалуйста, выберите номер от 1 до 5.");
+                        Console.WriteLine("Некорректный ввод. Пожалуйста, выберите номер от 1 до 7.");
                         break;
                 }
                 if (!exit)
@@ -75,6 +83,7 @@ namespace UniversityStats
                     {
                         Name = "Engineering",
                         GroupCount = 15,
+                        Departments = new List<Department> { new Department { Name = "Computer Science" } },
                         Specialties = new List<Specialty>
                         {
                             new Specialty { Code = "CS101", Name = "Computer Science" },
@@ -85,6 +94,7 @@ namespace UniversityStats
                     {
                         Name = "Arts",
                         GroupCount = 8,
+                        Departments = new List<Department> { new Department { Name = "Humanities" } },
                         Specialties = new List<Specialty>
                         {
                             new Specialty { Code = "ENG201", Name = "English Literature" },
@@ -107,66 +117,61 @@ namespace UniversityStats
             Console.WriteLine($"Количество факультетов: {university.Faculties.Count}");
         }
 
-        static void ShowFacultiesWithGroupCountGreaterThan(University university)
+        static void ShowFacultyDepartmentSpecialtyInfo(University university)
         {
-            Console.Write("\nВведите минимальное количество групп: ");
-            if (int.TryParse(Console.ReadLine(), out int minGroupCount))
+            var info = university.GetFacultyDepartmentSpecialtyInfo();
+            Console.WriteLine("\n=== Факультеты, Кафедры и Специальности ===");
+            foreach (var (faculty, department, specialty) in info)
             {
-                var faculties = university.GetFacultiesWithGroupCountGreaterThan(minGroupCount);
-                Console.WriteLine("\nФакультеты с количеством групп больше заданного:");
-                foreach (var faculty in faculties)
-                {
-                    Console.WriteLine($"- {faculty.Name} (Группы: {faculty.GroupCount})");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Некорректный ввод. Пожалуйста, введите числовое значение.");
+                Console.WriteLine($"Факультет: {faculty}, Кафедра: {department}, Специальность: {specialty}");
             }
         }
 
-        static void ShowSpecialtiesByFaculty(University university)
+        static void ShowTop5PopularSpecialties(University university)
         {
-            Console.Write("\nВведите название факультета: ");
-            var facultyName = Console.ReadLine();
-
-            var specialties = university.GetSpecialtiesByFaculty(facultyName);
-            if (specialties.Any())
+            var specialties = university.GetTop5PopularSpecialties();
+            Console.WriteLine("\n=== Топ 5 популярных специальностей ===");
+            foreach (var specialty in specialties)
             {
-                Console.WriteLine($"\nСпециальности факультета {facultyName}:");
-                foreach (var specialty in specialties)
-                {
-                    Console.WriteLine($"- {specialty.Name} (Код: {specialty.Code})");
-                }
-            }
-            else
-            {
-                Console.WriteLine("Факультет не найден или специальностей нет.");
+                Console.WriteLine($"Специальность: {specialty.Name}");
             }
         }
 
-        static void ShowRectorByOwnershipType(University university)
+        static void ShowUniversitiesWithMaxDepartments(List<University> universities)
         {
-            Console.WriteLine("\nВыберите тип собственности университета:");
-            foreach (var ownership in Enum.GetValues(typeof(OwnershipType)))
+            var result = University.GetUniversitiesWithMaxDepartments(universities);
+            Console.WriteLine("\n=== Университеты с максимальным количеством кафедр ===");
+            foreach (var uni in result)
             {
-                Console.WriteLine($"- {ownership}");
+                Console.WriteLine($"Университет: {uni.Name}, Кафедры: {uni.Faculties.Sum(f => f.Departments.Count)}");
             }
+        }
 
-            Console.Write("Введите тип собственности: ");
-            var input = Console.ReadLine();
-            if (Enum.TryParse(input, out OwnershipType ownershipType))
+        static void ShowUniversitiesByOwnershipAndGroupCount(List<University> universities)
+        {
+            Console.WriteLine("\nВведите тип собственности (Municipal, Private, Federal): ");
+            if (Enum.TryParse(Console.ReadLine(), out OwnershipType ownershipType))
             {
-                var rectors = university.GetRectorsByOwnershipType(ownershipType);
-                Console.WriteLine("\nРекторы с указанным типом собственности:");
-                foreach (var rector in rectors)
+                var result = University.GetUniversitiesByOwnershipAndGroupCount(universities, ownershipType);
+                Console.WriteLine($"\n=== Университеты с собственностью {ownershipType} ===");
+                foreach (var uni in result)
                 {
-                    Console.WriteLine($"- {rector.FullName}, {rector.Position} ({rector.Degree}, {rector.Rank})");
+                    Console.WriteLine($"Университет: {uni.Name}, Группы: {uni.Faculties.Sum(f => f.GroupCount)}");
                 }
             }
             else
             {
-                Console.WriteLine("Некорректный ввод типа собственности.");
+                Console.WriteLine("Некорректный тип собственности.");
+            }
+        }
+
+        static void ShowOwnershipStatistics(List<University> universities)
+        {
+            var stats = University.GetOwnershipStatistics(universities);
+            Console.WriteLine("\n=== Статистика по типу собственности ===");
+            foreach (var (ownership, facultyCount, departmentCount, specialtyCount) in stats)
+            {
+                Console.WriteLine($"Тип собственности: {ownership}, Факультеты: {facultyCount}, Кафедры: {departmentCount}, Специальности: {specialtyCount}");
             }
         }
     }
