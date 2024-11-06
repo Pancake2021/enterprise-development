@@ -7,6 +7,9 @@ namespace UniversityStats.Tests;
 
 public class UniversityTests
 {
+    /// <summary>
+    /// Проверяет, что университет создается с корректными начальными данными.
+    /// </summary>
     [Fact]
     public void TestUniversityCreation()
     {
@@ -17,6 +20,9 @@ public class UniversityTests
         Assert.Equal(2, university.Faculties.Count);
     }
 
+    /// <summary>
+    /// Проверяет, что метод GetUniversityInfo возвращает корректную информацию об университете.
+    /// </summary>
     [Fact]
     public void TestGetUniversityInfo()
     {
@@ -28,6 +34,9 @@ public class UniversityTests
         Assert.Equal("123 Main St", result.Address);
     }
 
+    /// <summary>
+    /// Проверяет, что метод возвращает информацию о факультетах, кафедрах и специальностях.
+    /// </summary>
     [Fact]
     public void TestGetFacultyDepartmentSpecialtyInfo()
     {
@@ -38,6 +47,9 @@ public class UniversityTests
         Assert.Contains(result, r => r.Faculty == "Engineering" && r.Specialty == "Computer Science");
     }
 
+    /// <summary>
+    /// Проверяет, что метод возвращает топ-5 популярных специальностей.
+    /// </summary>
     [Fact]
     public void TestGetTop5PopularSpecialties()
     {
@@ -48,6 +60,9 @@ public class UniversityTests
         Assert.Contains(result, s => s.Name == "Computer Science");
     }
 
+    /// <summary>
+    /// Проверяет, что метод возвращает университеты с максимальным количеством кафедр.
+    /// </summary>
     [Fact]
     public void TestGetUniversitiesWithMaxDepartments()
     {
@@ -58,6 +73,9 @@ public class UniversityTests
         Assert.Equal("City University", result[0].Name);
     }
 
+    /// <summary>
+    /// Проверяет, что метод фильтрует университеты по типу собственности и количеству групп.
+    /// </summary>
     [Fact]
     public void TestGetUniversitiesByOwnershipAndGroupCount()
     {
@@ -68,6 +86,9 @@ public class UniversityTests
         Assert.Equal("City University", result[0].Name);
     }
 
+    /// <summary>
+    /// Проверяет, что метод возвращает статистику по типу собственности, количеству факультетов, кафедр и специальностей.
+    /// </summary>
     [Fact]
     public void TestGetOwnershipStatistics()
     {
@@ -81,6 +102,9 @@ public class UniversityTests
         Assert.Equal(4, result[0].SpecialtyCount); // 2 специальности в каждом факультете, итого 4
     }
 
+    /// <summary>
+    /// Создаёт тестовый объект университета с данными для тестирования.
+    /// </summary>
     private University GetSampleUniversity()
     {
         return new University
