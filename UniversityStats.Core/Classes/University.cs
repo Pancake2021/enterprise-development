@@ -4,55 +4,50 @@ using System.Linq;
 namespace UniversityStats.Classes;
 
 /// <summary>
-/// Represents a university with attributes such as registration number, name, rector information, ownership, and faculties.
+/// Класс, представляющий университет и его основные данные.
 /// </summary>
 public class University
 {
     /// <summary>
-    /// Gets or sets the unique registration number of the university.
+    /// Регистрационный номер университета.
     /// </summary>
     public required string RegistrationNumber { get; set; }
 
     /// <summary>
-    /// Gets or sets the name of the university.
+    /// Название университета.
     /// </summary>
     public required string Name { get; set; }
 
     /// <summary>
-    /// Gets or sets the address of the university.
+    /// Адрес университета.
     /// </summary>
     public required string Address { get; set; }
 
     /// <summary>
-    /// Gets or sets information about the rector of the university.
+    /// Информация о ректоре университета.
     /// </summary>
     public required Rector RectorInfo { get; set; }
 
     /// <summary>
-    /// Gets or sets the ownership type of the institution (e.g., Municipal, Private, Federal).
+    /// Тип собственности учреждения.
     /// </summary>
     public required OwnershipType InstitutionOwnership { get; set; }
 
     /// <summary>
-    /// Gets or sets the ownership type of the university's building (e.g., Municipal, Private, Federal).
+    /// Тип собственности здания.
     /// </summary>
     public required OwnershipType BuildingOwnership { get; set; }
 
     /// <summary>
-    /// Gets or sets the list of faculties within the university.
+    /// Список факультетов в университете.
     /// </summary>
     public required List<Faculty> Faculties { get; set; } = new List<Faculty>();
 
-    /// <summary>
-    /// Retrieves information about the current university instance.
-    /// </summary>
-    /// <returns>The current <see cref="University"/> instance.</returns>
-    public University GetUniversityInfo() => this;
+    // Запросы данных о факультетах, кафедрах и специальностях, которые могут быть полезны:
 
     /// <summary>
-    /// Retrieves information about all faculties, departments, and specialties in the university.
+    /// Получить информацию о факультетах, кафедрах и специальностях вуза.
     /// </summary>
-    /// <returns>A collection of tuples containing faculty, department, and specialty names.</returns>
     public IEnumerable<(string Faculty, string Department, string Specialty)> GetFacultyDepartmentSpecialtyInfo()
     {
         return Faculties.SelectMany(faculty =>
@@ -62,9 +57,8 @@ public class University
     }
 
     /// <summary>
-    /// Retrieves the top 5 most popular specialties based on the number of groups.
+    /// Получить топ 5 популярных специальностей по количеству групп.
     /// </summary>
-    /// <returns>A collection of the top 5 <see cref="Specialty"/> objects.</returns>
     public IEnumerable<Specialty> GetTop5PopularSpecialties()
     {
         return Faculties.SelectMany(f => f.Specialties)
@@ -75,10 +69,8 @@ public class University
     }
 
     /// <summary>
-    /// Retrieves universities with the maximum number of departments, ordered by name.
+    /// Получить университеты с максимальным количеством кафедр, упорядоченные по названию.
     /// </summary>
-    /// <param name="universities">A list of universities.</param>
-    /// <returns>A collection of universities with the maximum number of departments.</returns>
     public static IEnumerable<University> GetUniversitiesWithMaxDepartments(List<University> universities)
     {
         var maxDepartments = universities.Max(u => u.Faculties.Sum(f => f.Departments.Count));
@@ -87,11 +79,8 @@ public class University
     }
 
     /// <summary>
-    /// Retrieves universities with a specified institution ownership type and sorts them by the number of groups.
+    /// Получить университеты по типу собственности учреждения и количеству групп в вузе.
     /// </summary>
-    /// <param name="universities">A list of universities.</param>
-    /// <param name="ownershipType">The ownership type to filter by.</param>
-    /// <returns>A collection of universities that match the specified ownership type, sorted by group count.</returns>
     public static IEnumerable<University> GetUniversitiesByOwnershipAndGroupCount(List<University> universities, OwnershipType ownershipType)
     {
         return universities
@@ -100,10 +89,8 @@ public class University
     }
 
     /// <summary>
-    /// Retrieves statistics of faculty, department, and specialty counts grouped by ownership type.
+    /// Получить количество факультетов, кафедр и специальностей по каждому типу собственности.
     /// </summary>
-    /// <param name="universities">A list of universities.</param>
-    /// <returns>A collection of tuples containing ownership type, faculty count, department count, and specialty count.</returns>
     public static IEnumerable<(OwnershipType Ownership, int FacultyCount, int DepartmentCount, int SpecialtyCount)> GetOwnershipStatistics(List<University> universities)
     {
         return universities.GroupBy(u => u.InstitutionOwnership)
