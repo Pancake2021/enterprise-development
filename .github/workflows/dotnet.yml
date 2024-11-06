@@ -1,32 +1,33 @@
 name: .NET Tests
-  
-on:     
+
+on:
   push:
     branches:
       - main
   pull_request:
     branches:
       - main
-    
+
 jobs:
-  build:   
+  build:
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       - name: Setup .NET
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x' # Убедитесь, что версия соответствует вашей версии .NET
-    
+
       - name: Restore dependencies
         run: dotnet restore UniversityStats.Core.Tests/UniversityStats.Core.Tests.csproj
-    
+      
       - name: Build
-        run: dotnet build UniversityStats.Tests/UniversityStats.Tests.csproj --no-restore
-    
+        run: dotnet build UniversityStats.Core.Tests/UniversityStats.Core.Tests.csproj --no-restore
+
       - name: Run tests
-        run: dotnet test UniversityStats.Tests/UniversityStats.Tests.csproj --no-build --verbosity normal
+        run: dotnet test UniversityStats.Core.Tests/UniversityStats.Core.Tests.csproj --no-build --verbosity normal
+    
 
