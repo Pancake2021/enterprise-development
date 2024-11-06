@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
-namespace UniversityStats.Classes
-{
+namespace UniversityStats.Classes;
+
     public class Faculty
     {
         public required string Name { get; set; }
@@ -9,4 +9,4 @@ namespace UniversityStats.Classes
         public List<Department> Departments { get; set; } = new List<Department>();
         public List<Specialty> Specialties { get; set; } = new List<Specialty>();
     }
-}
+

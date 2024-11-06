@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace UniversityStats.Classes
-{
+namespace UniversityStats.Classes;
+
     public class University
     {
         public required string RegistrationNumber { get; set; }
@@ -61,4 +61,3 @@ namespace UniversityStats.Classes
                     SpecialtyCount: g.Sum(u => u.Faculties.Sum(f => f.Specialties.Count))));
         }
     }
-}
