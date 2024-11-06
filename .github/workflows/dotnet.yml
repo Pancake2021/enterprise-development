@@ -22,7 +22,7 @@ jobs:
           dotnet-version: '8.0.x' # Убедитесь, что версия соответствует вашей версии .NET
     
       - name: Restore dependencies
-        run: dotnet restore UniversityStats.Tests/UniversityStats.Tests.csproj
+        run: dotnet restore UniversityStats.Core.Tests/UniversityStats.Core.Tests.csproj
     
       - name: Build
         run: dotnet build UniversityStats.Tests/UniversityStats.Tests.csproj --no-restore
