@@ -1,15 +1,11 @@
-using UniversityStats.Classes;
 using System.Collections.Generic;
-
-namespace UniversityStats.Tests;
+using UniversityStats.Classes;
 
 public class UniversityFixture
 {
-    public University SampleUniversity { get; }
-
-    public UniversityFixture()
+    public University CreateSampleUniversity()
     {
-        SampleUniversity = new University
+        return new University
         {
             RegistrationNumber = "UNIV001",
             Name = "City University",
@@ -17,9 +13,9 @@ public class UniversityFixture
             RectorInfo = new Rector
             {
                 FullName = "Dr. John Doe",
-                Degree = "PhD",
-                Rank = "Professor",
-                Position = "Rector"
+                Degree = Degree.PhD, // Заменено на перечисление Degree вместо строки
+                Rank = Rank.Professor, // Заменено на перечисление Rank вместо строки
+                Position = Position.Rector // Заменено на перечисление Position вместо строки
             },
             InstitutionOwnership = OwnershipType.Municipal,
             BuildingOwnership = OwnershipType.Federal,

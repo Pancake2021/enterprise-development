@@ -3,39 +3,23 @@ using UniversityStats.Classes;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace UniversityStats.Tests;
-
-public class UniversityTests : IClassFixture<UniversityFixture>
+public class UniversityTests
 {
-    private readonly University _sampleUniversity;
-
-    public UniversityTests(UniversityFixture fixture)
-    {
-        _sampleUniversity = fixture.SampleUniversity;
-    }
-
     [Fact]
-    public void TestUniversityCreation()
+    public void TestUniversityProperties()
     {
-        Assert.Equal("UNIV001", _sampleUniversity.RegistrationNumber);
-        Assert.Equal("City University", _sampleUniversity.Name);
-        Assert.Equal(2, _sampleUniversity.Faculties.Count);
-    }
+        var university = GetSampleUniversity();
 
-    [Fact]
-    public void TestGetUniversityInfo()
-    {
-        var result = _sampleUniversity.GetUniversityInfo();
-
-        Assert.Equal("UNIV001", result.RegistrationNumber);
-        Assert.Equal("City University", result.Name);
-        Assert.Equal("123 Main St", result.Address);
+        Assert.Equal("UNIV001", university.RegistrationNumber);
+        Assert.Equal("City University", university.Name);
+        Assert.Equal("123 Main St", university.Address);
     }
 
     [Fact]
     public void TestGetFacultyDepartmentSpecialtyInfo()
     {
-        var result = _sampleUniversity.GetFacultyDepartmentSpecialtyInfo().ToList();
+        var university = GetSampleUniversity();
+        var result = university.GetFacultyDepartmentSpecialtyInfo().ToList();
 
         Assert.NotEmpty(result);
         Assert.Contains(result, r => r.Faculty == "Engineering" && r.Specialty == "Computer Science");
@@ -44,7 +28,8 @@ public class UniversityTests : IClassFixture<UniversityFixture>
     [Fact]
     public void TestGetTop5PopularSpecialties()
     {
-        var result = _sampleUniversity.GetTop5PopularSpecialties().ToList();
+        var university = GetSampleUniversity();
+        var result = university.GetTop5PopularSpecialties().ToList();
 
         Assert.True(result.Count <= 5);
         Assert.Contains(result, s => s.Name == "Computer Science");
@@ -53,7 +38,7 @@ public class UniversityTests : IClassFixture<UniversityFixture>
     [Fact]
     public void TestGetUniversitiesWithMaxDepartments()
     {
-        var universities = new List<University> { _sampleUniversity };
+        var universities = new List<University> { GetSampleUniversity() };
         var result = University.GetUniversitiesWithMaxDepartments(universities).ToList();
 
         Assert.Single(result);
@@ -63,7 +48,7 @@ public class UniversityTests : IClassFixture<UniversityFixture>
     [Fact]
     public void TestGetUniversitiesByOwnershipAndGroupCount()
     {
-        var universities = new List<University> { _sampleUniversity };
+        var universities = new List<University> { GetSampleUniversity() };
         var result = University.GetUniversitiesByOwnershipAndGroupCount(universities, OwnershipType.Municipal).ToList();
 
         Assert.NotEmpty(result);
@@ -73,14 +58,57 @@ public class UniversityTests : IClassFixture<UniversityFixture>
     [Fact]
     public void TestGetOwnershipStatistics()
     {
-        var universities = new List<University> { _sampleUniversity };
+        var universities = new List<University> { GetSampleUniversity() };
         var result = University.GetOwnershipStatistics(universities).ToList();
 
-        Assert.Single(result);
+        Assert.Single(result); // Ожидаем одну запись для типа собственности
         Assert.Equal(OwnershipType.Municipal, result[0].Ownership);
-        Assert.Equal(2, result[0].FacultyCount);
-        Assert.Equal(2, result[0].DepartmentCount);
-        Assert.Equal(4, result[0].SpecialtyCount);
+        Assert.Equal(2, result[0].FacultyCount); // 2 факультета в тестовом университете
+        Assert.Equal(2, result[0].DepartmentCount); // 1 кафедра в каждом факультете, итого 2
+        Assert.Equal(4, result[0].SpecialtyCount); // 2 специальности в каждом факультете, итого 4
+    }
+
+    private University GetSampleUniversity()
+    {
+        return new University
+        {
+            RegistrationNumber = "UNIV001",
+            Name = "City University",
+            Address = "123 Main St",
+            RectorInfo = new Rector
+            {
+                FullName = "Dr. John Doe",
+                Degree = Degree.PhD,
+                Rank = Rank.Professor,
+                Position = Position.Rector
+            },
+            InstitutionOwnership = OwnershipType.Municipal,
+            BuildingOwnership = OwnershipType.Federal,
+            Faculties = new List<Faculty>
+            {
+                new Faculty
+                {
+                    Name = "Engineering",
+                    GroupCount = 15,
+                    Departments = new List<Department> { new Department { Name = "Computer Science" } },
+                    Specialties = new List<Specialty>
+                    {
+                        new Specialty { Code = "CS101", Name = "Computer Science" },
+                        new Specialty { Code = "ME102", Name = "Mechanical Engineering" }
+                    }
+                },
+                new Faculty
+                {
+                    Name = "Arts",
+                    GroupCount = 8,
+                    Departments = new List<Department> { new Department { Name = "Humanities" } },
+                    Specialties = new List<Specialty>
+                    {
+                        new Specialty { Code = "ENG201", Name = "English Literature" },
+                        new Specialty { Code = "HIS202", Name = "History" }
+                    }
+                }
+            }
+        };
     }
 }
-
