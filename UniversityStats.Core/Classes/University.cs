@@ -3,51 +3,29 @@ using System.Linq;
 
 namespace UniversityStats.Classes;
 
-/// <summary>
-/// Класс, представляющий университет и его основные данные.
-/// </summary>
 public class University
 {
-    /// <summary>
-    /// Регистрационный номер университета.
-    /// </summary>
     public required string RegistrationNumber { get; set; }
-
-    /// <summary>
-    /// Название университета.
-    /// </summary>
     public required string Name { get; set; }
-
-    /// <summary>
-    /// Адрес университета.
-    /// </summary>
     public required string Address { get; set; }
-
-    /// <summary>
-    /// Информация о ректоре университета.
-    /// </summary>
     public required Rector RectorInfo { get; set; }
-
-    /// <summary>
-    /// Тип собственности учреждения.
-    /// </summary>
     public required OwnershipType InstitutionOwnership { get; set; }
-
-    /// <summary>
-    /// Тип собственности здания.
-    /// </summary>
     public required OwnershipType BuildingOwnership { get; set; }
-
-    /// <summary>
-    /// Список факультетов в университете.
-    /// </summary>
     public required List<Faculty> Faculties { get; set; } = new List<Faculty>();
-
-    // Запросы данных о факультетах, кафедрах и специальностях, которые могут быть полезны:
 
     /// <summary>
     /// Получить информацию о факультетах, кафедрах и специальностях вуза.
     /// </summary>
+    /// <remarks>
+    /// Метод возвращает коллекцию, содержащую информацию о факультетах, кафедрах и специальностях вуза.
+    /// Каждый элемент коллекции включает название факультета, название кафедры и название специальности.
+    /// </remarks>
+    /// <returns>
+    /// Коллекция кортежей, где каждый кортеж состоит из:
+    /// - Название факультета (Faculty)
+    /// - Название кафедры (Department)
+    /// - Название специальности (Specialty)
+    /// </returns>
     public IEnumerable<(string Faculty, string Department, string Specialty)> GetFacultyDepartmentSpecialtyInfo()
     {
         return Faculties.SelectMany(faculty =>
@@ -57,8 +35,9 @@ public class University
     }
 
     /// <summary>
-    /// Получить топ 5 популярных специальностей по количеству групп.
+    /// Получить топ 5 популярных специальностей (по количеству групп).
     /// </summary>
+    /// <returns>Коллекция из 5 самых популярных специальностей.</returns>
     public IEnumerable<Specialty> GetTop5PopularSpecialties()
     {
         return Faculties.SelectMany(f => f.Specialties)
@@ -69,8 +48,10 @@ public class University
     }
 
     /// <summary>
-    /// Получить университеты с максимальным количеством кафедр, упорядоченные по названию.
+    /// Получить вузы с максимальным количеством кафедр, упорядоченные по названию.
     /// </summary>
+    /// <param name="universities">Список вузов для анализа.</param>
+    /// <returns>Коллекция вузов с максимальным количеством кафедр.</returns>
     public static IEnumerable<University> GetUniversitiesWithMaxDepartments(List<University> universities)
     {
         var maxDepartments = universities.Max(u => u.Faculties.Sum(f => f.Departments.Count));
@@ -79,8 +60,11 @@ public class University
     }
 
     /// <summary>
-    /// Получить университеты по типу собственности учреждения и количеству групп в вузе.
+    /// Получить вузы с заданной собственностью учреждения и количеством групп в вузе.
     /// </summary>
+    /// <param name="universities">Список вузов для анализа.</param>
+    /// <param name="ownershipType">Тип собственности учреждения.</param>
+    /// <returns>Коллекция вузов, соответствующих заданным условиям.</returns>
     public static IEnumerable<University> GetUniversitiesByOwnershipAndGroupCount(List<University> universities, OwnershipType ownershipType)
     {
         return universities
@@ -89,8 +73,16 @@ public class University
     }
 
     /// <summary>
-    /// Получить количество факультетов, кафедр и специальностей по каждому типу собственности.
+    /// Получить количество факультетов, кафедр, специальностей по каждому типу собственности.
     /// </summary>
+    /// <param name="universities">Список вузов для анализа.</param>
+    /// <returns>
+    /// Коллекция кортежей, содержащих:
+    /// - Тип собственности (Ownership)
+    /// - Количество факультетов (FacultyCount)
+    /// - Количество кафедр (DepartmentCount)
+    /// - Количество специальностей (SpecialtyCount)
+    /// </returns>
     public static IEnumerable<(OwnershipType Ownership, int FacultyCount, int DepartmentCount, int SpecialtyCount)> GetOwnershipStatistics(List<University> universities)
     {
         return universities.GroupBy(u => u.InstitutionOwnership)
