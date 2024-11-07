@@ -35,19 +35,6 @@ public class University
     }
 
     /// <summary>
-    /// Получить топ 5 популярных специальностей (по количеству групп).
-    /// </summary>
-    /// <returns>Коллекция из 5 самых популярных специальностей.</returns>
-    public IEnumerable<Specialty> GetTop5PopularSpecialties()
-    {
-        return Faculties.SelectMany(f => f.Specialties)
-            .GroupBy(s => s)
-            .OrderByDescending(g => g.Count())
-            .Take(5)
-            .Select(g => g.Key);
-    }
-
-    /// <summary>
     /// Получить вузы с максимальным количеством кафедр, упорядоченные по названию.
     /// </summary>
     /// <param name="universities">Список вузов для анализа.</param>
