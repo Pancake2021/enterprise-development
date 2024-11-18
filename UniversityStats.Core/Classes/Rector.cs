@@ -8,7 +8,6 @@ public enum Degree
     PhD,
     Master,
     Bachelor
-    // Добавьте другие степени, если необходимо
 }
 
 /// <summary>
@@ -19,7 +18,6 @@ public enum Rank
     Professor,
     AssociateProfessor,
     Lecturer
-    // Добавьте другие ранги, если необходимо
 }
 
 /// <summary>
@@ -30,7 +28,6 @@ public enum Position
     Rector,
     Dean,
     Lecturer
-    // Добавьте другие позиции, если необходимо
 }
 
 /// <summary>
