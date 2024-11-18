@@ -5,12 +5,39 @@ namespace UniversityStats.Classes;
 
 public class University
 {
+    /// <summary>
+    /// Регистрационный номер университета.
+    /// </summary>
     public required string RegistrationNumber { get; set; }
+
+    /// <summary>
+    /// Название университета.
+    /// </summary>
     public required string Name { get; set; }
+
+    /// <summary>
+    /// Адрес университета.
+    /// </summary>
     public required string Address { get; set; }
+
+    /// <summary>
+    /// Информация о ректоре университета.
+    /// </summary>
     public required Rector RectorInfo { get; set; }
+
+    /// <summary>
+    /// Тип собственности учреждения.
+    /// </summary>
     public required OwnershipType InstitutionOwnership { get; set; }
+
+    /// <summary>
+    /// Тип собственности здания.
+    /// </summary>
     public required OwnershipType BuildingOwnership { get; set; }
+
+    /// <summary>
+    /// Список факультетов, входящих в университет.
+    /// </summary>
     public required List<Faculty> Faculties { get; set; } = new List<Faculty>();
 
     /// <summary>
