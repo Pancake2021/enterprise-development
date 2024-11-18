@@ -1,32 +1,34 @@
+using System.Collections.Generic;
+
 namespace UniversityStats.Classes;
 
 /// <summary>
-/// Represents a faculty within the university, containing departments and specialties.
+/// Класс, представляющий факультет.
 /// </summary>
 public class Faculty
 {
     /// <summary>
-    /// Gets or sets the unique identifier for the faculty.
+    /// Уникальный идентификатор факультета (первичный ключ).
     /// </summary>
     public int Id { get; set; } // Primary Key
 
     /// <summary>
-    /// Gets or sets the name of the faculty.
+    /// Название факультета.
     /// </summary>
     public required string Name { get; set; }
 
     /// <summary>
-    /// Gets or sets the number of groups within the faculty.
+    /// Количество групп на факультете.
     /// </summary>
     public int GroupCount { get; set; }
 
     /// <summary>
-    /// Gets or sets the list of departments in the faculty.
+    /// Список кафедр, входящих в состав факультета.
     /// </summary>
     public List<Department> Departments { get; set; } = new List<Department>();
 
     /// <summary>
-    /// Gets or sets the list of specialties within the faculty.
+    /// Список специальностей на факультете.
     /// </summary>
     public List<Specialty> Specialties { get; set; } = new List<Specialty>();
 }
