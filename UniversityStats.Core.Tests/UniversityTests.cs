@@ -11,13 +11,12 @@ namespace UniversityStats.Core.Tests
         [Fact]
         public void TestGetUniversitiesWithMaxDepartments()
         {
-            var universities = new List<University> { GetSampleUniversity(), GetAnotherSampleUniversity() };
+            var universities = new List<University> { GetSampleUniversity(), GetAnotherSampleUniversityWithSameDepartments() };
             var repository = new UniversityRepository(universities);
 
             var result = repository.GetUniversitiesWithMaxDepartments().ToList();
 
-            Assert.Single(result); // Вместо Assert.Equal(1, result.Count)
-            Assert.Equal("City University", result[0].Name);
+            Assert.Equal(2, result.Count); // Ожидаем два университета с одинаковым количеством кафедр
         }
 
         [Fact]
@@ -35,14 +34,15 @@ namespace UniversityStats.Core.Tests
         [Fact]
         public void TestGetOwnershipStatistics()
         {
-            var universities = new List<University> { GetSampleUniversity(), GetAnotherSampleUniversity() };
+            var universities = new List<University> { GetSampleUniversity(), GetAnotherSampleUniversity(), GetThirdSampleUniversity() };
             var repository = new UniversityRepository(universities);
 
             var result = repository.GetOwnershipStatistics().ToList();
 
-            Assert.Equal(2, result.Count); // Ожидаем две записи для типов собственности
-            Assert.Contains(result, r => r.Ownership == OwnershipType.Municipal && r.FacultyCount == 2);
-            Assert.Contains(result, r => r.Ownership == OwnershipType.Private && r.FacultyCount == 1);
+            // Исправим, чтобы проверять результат более гибко
+            Assert.Equal(2, result.Count); // Два типа собственности
+            Assert.Contains(result, r => r.Ownership == OwnershipType.Municipal && r.FacultyCount == 3 && r.DepartmentCount == 3 && r.SpecialtyCount == 5);
+            Assert.Contains(result, r => r.Ownership == OwnershipType.Private && r.FacultyCount == 1 && r.DepartmentCount == 1 && r.SpecialtyCount == 1);
         }
 
         private University GetSampleUniversity()
@@ -115,6 +115,81 @@ namespace UniversityStats.Core.Tests
                         Specialties = new List<Specialty>
                         {
                             new Specialty { Code = "IT301", Name = "Information Technology" }
+                        }
+                    }
+                }
+            };
+        }
+
+        private University GetAnotherSampleUniversityWithSameDepartments()
+        {
+            return new University
+            {
+                RegistrationNumber = "UNIV003",
+                Name = "Technical University",
+                Address = "789 Tech Park",
+                RectorInfo = new Rector
+                {
+                    FullName = "Dr. Alice Johnson",
+                    Degree = Degree.PhD,
+                    Rank = Rank.Professor,
+                    Position = Position.Rector
+                },
+                InstitutionOwnership = OwnershipType.Municipal,
+                BuildingOwnership = OwnershipType.Federal,
+                Faculties = new List<Faculty>
+                {
+                    new Faculty
+                    {
+                        Name = "Science",
+                        GroupCount = 12,
+                        Departments = new List<Department> { new Department { Name = "Physics" } },
+                        Specialties = new List<Specialty>
+                        {
+                            new Specialty { Code = "PHY101", Name = "Physics" },
+                            new Specialty { Code = "CHM102", Name = "Chemistry" }
+                        }
+                    },
+                    new Faculty
+                    {
+                        Name = "Mathematics",
+                        GroupCount = 8,
+                        Departments = new List<Department> { new Department { Name = "Mathematics" } },
+                        Specialties = new List<Specialty>
+                        {
+                            new Specialty { Code = "MATH101", Name = "Mathematics" }
+                        }
+                    }
+                }
+            };
+        }
+
+        private University GetThirdSampleUniversity()
+        {
+            return new University
+            {
+                RegistrationNumber = "UNIV004",
+                Name = "Municipal Arts University",
+                Address = "101 Main St",
+                RectorInfo = new Rector
+                {
+                    FullName = "Dr. Robert Brown",
+                    Degree = Degree.Bachelor,
+                    Rank = Rank.Lecturer,
+                    Position = Position.Dean
+                },
+                InstitutionOwnership = OwnershipType.Municipal,
+                BuildingOwnership = OwnershipType.Municipal,
+                Faculties = new List<Faculty>
+                {
+                    new Faculty
+                    {
+                        Name = "Visual Arts",
+                        GroupCount = 6,
+                        Departments = new List<Department> { new Department { Name = "Design" } },
+                        Specialties = new List<Specialty>
+                        {
+                            new Specialty { Code = "ART301", Name = "Design" }
                         }
                     }
                 }
