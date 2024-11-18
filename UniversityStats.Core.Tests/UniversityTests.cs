@@ -16,7 +16,7 @@ namespace UniversityStats.Core.Tests
 
             var result = repository.GetUniversitiesWithMaxDepartments().ToList();
 
-            Assert.Equal(2, result.Count); // Ожидаем два университета с одинаковым количеством кафедр
+            Assert.Equal(2, result.Count);
         }
 
         [Fact]
@@ -31,6 +31,12 @@ namespace UniversityStats.Core.Tests
             Assert.Equal("City University", result[0].Name);
         }
 
+        /// <summary>
+        /// Тестирует получение статистики по типу собственности в университете.
+        /// Проверяет, что:
+        /// 1. Возвращается корректное количество записей по типам собственности (2).
+        /// 2. Проверяются значения по типу собственности, количеству факультетов, кафедр и специальностей.
+        /// </summary>
         [Fact]
         public void TestGetOwnershipStatistics()
         {
@@ -39,8 +45,7 @@ namespace UniversityStats.Core.Tests
 
             var result = repository.GetOwnershipStatistics().ToList();
 
-            // Исправим, чтобы проверять результат более гибко
-            Assert.Equal(2, result.Count); // Два типа собственности
+            Assert.Equal(2, result.Count);
             Assert.Contains(result, r => r.Ownership == OwnershipType.Municipal && r.FacultyCount == 3 && r.DepartmentCount == 3 && r.SpecialtyCount == 5);
             Assert.Contains(result, r => r.Ownership == OwnershipType.Private && r.FacultyCount == 1 && r.DepartmentCount == 1 && r.SpecialtyCount == 1);
         }
