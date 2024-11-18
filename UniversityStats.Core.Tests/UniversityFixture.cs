@@ -13,9 +13,9 @@ public class UniversityFixture
             RectorInfo = new Rector
             {
                 FullName = "Dr. John Doe",
-                Degree = Degree.PhD, // Заменено на перечисление Degree вместо строки
-                Rank = Rank.Professor, // Заменено на перечисление Rank вместо строки
-                Position = Position.Rector // Заменено на перечисление Position вместо строки
+                Degree = Degree.PhD,
+                Rank = Rank.Professor,
+                Position = Position.Rector
             },
             InstitutionOwnership = OwnershipType.Municipal,
             BuildingOwnership = OwnershipType.Federal,
@@ -25,22 +25,50 @@ public class UniversityFixture
                 {
                     Name = "Engineering",
                     GroupCount = 15,
-                    Departments = new List<Department> { new Department { Name = "Computer Science" } },
+                    Departments = new List<Department> 
+                    { 
+                        new Department 
+                        { 
+                            Name = "Computer Science" 
+                        } 
+                    },
                     Specialties = new List<Specialty>
                     {
-                        new Specialty { Code = "CS101", Name = "Computer Science" },
-                        new Specialty { Code = "ME102", Name = "Mechanical Engineering" }
+                        new Specialty 
+                        { 
+                            Code = "CS101", 
+                            Name = "Computer Science" 
+                        },
+                        new Specialty 
+                        { 
+                            Code = "ME102", 
+                            Name = "Mechanical Engineering" 
+                        }
                     }
                 },
                 new Faculty
                 {
                     Name = "Arts",
                     GroupCount = 8,
-                    Departments = new List<Department> { new Department { Name = "Humanities" } },
+                    Departments = new List<Department> 
+                    { 
+                        new Department 
+                        { 
+                            Name = "Humanities" 
+                        } 
+                    },
                     Specialties = new List<Specialty>
                     {
-                        new Specialty { Code = "ENG201", Name = "English Literature" },
-                        new Specialty { Code = "HIS202", Name = "History" }
+                        new Specialty 
+                        { 
+                            Code = "ENG201", 
+                            Name = "English Literature" 
+                        },
+                        new Specialty 
+                        { 
+                            Code = "HIS202", 
+                            Name = "History" 
+                        }
                     }
                 }
             }
