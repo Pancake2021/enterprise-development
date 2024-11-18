@@ -1,36 +1,6 @@
 namespace UniversityStats.Classes;
 
 /// <summary>
-/// Перечисление для обозначения научной степени.
-/// </summary>
-public enum Degree
-{
-    PhD,
-    Master,
-    Bachelor
-}
-
-/// <summary>
-/// Перечисление для обозначения академического звания.
-/// </summary>
-public enum Rank
-{
-    Professor,
-    AssociateProfessor,
-    Lecturer
-}
-
-/// <summary>
-/// Перечисление для обозначения должности ректора.
-/// </summary>
-public enum Position
-{
-    Rector,
-    Dean,
-    Lecturer
-}
-
-/// <summary>
 /// Класс, представляющий информацию о ректоре.
 /// </summary>
 public class Rector
