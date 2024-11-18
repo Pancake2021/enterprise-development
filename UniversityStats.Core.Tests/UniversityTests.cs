@@ -16,7 +16,7 @@ namespace UniversityStats.Core.Tests
 
             var result = repository.GetUniversitiesWithMaxDepartments().ToList();
 
-            Assert.Equal(1, result.Count); // Проверяем, что метод вернул нужное количество результатов
+            Assert.Single(result); // Вместо Assert.Equal(1, result.Count)
             Assert.Equal("City University", result[0].Name);
         }
 
@@ -99,7 +99,7 @@ namespace UniversityStats.Core.Tests
                 RectorInfo = new Rector
                 {
                     FullName = "Dr. Jane Smith",
-                    Degree = Degree.Master, // Исправлено: должно быть "Master" вместо "Masters"
+                    Degree = Degree.Master,
                     Rank = Rank.AssociateProfessor,
                     Position = Position.Dean
                 },
