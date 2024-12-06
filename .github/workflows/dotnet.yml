@@ -1,33 +1,31 @@
-name: .NET Tests
+name: .NET Tests CI
 
 on:
   push:
     branches:
-      - main
+      - lab2
   pull_request:
     branches:
-      - main
+      - lab2
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
+      - name: Check out code
+        uses: actions/checkout@v2
 
-      - name: Setup .NET
-        uses: actions/setup-dotnet@v3
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v2
         with:
-          dotnet-version: '8.0.x' # Убедитесь, что версия соответствует вашей версии .NET
+          dotnet-version: '8.0'
 
       - name: Restore dependencies
-        run: dotnet restore UniversityStats.Core.Tests/UniversityStats.Core.Tests.csproj
-      
+        run: dotnet restore UniversityStats/UniversityStats.sln  
+
       - name: Build
-        run: dotnet build UniversityStats.Core.Tests/UniversityStats.Core.Tests.csproj --no-restore
+        run: dotnet build UniversityStats/UniversityStats.sln --configuration Release  
 
       - name: Run tests
-        run: dotnet test UniversityStats.Core.Tests/UniversityStats.Core.Tests.csproj --no-build --verbosity normal
-    
-
+        run: dotnet test UniversityStats/UniversityStats.sln --configuration Release --no-build --verbosity normal 
