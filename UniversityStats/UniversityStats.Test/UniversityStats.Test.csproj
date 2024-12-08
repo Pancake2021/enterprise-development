@@ -17,7 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\UniversityStats.Domain\UniversityStats.Domain.csproj" />
-    <ProjectReference Include="..\UniversityStats.Api\UniversityStats.Api.csproj" />
+    <ProjectReference Include="..\UniversityStats.API\UniversityStats.API.csproj" />
   </ItemGroup>
 
   <ItemGroup>

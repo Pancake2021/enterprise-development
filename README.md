@@ -21,7 +21,7 @@ UniversityStats - это веб-приложение для управления
 
 ## Структура проекта
 
-- `UniversityStats.Api` - Web API проект
+- `UniversityStats.API` - Web API проект
 - `UniversityStats.Domain` - Доменная модель и репозитории
 - `UniversityStats.Test` - Модульные тесты
 
@@ -40,7 +40,7 @@ dotnet restore
 3. Запустите приложение:
 ```bash
 cd UniversityStats
-dotnet run --project UniversityStats.Api
+dotnet run --project UniversityStats.API
 ```
 
 4. Откройте Swagger UI:
