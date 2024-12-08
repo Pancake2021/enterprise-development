@@ -1,50 +1,70 @@
-using AutoMapper;
-using UniversityStats.API.Dto;
-using UniversityStats.Domain.Entity;
-using UniversityStats.Domain.Repositories;
+using UniversityStats.Infrastructure.Entities;
+using UniversityStats.Infrastructure.Repositories.Interfaces;
 
 namespace UniversityStats.API.Services;
 
 /// <summary>
 /// Class for university's service
 /// </summary>
-/// <param name="repository">University's repository</param>
-/// <param name="mapper">Automapper's object for mapping 2 objects UniversityDto and University</param>
-public class UniversityService(IRepository<University> repository, IMapper mapper) : IService<UniversityDto>
+public class UniversityService
 {
+    private readonly IUniversityRepository _universityRepository;
+
     /// <summary>
-    /// Method delete university by registration number
+    /// Constructor for UniversityService
     /// </summary>
-    /// <param name="id">Registration number</param>
-    /// <returns>True or False</returns>
-    public bool Delete(string id) => repository.Delete(id);
+    /// <param name="universityRepository">University's repository</param>
+    public UniversityService(IUniversityRepository universityRepository)
+    {
+        _universityRepository = universityRepository;
+    }
+
+    /// <summary>
+    /// Method get university by id
+    /// </summary>
+    /// <param name="id">University's id</param>
+    /// <returns>University's information or null</returns>
+    public async Task<University?> GetUniversityByIdAsync(int id)
+    {
+        return await _universityRepository.GetByIdAsync(id);
+    }
 
     /// <summary>
     /// Method get list of universities
     /// </summary>
     /// <returns>List of universities</returns>
-    public IEnumerable<UniversityDto> GetAll() => mapper.Map<IEnumerable<UniversityDto>>(repository.GetAll());
-
-    /// <summary>
-    /// Method get university by registration number
-    /// </summary>
-    /// <param name="id">Registration number</param>
-    /// <returns>University's information or null</returns>
-    public UniversityDto? GetById(string id) => mapper.Map<UniversityDto>(repository.GetById(id));
+    public async Task<IEnumerable<University>> GetAllUniversitiesAsync()
+    {
+        return await _universityRepository.GetAllAsync();
+    }
 
     /// <summary>
     /// Method post university to database
     /// </summary>
-    /// <param name="dtoData">University's information</param>
-    public void Post(UniversityDto dtoData)
+    /// <param name="university">University's information</param>
+    /// <returns>University's information</returns>
+    public async Task<University> CreateUniversityAsync(University university)
     {
-        repository.Post(mapper.Map<University>(dtoData)); 
+        return await _universityRepository.AddAsync(university);
     }
 
     /// <summary>
-    /// Method put university by registration number
+    /// Method update university
     /// </summary>
-    /// <param name="dtoData">University's information</param>
-    /// <returns>True or False</returns>
-    public bool Put(UniversityDto dtoData) => repository.Put(mapper.Map<University>(dtoData));
+    /// <param name="university">University's information</param>
+    /// <returns>University's information</returns>
+    public async Task<University> UpdateUniversityAsync(University university)
+    {
+        return await _universityRepository.UpdateAsync(university);
+    }
+
+    /// <summary>
+    /// Method delete university
+    /// </summary>
+    /// <param name="id">University's id</param>
+    /// <returns>True if deleted, false otherwise</returns>
+    public async Task<bool> DeleteUniversityAsync(int id)
+    {
+        return await _universityRepository.DeleteAsync(id);
+    }
 }

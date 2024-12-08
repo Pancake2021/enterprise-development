@@ -1,50 +1,64 @@
-using AutoMapper;
-using UniversityStats.API.Dto;
-using UniversityStats.Domain.Entity;
-using UniversityStats.Domain.Repositories;
+using UniversityStats.Infrastructure.Entities;
+using UniversityStats.Infrastructure.Repositories.Interfaces;
 
 namespace UniversityStats.API.Services;
 
 /// <summary>
 /// Class for faculty's service
 /// </summary>
-/// <param name="repository">Faculty's repository</param>
-/// <param name="mapper">Automapper's object for mapping 2 objects FacultyDto and Faculty</param>
-public class FacultyService(IRepository<Faculty> repository, IMapper mapper): IService<FacultyDto>
+public class FacultyService
 {
-    /// <summary>
-    /// Method delete faculty by faculty's id
-    /// </summary>
-    /// <param name="id">Faculty's id</param>
-    /// <returns>True or False</returns>
-    public bool Delete(string id) => repository.Delete(id);
+    private readonly IFacultyRepository _facultyRepository;
+
+    public FacultyService(IFacultyRepository facultyRepository)
+    {
+        _facultyRepository = facultyRepository;
+    }
 
     /// <summary>
     /// Method get list of faculties
     /// </summary>
     /// <returns>List of faculties</returns>
-    public IEnumerable<FacultyDto> GetAll() => mapper.Map<IEnumerable<FacultyDto>>(repository.GetAll());
+    public async Task<IEnumerable<Faculty>> GetAllFacultiesAsync()
+    {
+        return await _facultyRepository.GetAllAsync();
+    }
 
     /// <summary>
     /// Method get faculty by faculty's id
     /// </summary>
     /// <param name="id">Faculty's id</param>
     /// <returns>Faculty's information or null</returns>
-    public FacultyDto? GetById(string id) => mapper.Map<FacultyDto>(repository.GetById(id));
-
-    /// <summary>
-    /// Method post faculty to database
-    /// </summary>
-    /// <param name="dtoData">Faculty's information</param>
-    public void Post(FacultyDto dtoData)
+    public async Task<Faculty?> GetFacultyByIdAsync(int id)
     {
-        repository.Post(mapper.Map<Faculty>(dtoData));
+        return await _facultyRepository.GetByIdAsync(id);
     }
 
     /// <summary>
-    /// Method put faculty by faculty's id
+    /// Method create faculty in database
     /// </summary>
-    /// <param name="dtoData">Faculty's information</param>
+    /// <param name="faculty">Faculty's information</param>
+    public async Task<Faculty> CreateFacultyAsync(Faculty faculty)
+    {
+        return await _facultyRepository.AddAsync(faculty);
+    }
+
+    /// <summary>
+    /// Method update faculty
+    /// </summary>
+    /// <param name="faculty">Faculty's information</param>
+    public async Task<Faculty> UpdateFacultyAsync(Faculty faculty)
+    {
+        return await _facultyRepository.UpdateAsync(faculty);
+    }
+
+    /// <summary>
+    /// Method delete faculty by faculty's id
+    /// </summary>
+    /// <param name="id">Faculty's id</param>
     /// <returns>True or False</returns>
-    public bool Put(FacultyDto dtoData) => repository.Put(mapper.Map<Faculty>(dtoData));
+    public async Task<bool> DeleteFacultyAsync(int id)
+    {
+        return await _facultyRepository.DeleteAsync(id);
+    }
 }

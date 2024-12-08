@@ -1,121 +1,59 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;  // Для логирования
-using UniversityStats.API.Dto;
+using Microsoft.AspNetCore.Mvc;
 using UniversityStats.API.Services;
+using UniversityStats.Infrastructure.Entities;
 
-namespace UniversityStats.API.Controllers
+namespace UniversityStats.API.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class FacultyController : ControllerBase
 {
-    /// <summary>
-    /// Class for Faculty's controller
-    /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FacultyController : ControllerBase
+    private readonly FacultyService _facultyService;
+
+    public FacultyController(FacultyService facultyService)
     {
-        private readonly FacultyService _service;
-        private readonly ILogger<FacultyController> _logger;  // Логер для контроллера
+        _facultyService = facultyService;
+    }
 
-        // Конструктор с внедрением зависимостей
-        public FacultyController(FacultyService service, ILogger<FacultyController> logger)
-        {
-            _service = service;
-            _logger = logger;
-        }
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Faculty>> GetFaculty(int id)
+    {
+        var faculty = await _facultyService.GetFacultyByIdAsync(id);
+        if (faculty == null)
+            return NotFound();
+        return Ok(faculty);
+    }
 
-        /// <summary>
-        /// Return list of faculties
-        /// </summary>
-        /// <returns>List of faculties</returns>
-        [HttpGet]
-        public ActionResult<IEnumerable<FacultyDto>> Get()
-        {
-            _logger.LogInformation("Fetching list of all faculties.");  // Логируем начало операции
-            var faculties = _service.GetAll();
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Faculty>>> GetAllFaculties()
+    {
+        var faculties = await _facultyService.GetAllFacultiesAsync();
+        return Ok(faculties);
+    }
 
-            if (faculties == null || !faculties.Any())
-            {
-                _logger.LogWarning("No faculties found.");  // Логируем предупреждение, если не найдены данные
-                return NotFound("No faculties found.");
-            }
+    [HttpPost]
+    public async Task<ActionResult<Faculty>> CreateFaculty([FromBody] Faculty faculty)
+    {
+        var createdFaculty = await _facultyService.CreateFacultyAsync(faculty);
+        return CreatedAtAction(nameof(GetFaculty), new { id = createdFaculty.Id }, createdFaculty);
+    }
 
-            _logger.LogInformation("Successfully fetched all faculties.");  // Логируем успешное выполнение
-            return Ok(faculties);
-        }
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Faculty>> UpdateFaculty(int id, [FromBody] Faculty faculty)
+    {
+        if (id != faculty.Id)
+            return BadRequest();
 
-        /// <summary>
-        /// Find faculty's information by faculty's id
-        /// </summary>
-        /// <param name="facultyId">Faculty's id</param>
-        /// <returns>Faculty's information</returns>
-        [HttpGet("{facultyId}")]
-        public ActionResult<FacultyDto> Get(string facultyId)
-        {
-            _logger.LogInformation($"Fetching faculty with id: {facultyId}.");  // Логируем начало операции
-            var faculty = _service.GetById(facultyId);
+        var updatedFaculty = await _facultyService.UpdateFacultyAsync(faculty);
+        return Ok(updatedFaculty);
+    }
 
-            if (faculty == null)
-            {
-                _logger.LogWarning($"Faculty with id: {facultyId} not found.");  // Логируем, если не найдено
-                return NotFound();
-            }
-
-            _logger.LogInformation($"Successfully fetched faculty with id: {facultyId}.");  // Логируем успех
-            return Ok(faculty);
-        }
-
-        /// <summary>
-        /// Post faculty's information to database
-        /// </summary>
-        /// <param name="faculty">Faculty's information</param>
-        /// <returns>Success or not</returns>
-        [HttpPost]
-        public ActionResult<FacultyDto> Post([FromBody] FacultyDto faculty)
-        {
-            _logger.LogInformation("Adding new faculty to the database.");
-            _service.Post(faculty);
-
-            _logger.LogInformation("Faculty added successfully.");
-            return Ok(faculty);
-        }
-
-        /// <summary>
-        /// Correct faculty's information by faculty's id
-        /// </summary>
-        /// <param name="faculty">Faculty's information</param>
-        /// <returns>Success or not</returns>
-        [HttpPut]
-        public ActionResult<FacultyDto> Put([FromBody] FacultyDto faculty)
-        {
-            _logger.LogInformation($"Updating faculty with id: {faculty.FacultyId}");  // Исправляем на правильное свойство
-
-            if (!_service.Put(faculty))
-            {
-                _logger.LogWarning($"Faculty with id: {faculty.FacultyId} not found for update.");  // Логируем, если не найдено
-                return NotFound();
-            }
-
-            _logger.LogInformation($"Successfully updated faculty with id: {faculty.FacultyId}.");  // Логируем успех
-            return Ok(faculty);
-        }
-
-        /// <summary>
-        /// Delete faculty by faculty's id
-        /// </summary>
-        /// <param name="facultyId">Faculty's id</param>
-        /// <returns>Success or not</returns>
-        [HttpDelete("{facultyId}")]
-        public ActionResult<string> Delete(string facultyId)
-        {
-            _logger.LogInformation($"Deleting faculty with id: {facultyId}");
-
-            if (!_service.Delete(facultyId))
-            {
-                _logger.LogWarning($"Faculty with id: {facultyId} not found for deletion.");
-                return NotFound();
-            }
-
-            _logger.LogInformation($"Successfully deleted faculty with id: {facultyId}");
-            return Ok("Faculty was deleted");
-        }
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteFaculty(int id)
+    {
+        var result = await _facultyService.DeleteFacultyAsync(id);
+        if (!result)
+            return NotFound();
+        return NoContent();
     }
 }

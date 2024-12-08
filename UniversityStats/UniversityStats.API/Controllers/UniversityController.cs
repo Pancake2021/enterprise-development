@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;  // Для логирования
-using UniversityStats.API.Dto;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using UniversityStats.API.Services;
+using UniversityStats.Infrastructure.Entities;
 
 namespace UniversityStats.API.Controllers
 {
@@ -13,9 +13,8 @@ namespace UniversityStats.API.Controllers
     public class UniversityController : ControllerBase
     {
         private readonly UniversityService _service;
-        private readonly ILogger<UniversityController> _logger;  // Логер для контроллера
+        private readonly ILogger<UniversityController> _logger;
 
-        // Внедрение зависимостей через конструктор
         public UniversityController(UniversityService service, ILogger<UniversityController> logger)
         {
             _service = service;
@@ -25,14 +24,14 @@ namespace UniversityStats.API.Controllers
         /// <summary>
         /// Return list of universities
         /// </summary>
-        /// <returns> List of universities</returns>
+        /// <returns>List of universities</returns>
         [HttpGet]
-        public ActionResult<IEnumerable<UniversityDto>> Get()
+        public async Task<ActionResult<IEnumerable<University>>> GetAll()
         {
             _logger.LogInformation("Fetching list of universities.");
-            var universities = _service.GetAll();
+            var universities = await _service.GetAllUniversitiesAsync();
 
-            if (universities == null || !universities.Any())
+            if (!universities.Any())
             {
                 _logger.LogWarning("No universities found.");
                 return NotFound();
@@ -43,23 +42,23 @@ namespace UniversityStats.API.Controllers
         }
 
         /// <summary>
-        /// Return university's information by registration number
+        /// Return university's information by id
         /// </summary>
-        /// <param name="registrationNumber">University's registration number</param>
+        /// <param name="id">University's id</param>
         /// <returns>University's information</returns>
-        [HttpGet("{registrationNumber}")]
-        public ActionResult<UniversityDto> Get(string registrationNumber)
+        [HttpGet("{id}")]
+        public async Task<ActionResult<University>> GetById(int id)
         {
-            _logger.LogInformation($"Fetching university information for registration number: {registrationNumber}.");
-            var university = _service.GetById(registrationNumber);
+            _logger.LogInformation($"Fetching university information for id: {id}.");
+            var university = await _service.GetUniversityByIdAsync(id);
 
             if (university == null)
             {
-                _logger.LogWarning($"University with registration number {registrationNumber} not found.");
+                _logger.LogWarning($"University with id {id} not found.");
                 return NotFound();
             }
 
-            _logger.LogInformation($"Successfully fetched university with registration number: {registrationNumber}.");
+            _logger.LogInformation($"Successfully fetched university with id: {id}.");
             return Ok(university);
         }
 
@@ -67,53 +66,64 @@ namespace UniversityStats.API.Controllers
         /// Post university's information to database
         /// </summary>
         /// <param name="university">University's information</param>
-        /// <returns>Success or not</returns>
+        /// <returns>Created university</returns>
         [HttpPost]
-        public ActionResult<UniversityDto> Post([FromBody] UniversityDto university)
+        public async Task<ActionResult<University>> Create([FromBody] University university)
         {
-            _logger.LogInformation("Posting new university information.");
-            _service.Post(university);
+            _logger.LogInformation("Creating new university.");
+            var createdUniversity = await _service.CreateUniversityAsync(university);
 
-            _logger.LogInformation($"University with registration number {university.RegistrationNumber} was successfully posted.");
-            return Ok(university);
+            _logger.LogInformation($"University with id {createdUniversity.Id} was successfully created.");
+            return CreatedAtAction(nameof(GetById), new { id = createdUniversity.Id }, createdUniversity);
         }
 
         /// <summary>
-        /// Correct university's information by id
+        /// Update university's information
         /// </summary>
+        /// <param name="id">University's id</param>
         /// <param name="university">University's information</param>
-        /// <returns>Success or not</returns>
-        [HttpPut]
-        public ActionResult<UniversityDto> Put([FromBody] UniversityDto university)
+        /// <returns>Updated university</returns>
+        [HttpPut("{id}")]
+        public async Task<ActionResult<University>> Update(int id, [FromBody] University university)
         {
-            _logger.LogInformation($"Updating university with registration number: {university.RegistrationNumber}.");
-            if (!_service.Put(university))
+            if (id != university.Id)
             {
-                _logger.LogWarning($"University with registration number {university.RegistrationNumber} not found for update.");
+                _logger.LogWarning("Id in URL does not match id in body.");
+                return BadRequest();
+            }
+
+            _logger.LogInformation($"Updating university with id: {id}.");
+            var updatedUniversity = await _service.UpdateUniversityAsync(university);
+
+            if (updatedUniversity == null)
+            {
+                _logger.LogWarning($"University with id {id} not found for update.");
                 return NotFound();
             }
 
-            _logger.LogInformation($"University with registration number {university.RegistrationNumber} was successfully updated.");
-            return Ok(university);
+            _logger.LogInformation($"University with id {id} was successfully updated.");
+            return Ok(updatedUniversity);
         }
 
         /// <summary>
-        /// Delete university's information by registration number
+        /// Delete university's information
         /// </summary>
-        /// <param name="registrationNumber">Registration number</param>
+        /// <param name="id">University's id</param>
         /// <returns>Success or not</returns>
-        [HttpDelete("{registrationNumber}")]
-        public ActionResult<string> Delete(string registrationNumber)
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> Delete(int id)
         {
-            _logger.LogInformation($"Attempting to delete university with registration number: {registrationNumber}.");
-            if (!_service.Delete(registrationNumber))
+            _logger.LogInformation($"Attempting to delete university with id: {id}.");
+            var result = await _service.DeleteUniversityAsync(id);
+
+            if (!result)
             {
-                _logger.LogWarning($"University with registration number {registrationNumber} not found for deletion.");
+                _logger.LogWarning($"University with id {id} not found for deletion.");
                 return NotFound();
             }
 
-            _logger.LogInformation($"University with registration number {registrationNumber} was successfully deleted.");
-            return Ok("University was deleted");
+            _logger.LogInformation($"University with id {id} was successfully deleted.");
+            return NoContent();
         }
     }
 }

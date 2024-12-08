@@ -1,139 +1,99 @@
 using AutoMapper;
-using UniversityStats.API.Dto;
 using UniversityStats.API.Services;
-using UniversityStats.Domain.Entity;
-using UniversityStats.Domain.Repositories;
+using UniversityStats.Infrastructure.Entities;
+using UniversityStats.Infrastructure.Repositories.Interfaces;
 using Moq;
 
 namespace UniversityStats.Test;
 
 public class ServiceTests
 {
-    private readonly Mock<IMapper> _mapperMock;
-    private readonly Mock<IRepository<Department>> _departmentRepoMock;
-    private readonly Mock<IRepository<University>> _universityRepoMock;
-    private readonly Mock<IRepository<Faculty>> _facultyRepoMock;
+    private readonly Mock<IDepartmentRepository> _departmentRepoMock;
+    private readonly Mock<IUniversityRepository> _universityRepoMock;
+    private readonly Mock<IFacultyRepository> _facultyRepoMock;
 
     public ServiceTests()
     {
-        _mapperMock = new Mock<IMapper>();
-        _departmentRepoMock = new Mock<IRepository<Department>>();
-        _universityRepoMock = new Mock<IRepository<University>>();
-        _facultyRepoMock = new Mock<IRepository<Faculty>>();
+        _departmentRepoMock = new Mock<IDepartmentRepository>();
+        _universityRepoMock = new Mock<IUniversityRepository>();
+        _facultyRepoMock = new Mock<IFacultyRepository>();
     }
 
     [Fact]
-    public void DepartmentService_GetAll_ReturnsAllDepartments()
+    public async Task DepartmentService_GetAll_ReturnsAllDepartments()
     {
         // Arrange
         var department = new Department 
         { 
-            DepartmentId = "1", 
-            NameDepartment = "Test Department", 
-            FacultyId = "1" 
-        };
-        var departmentDto = new DepartmentDto 
-        { 
-            DepartmentId = "1", 
-            NameDepartment = "Test Department", 
-            FacultyId = "1" 
+            Id = 1, 
+            Name = "Test Department", 
+            UniversityId = 1 
         };
 
         var departments = new List<Department> { department };
-        var departmentDtos = new List<DepartmentDto> { departmentDto };
 
-        _departmentRepoMock.Setup(x => x.GetAll()).Returns(departments);
-        _mapperMock.Setup(x => x.Map<IEnumerable<DepartmentDto>>(departments)).Returns(departmentDtos);
+        _departmentRepoMock.Setup(x => x.GetAllAsync()).ReturnsAsync(departments);
 
-        var service = new DepartmentService(_departmentRepoMock.Object, _mapperMock.Object);
+        var service = new DepartmentService(_departmentRepoMock.Object);
 
         // Act
-        var result = service.GetAll();
+        var result = await service.GetAllDepartmentsAsync();
 
         // Assert
-        Assert.Equal(1, result.Count());
-        Assert.Equal("Test Department", result.First().NameDepartment);
-        _departmentRepoMock.Verify(x => x.GetAll(), Times.Once);
-        _mapperMock.Verify(x => x.Map<IEnumerable<DepartmentDto>>(departments), Times.Once);
+        Assert.Single(result);
+        Assert.Equal("Test Department", result.First().Name);
+        _departmentRepoMock.Verify(x => x.GetAllAsync(), Times.Once);
     }
 
     [Fact]
-    public void UniversityService_GetAll_ReturnsAllUniversities()
+    public async Task UniversityService_GetAll_ReturnsAllUniversities()
     {
         // Arrange
         var university = new University 
         { 
-            RegistrationNumber = "1", 
-            NameUniversity = "Test University",
-            Tittle = "Test University Title",
-            Address = "Test Address", 
-            PropertyType = "Test Type", 
-            BuildingOwnership = "Test Ownership", 
-            RectorFullName = "Test Rector", 
-            Degree = "Test Degree" 
-        };
-        var universityDto = new UniversityDto 
-        { 
-            RegistrationNumber = "1", 
-            NameUniversity = "Test University",
-            Tittle = "Test University Title",
-            Address = "Test Address", 
-            PropertyType = "Test Type", 
-            BuildingOwnership = "Test Ownership", 
-            RectorFullName = "Test Rector", 
-            Degree = "Test Degree" 
+            Id = 1,
+            Name = "Test University",
+            Description = "Test Description"
         };
 
         var universities = new List<University> { university };
-        var universityDtos = new List<UniversityDto> { universityDto };
 
-        _universityRepoMock.Setup(x => x.GetAll()).Returns(universities);
-        _mapperMock.Setup(x => x.Map<IEnumerable<UniversityDto>>(universities)).Returns(universityDtos);
+        _universityRepoMock.Setup(x => x.GetAllAsync()).ReturnsAsync(universities);
 
-        var service = new UniversityService(_universityRepoMock.Object, _mapperMock.Object);
+        var service = new UniversityService(_universityRepoMock.Object);
 
         // Act
-        var result = service.GetAll();
+        var result = await service.GetAllUniversitiesAsync();
 
         // Assert
-        Assert.Equal(1, result.Count());
-        Assert.Equal("Test University", result.First().NameUniversity);
-        _universityRepoMock.Verify(x => x.GetAll(), Times.Once);
-        _mapperMock.Verify(x => x.Map<IEnumerable<UniversityDto>>(universities), Times.Once);
+        Assert.Single(result);
+        Assert.Equal("Test University", result.First().Name);
+        _universityRepoMock.Verify(x => x.GetAllAsync(), Times.Once);
     }
 
     [Fact]
-    public void FacultyService_GetAll_ReturnsAllFaculties()
+    public async Task FacultyService_GetAll_ReturnsAllFaculties()
     {
         // Arrange
         var faculty = new Faculty 
         { 
-            FacultyId = "1", 
-            NameFaculty = "Test Faculty", 
-            RegistrationNumber = "Test Reg Number" 
-        };
-        var facultyDto = new FacultyDto 
-        { 
-            FacultyId = "1", 
-            NameFaculty = "Test Faculty", 
-            RegistrationNumber = "Test Reg Number" 
+            Id = 1, 
+            Name = "Test Faculty", 
+            DepartmentId = 1 
         };
 
         var faculties = new List<Faculty> { faculty };
-        var facultyDtos = new List<FacultyDto> { facultyDto };
 
-        _facultyRepoMock.Setup(x => x.GetAll()).Returns(faculties);
-        _mapperMock.Setup(x => x.Map<IEnumerable<FacultyDto>>(faculties)).Returns(facultyDtos);
+        _facultyRepoMock.Setup(x => x.GetAllAsync()).ReturnsAsync(faculties);
 
-        var service = new FacultyService(_facultyRepoMock.Object, _mapperMock.Object);
+        var service = new FacultyService(_facultyRepoMock.Object);
 
         // Act
-        var result = service.GetAll();
+        var result = await service.GetAllFacultiesAsync();
 
         // Assert
-        Assert.Equal(1, result.Count());
-        Assert.Equal("Test Reg Number", result.First().RegistrationNumber);
-        _facultyRepoMock.Verify(x => x.GetAll(), Times.Once);
-        _mapperMock.Verify(x => x.Map<IEnumerable<FacultyDto>>(faculties), Times.Once);
+        Assert.Single(result);
+        Assert.Equal("Test Faculty", result.First().Name);
+        _facultyRepoMock.Verify(x => x.GetAllAsync(), Times.Once);
     }
 }

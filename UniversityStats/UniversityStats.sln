@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "UniversityStats.Test", "Uni
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityStats.API", "UniversityStats.API\UniversityStats.API.csproj", "{FBDBDEC6-4DCF-4527-BB49-BB3D700C5D12}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UniversityStats.Infrastructure", "UniversityStats.Infrastructure\UniversityStats.Infrastructure.csproj", "{790BA545-03E1-4272-9902-F8DC7D509B96}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{FBDBDEC6-4DCF-4527-BB49-BB3D700C5D12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBDBDEC6-4DCF-4527-BB49-BB3D700C5D12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBDBDEC6-4DCF-4527-BB49-BB3D700C5D12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{790BA545-03E1-4272-9902-F8DC7D509B96}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{790BA545-03E1-4272-9902-F8DC7D509B96}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{790BA545-03E1-4272-9902-F8DC7D509B96}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{790BA545-03E1-4272-9902-F8DC7D509B96}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

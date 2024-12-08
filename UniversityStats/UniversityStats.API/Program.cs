@@ -2,8 +2,18 @@ using UniversityStats.API;
 using UniversityStats.API.Services;
 using UniversityStats.API.Dto;
 using UniversityStats.Domain.Entity;
-using UniversityStats.Domain.Repositories;
+using UniversityStats.Infrastructure.Repositories.Implementation;
+using UniversityStats.Infrastructure.Repositories.Interfaces;
+using UniversityStats.Infrastructure;
+using UniversityStats.Infrastructure.Data;
 using System.Reflection;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using UniversityStats.Infrastructure.Identity;
+using AutoMapper;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,29 +25,64 @@ builder.Services.AddSwaggerGen(options =>
 });
 
 // Add services to the container.
-
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<IRepository<Department>, DepartmentRepository>();
-builder.Services.AddSingleton<IRepository<University>, UniversityRepository>();
-builder.Services.AddSingleton<IRepository<Faculty>, FacultyRepository>();
-builder.Services.AddSingleton<IRepository<DepartmentSpecialty>, DepartmentSpecialtyRepository>();
-builder.Services.AddSingleton<IRepository<Specialty>, SpecialtyRepository>();
-builder.Services.AddSingleton<QueryRepository>();
+// Регистрация репозиториев
+builder.Services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+builder.Services.AddScoped<IUniversityRepository, UniversityRepository>();
+builder.Services.AddScoped<IFacultyRepository, FacultyRepository>();
+builder.Services.AddScoped<ISpecialtyRepository, SpecialtyRepository>();
+builder.Services.AddScoped<IGroupRepository, GroupRepository>();
 
-builder.Services.AddSingleton<IService<DepartmentDto>, DepartmentService>();
-builder.Services.AddSingleton<IService<UniversityDto>, UniversityService>();
-builder.Services.AddSingleton<IService<FacultyDto>, FacultyService>();
-builder.Services.AddSingleton<IService<DepartmentSpecialtyDto>, DepartmentSpecialtyService>();
-builder.Services.AddSingleton<IService<SpecialtyDto>, SpecialtyService>();
-builder.Services.AddSingleton<QueryService>();
+// Регистрация сервисов
+builder.Services.AddScoped<DepartmentService>();
+builder.Services.AddScoped<FacultyService>();
+builder.Services.AddScoped<SpecialtyService>();
+builder.Services.AddScoped<GroupService>();
 
-builder.Services.AddSingleton<Database>();
-
+// Регистрация AutoMapper
 builder.Services.AddAutoMapper(typeof(Mapping));
+
+// Подключение к базе данных
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") 
+    ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+builder.Services.AddDbContext<UniversityStatsContext>(options =>
+    options.UseMySql(connectionString, new MySqlServerVersion(new Version(8, 0, 21))));
+
+// Настройка Identity
+builder.Services.AddIdentity<ApplicationUser, ApplicationRole>()
+    .AddEntityFrameworkStores<UniversityStatsContext>()
+    .AddDefaultTokenProviders();
+
+// Получение настроек JWT
+var jwtIssuer = builder.Configuration["Jwt:Issuer"] 
+    ?? throw new InvalidOperationException("JWT Issuer not configured");
+var jwtAudience = builder.Configuration["Jwt:Audience"] 
+    ?? throw new InvalidOperationException("JWT Audience not configured");
+var jwtKey = builder.Configuration["Jwt:Key"] 
+    ?? throw new InvalidOperationException("JWT Key not configured");
+
+// Настройка аутентификации
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+.AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = jwtIssuer,
+        ValidAudience = jwtAudience,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+    };
+});
 
 var app = builder.Build();
 
@@ -48,10 +93,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Применение миграций при старте
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<UniversityStatsContext>();
+    context.Database.Migrate();
+}
+
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();

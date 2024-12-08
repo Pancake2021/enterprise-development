@@ -1,41 +1,50 @@
 using Microsoft.AspNetCore.Mvc;
-using UniversityStats.API.Dto;
 using UniversityStats.API.Services;
+using UniversityStats.Infrastructure.Entities;
 
 namespace UniversityStats.API.Controllers;
 
 /// <summary>
 /// Class for department's controller
 /// </summary>
-/// <param name="service">Department's service</param>
-[Route("api/[controller]")]
 [ApiController]
-public class DepartmentController(DepartmentService service) : ControllerBase
+[Route("api/[controller]")]
+public class DepartmentController : ControllerBase
 {
+    private readonly DepartmentService _departmentService;
+
     /// <summary>
-    /// Return list of departments
+    /// Constructor for DepartmentController
     /// </summary>
-    /// <returns> List of departments</returns>
-    [HttpGet]
-    public ActionResult<IEnumerable<DepartmentDto>> Get()
+    /// <param name="departmentService">Department's service</param>
+    public DepartmentController(DepartmentService departmentService)
     {
-        return Ok(service.GetAll());
+        _departmentService = departmentService;
     }
 
     /// <summary>
     /// Find department by department's id
     /// </summary>
-    /// <param name="departmentId">Department's id</param>
+    /// <param name="id">Department's id</param>
     /// <returns>Department's information</returns>
-    [HttpGet("{departmentId}")]
-    public ActionResult<DepartmentDto> Get(string departmentId)
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Department>> GetDepartment(int id)
     {
-        var department = service.GetById(departmentId);
-
+        var department = await _departmentService.GetDepartmentByIdAsync(id);
         if (department == null)
             return NotFound();
-
         return Ok(department);
+    }
+
+    /// <summary>
+    /// Return list of departments
+    /// </summary>
+    /// <returns> List of departments</returns>
+    [HttpGet]
+    public async Task<ActionResult<IEnumerable<Department>>> GetAllDepartments()
+    {
+        var departments = await _departmentService.GetAllDepartmentsAsync();
+        return Ok(departments);
     }
 
     /// <summary>
@@ -44,38 +53,39 @@ public class DepartmentController(DepartmentService service) : ControllerBase
     /// <param name="department">Department's information</param>
     /// <returns>Success or not</returns>
     [HttpPost]
-    public ActionResult<DepartmentDto> Post([FromBody] DepartmentDto department)
+    public async Task<ActionResult<Department>> CreateDepartment([FromBody] Department department)
     {
-        service.Post(department);
-        
-        return Ok(department);
+        var createdDepartment = await _departmentService.CreateDepartmentAsync(department);
+        return CreatedAtAction(nameof(GetDepartment), new { id = createdDepartment.Id }, createdDepartment);
     }
 
     /// <summary>
     /// Correct department's informations
     /// </summary>
+    /// <param name="id">Department's id</param>
     /// <param name="department">Department's information</param>
     /// <returns>Success or not</returns>
-    [HttpPut]
-    public ActionResult<DepartmentDto> Put([FromBody] DepartmentDto department)
+    [HttpPut("{id}")]
+    public async Task<ActionResult<Department>> UpdateDepartment(int id, [FromBody] Department department)
     {
-        if (!service.Put(department))
-            return NotFound();
+        if (id != department.Id)
+            return BadRequest();
 
-        return Ok(department);
+        var updatedDepartment = await _departmentService.UpdateDepartmentAsync(department);
+        return Ok(updatedDepartment);
     }
 
     /// <summary>
     /// Delete department's information by department's id
     /// </summary>
-    /// <param name="departmentId">Department's id</param>
+    /// <param name="id">Department's id</param>
     /// <returns>Success or not</returns>
-    [HttpDelete("{departmentId}")]
-    public ActionResult<string> Delete(string departmentId)
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> DeleteDepartment(int id)
     {
-        if (!service.Delete(departmentId))
+        var result = await _departmentService.DeleteDepartmentAsync(id);
+        if (!result)
             return NotFound();
-
-        return Ok("Department was deleted");
+        return NoContent();
     }
 }
