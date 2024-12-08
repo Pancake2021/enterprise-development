@@ -1,4 +1,63 @@
-#  «Статистические данные по высшим учебным заведениям города»
+# UniversityStats
+
+UniversityStats - это веб-приложение для управления статистикой университетов, разработанное на платформе .NET 8.0.
+
+## Описание
+
+Приложение предоставляет API для управления данными о:
+- Университетах
+- Факультетах
+- Кафедрах
+- Специальностях
+- Связях между кафедрами и специальностями
+
+## Технологии
+
+- .NET 8.0
+- ASP.NET Core Web API
+- AutoMapper для маппинга объектов
+- xUnit для модульного тестирования
+- Swagger для документации API
+
+## Структура проекта
+
+- `UniversityStats.Api` - Web API проект
+- `UniversityStats.Domain` - Доменная модель и репозитории
+- `UniversityStats.Test` - Модульные тесты
+
+## Начало работы
+
+1. Клонируйте репозиторий:
+```bash
+git clone https://github.com/yourusername/UniversityStats.git
+```
+
+2. Восстановите зависимости:
+```bash
+dotnet restore
+```
+
+3. Запустите приложение:
+```bash
+cd UniversityStats
+dotnet run --project UniversityStats.Api
+```
+
+4. Откройте Swagger UI:
+```
+https://localhost:5001/swagger
+```
+
+## Тестирование
+
+Для запуска тестов выполните:
+```bash
+dotnet test
+```
+
+## Лицензия
+
+MIT
 
 ## Используемые классы:
 University - класс, определяющий университет.

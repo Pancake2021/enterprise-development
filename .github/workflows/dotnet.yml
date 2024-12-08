@@ -1,31 +1,33 @@
-name: .NET Tests CI
+name: .NET CI/CD
 
 on:
   push:
-    branches:
-      - lab2
+    branches: [ main ]
   pull_request:
-    branches:
-      - lab2
+    branches: [ main ]
 
 jobs:
-  build:
+  build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
-        uses: actions/checkout@v2
+    - uses: actions/checkout@v3
 
-      - name: Set up .NET
-        uses: actions/setup-dotnet@v2
-        with:
-          dotnet-version: '8.0'
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: '8.0.x'
 
-      - name: Restore dependencies
-        run: dotnet restore UniversityStats/UniversityStats.sln  
+    - name: Restore dependencies
+      run: dotnet restore UniversityStats/UniversityStats.sln
 
-      - name: Build
-        run: dotnet build UniversityStats/UniversityStats.sln --configuration Release  
+    - name: Build
+      run: dotnet build UniversityStats/UniversityStats.sln --configuration Release --no-restore
 
-      - name: Run tests
-        run: dotnet test UniversityStats/UniversityStats.sln --configuration Release --no-build --verbosity normal 
+    - name: Test
+      run: dotnet test UniversityStats/UniversityStats.sln --configuration Release --no-build --verbosity normal --collect:"XPlat Code Coverage"
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v3
+      env:
+        CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}

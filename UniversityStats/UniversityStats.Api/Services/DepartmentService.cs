@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using UniversityStats.API.Dto;
 using UniversityStats.Domain.Entity;
 using UniversityStats.Domain.Repositories;
@@ -10,7 +10,7 @@ namespace UniversityStats.API.Services;
 /// </summary>
 /// <param name="repository">Department's repository</param>
 /// <param name="mapper">Automapper's object for mapping 2 objects DepartmentDto and Department</param>
-public class DepartmentService(DepartmentRepository repository, IMapper mapper) : IService<DepartmentDto>
+public class DepartmentService(IRepository<Department> repository, IMapper mapper) : IService<DepartmentDto>
 {
     /// <summary>
     /// Method delete department by department's id
@@ -23,7 +23,7 @@ public class DepartmentService(DepartmentRepository repository, IMapper mapper) 
     /// Method get list of departments
     /// </summary>
     /// <returns>List of departments</returns>
-    public IEnumerable<DepartmentDto> GetAll() => repository.GetAll().Select(mapper.Map<DepartmentDto>);
+    public IEnumerable<DepartmentDto> GetAll() => mapper.Map<IEnumerable<DepartmentDto>>(repository.GetAll());
 
     /// <summary>
     /// Method get department by department's id

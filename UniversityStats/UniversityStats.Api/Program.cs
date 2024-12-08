@@ -1,5 +1,7 @@
 using UniversityStats.API;
 using UniversityStats.API.Services;
+using UniversityStats.API.Dto;
+using UniversityStats.Domain.Entity;
 using UniversityStats.Domain.Repositories;
 using System.Reflection;
 
@@ -19,18 +21,18 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddSingleton<DepartmentRepository>();
-builder.Services.AddSingleton<UniversityRepository>();
-builder.Services.AddSingleton<FacultyRepository>();
-builder.Services.AddSingleton<DepartmentSpecialtyRepository>();
-builder.Services.AddSingleton<SpecialtyRepository>();
+builder.Services.AddSingleton<IRepository<Department>, DepartmentRepository>();
+builder.Services.AddSingleton<IRepository<University>, UniversityRepository>();
+builder.Services.AddSingleton<IRepository<Faculty>, FacultyRepository>();
+builder.Services.AddSingleton<IRepository<DepartmentSpecialty>, DepartmentSpecialtyRepository>();
+builder.Services.AddSingleton<IRepository<Specialty>, SpecialtyRepository>();
 builder.Services.AddSingleton<QueryRepository>();
 
-builder.Services.AddSingleton<DepartmentService>();
-builder.Services.AddSingleton<UniversityService>();
-builder.Services.AddSingleton<FacultyService>();
-builder.Services.AddSingleton<DepartmentSpecialtyService>();
-builder.Services.AddSingleton<SpecialtyService>();
+builder.Services.AddSingleton<IService<DepartmentDto>, DepartmentService>();
+builder.Services.AddSingleton<IService<UniversityDto>, UniversityService>();
+builder.Services.AddSingleton<IService<FacultyDto>, FacultyService>();
+builder.Services.AddSingleton<IService<DepartmentSpecialtyDto>, DepartmentSpecialtyService>();
+builder.Services.AddSingleton<IService<SpecialtyDto>, SpecialtyService>();
 builder.Services.AddSingleton<QueryService>();
 
 builder.Services.AddSingleton<Database>();

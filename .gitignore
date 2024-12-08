@@ -1,5 +1,7 @@
 # macOS system files
 .DS_Store
+.AppleDouble
+.LSOverride
 
 # Build directories
 bin/
@@ -405,3 +407,40 @@ FodyWeavers.xsd
 *.sln.iml
 .DS_Store
 .DS_Store
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Visual Studio files
+.vs/
+*.user
+*.userosscache
+*.suo
+*.userprefs
+*.usertasks
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# .NET Core
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# IDE files
+.idea/
+*.swp
+*.swo
+*.*~

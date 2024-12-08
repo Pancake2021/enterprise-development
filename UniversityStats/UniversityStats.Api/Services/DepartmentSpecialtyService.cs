@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using UniversityStats.API.Dto;
 using UniversityStats.Domain.Entity;
 using UniversityStats.Domain.Repositories;
@@ -10,7 +10,7 @@ namespace UniversityStats.API.Services
     /// </summary>
     public class DepartmentSpecialtyService : IService<DepartmentSpecialtyDto>
     {
-        private readonly DepartmentSpecialtyRepository repository;
+        private readonly IRepository<DepartmentSpecialty> repository;
         private readonly IMapper mapper;
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace UniversityStats.API.Services
         /// </summary>
         /// <param name="repository">(department specialty)'s repository</param>
         /// <param name="mapper">Automapper's object for mapping 2 objects DepartmentSpecialty and DepartmentSpecialtyDto</param>
-        public DepartmentSpecialtyService(DepartmentSpecialtyRepository repository, IMapper mapper)
+        public DepartmentSpecialtyService(IRepository<DepartmentSpecialty> repository, IMapper mapper)
         {
             this.repository = repository;
             this.mapper = mapper;

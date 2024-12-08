@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using UniversityStats.API.Dto;
 using UniversityStats.Domain.Entity;
 using UniversityStats.Domain.Repositories;
@@ -10,7 +10,7 @@ namespace UniversityStats.API.Services;
 /// </summary>
 /// <param name="repository">Faculty's repository</param>
 /// <param name="mapper">Automapper's object for mapping 2 objects FacultyDto and Faculty</param>
-public class FacultyService(FacultyRepository repository, IMapper mapper): IService<FacultyDto>
+public class FacultyService(IRepository<Faculty> repository, IMapper mapper): IService<FacultyDto>
 {
     /// <summary>
     /// Method delete faculty by faculty's id
@@ -23,7 +23,7 @@ public class FacultyService(FacultyRepository repository, IMapper mapper): IServ
     /// Method get list of faculties
     /// </summary>
     /// <returns>List of faculties</returns>
-    public IEnumerable<FacultyDto> GetAll() => repository.GetAll().Select(mapper.Map<FacultyDto>);
+    public IEnumerable<FacultyDto> GetAll() => mapper.Map<IEnumerable<FacultyDto>>(repository.GetAll());
 
     /// <summary>
     /// Method get faculty by faculty's id
