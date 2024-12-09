@@ -14,16 +14,8 @@ namespace UniversityStats.API.Controllers
         UniversityService service, 
         ILogger<UniversityController> logger) : ControllerBase
     {
-        private readonly UniversityService _service;
-        private readonly ILogger<UniversityController> _logger;
-
-        public UniversityController(
-            UniversityService service, 
-            ILogger<UniversityController> logger)
-        {
-            _service = service;
-            _logger = logger;
-        }
+        private readonly UniversityService _service = service;
+        private readonly ILogger<UniversityController> _logger = logger;
 
         /// <summary>
         /// Return list of universities

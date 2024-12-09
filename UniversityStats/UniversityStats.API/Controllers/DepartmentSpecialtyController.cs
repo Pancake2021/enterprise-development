@@ -14,17 +14,8 @@ namespace UniversityStats.API.Controllers
         DepartmentSpecialtyService service, 
         ILogger<DepartmentSpecialtyController> logger) : ControllerBase
     {
-        private readonly DepartmentSpecialtyService _service;
-        private readonly ILogger<DepartmentSpecialtyController> _logger;  // Логер для контроллера
-
-        // Конструктор с внедрением зависимостей
-        public DepartmentSpecialtyController(
-            DepartmentSpecialtyService service, 
-            ILogger<DepartmentSpecialtyController> logger)
-        {
-            _service = service;
-            _logger = logger;
-        }
+        private readonly DepartmentSpecialtyService _service = service;
+        private readonly ILogger<DepartmentSpecialtyController> _logger = logger;
 
         /// <summary>
         /// Return list of (department specialty)

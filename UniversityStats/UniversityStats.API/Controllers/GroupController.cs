@@ -9,12 +9,7 @@ namespace UniversityStats.API.Controllers;
 public class GroupController(
     GroupService groupService) : ControllerBase
 {
-    private readonly GroupService _groupService;
-
-    public GroupController(GroupService groupService)
-    {
-        _groupService = groupService;
-    }
+    private readonly GroupService _groupService = groupService;
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Group>> GetGroup(int id)

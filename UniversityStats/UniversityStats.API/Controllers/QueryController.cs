@@ -14,15 +14,8 @@ namespace UniversityStats.API.Controllers
         QueryService service, 
         ILogger<QueryController> logger) : ControllerBase
     {
-        private readonly QueryService _service;
-        private readonly ILogger<QueryController> _logger;  // Логер для контроллера
-
-        // Внедрение зависимостей через конструктор
-        public QueryController(QueryService service, ILogger<QueryController> logger)
-        {
-            _service = service;
-            _logger = logger;
-        }
+        private readonly QueryService _service = service;
+        private readonly ILogger<QueryController> _logger = logger;
 
         /// <summary>
         /// Return list of university's information with registration number

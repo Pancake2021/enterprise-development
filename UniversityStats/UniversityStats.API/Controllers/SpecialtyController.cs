@@ -9,13 +9,7 @@ namespace UniversityStats.API.Controllers;
 public class SpecialtyController(
     SpecialtyService specialtyService) : ControllerBase
 {
-    private readonly SpecialtyService _specialtyService;
-
-    public SpecialtyController(
-        SpecialtyService specialtyService) 
-    {
-        _specialtyService = specialtyService;
-    }
+    private readonly SpecialtyService _specialtyService = specialtyService;
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Specialty>> GetSpecialty(int id)
