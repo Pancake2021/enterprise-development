@@ -20,7 +20,7 @@ public class SpecialtyController : ControllerBase
     {
         var specialty = await _specialtyService.GetSpecialtyByIdAsync(id);
         if (specialty == null)
-            return NotFound();
+            return NoContent();
         return Ok(specialty);
     }
 
@@ -53,7 +53,7 @@ public class SpecialtyController : ControllerBase
     {
         var result = await _specialtyService.DeleteSpecialtyAsync(id);
         if (!result)
-            return NotFound();
+            return NoContent();
         return NoContent();
     }
 }

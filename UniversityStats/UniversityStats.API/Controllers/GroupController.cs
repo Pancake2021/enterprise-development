@@ -20,7 +20,7 @@ public class GroupController : ControllerBase
     {
         var group = await _groupService.GetGroupByIdAsync(id);
         if (group == null)
-            return NotFound();
+            return NoContent();
         return Ok(group);
     }
 
@@ -53,7 +53,7 @@ public class GroupController : ControllerBase
     {
         var result = await _groupService.DeleteGroupAsync(id);
         if (!result)
-            return NotFound();
+            return NoContent();
         return NoContent();
     }
 }

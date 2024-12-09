@@ -34,7 +34,7 @@ namespace UniversityStats.API.Controllers
             if (!universities.Any())
             {
                 _logger.LogWarning("No universities found.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation("Successfully fetched list of universities.");
@@ -55,7 +55,7 @@ namespace UniversityStats.API.Controllers
             if (university == null)
             {
                 _logger.LogWarning($"University with id {id} not found.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation($"Successfully fetched university with id: {id}.");
@@ -98,7 +98,7 @@ namespace UniversityStats.API.Controllers
             if (updatedUniversity == null)
             {
                 _logger.LogWarning($"University with id {id} not found for update.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation($"University with id {id} was successfully updated.");
@@ -119,7 +119,7 @@ namespace UniversityStats.API.Controllers
             if (!result)
             {
                 _logger.LogWarning($"University with id {id} not found for deletion.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation($"University with id {id} was successfully deleted.");

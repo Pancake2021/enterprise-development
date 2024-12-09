@@ -35,7 +35,7 @@ namespace UniversityStats.API.Controllers
             if (departmentSpecialties == null || !departmentSpecialties.Any())
             {
                 _logger.LogWarning("No department specialties found.");  // Логируем предупреждение, если не найдены данные
-                return NotFound("No department specialties found.");
+                return NoContent();
             }
 
             _logger.LogInformation("Successfully fetched all department specialties.");  // Логируем успешное выполнение
@@ -56,7 +56,7 @@ namespace UniversityStats.API.Controllers
             if (departmentSpecialty == null)
             {
                 _logger.LogWarning($"Department specialty with id: {specialtyId} not found.");  // Логируем, если не найдено
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation($"Successfully fetched department specialty with id: {specialtyId}.");  // Логируем успех
@@ -91,7 +91,7 @@ namespace UniversityStats.API.Controllers
             if (!_service.Put(departmentSpecialty))
             {
                 _logger.LogWarning($"Department specialty with id: {departmentSpecialty.SpecialtyId} not found for update.");  // Исправляем на правильное свойство
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation($"Successfully updated department specialty with id: {departmentSpecialty.SpecialtyId}.");  // Исправляем на правильное свойство
@@ -111,7 +111,7 @@ namespace UniversityStats.API.Controllers
             if (!_service.Delete(specialtyId))
             {
                 _logger.LogWarning($"Department specialty with id: {specialtyId} not found for deletion.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation($"Successfully deleted department specialty with id: {specialtyId}");

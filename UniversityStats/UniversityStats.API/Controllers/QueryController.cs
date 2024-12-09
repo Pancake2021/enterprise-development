@@ -36,7 +36,7 @@ namespace UniversityStats.API.Controllers
             if (university == null)
             {
                 _logger.LogWarning($"University with registration number {registrationNumber} not found.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation($"Successfully fetched university info for registration number: {registrationNumber}.");
@@ -56,7 +56,7 @@ namespace UniversityStats.API.Controllers
             if (departments == null)
             {
                 _logger.LogWarning("No departments found.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation("Successfully fetched total departments in universities.");
@@ -76,7 +76,7 @@ namespace UniversityStats.API.Controllers
             if (specialties == null)
             {
                 _logger.LogWarning("No specialties found.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation("Successfully fetched top 5 specialties.");
@@ -97,7 +97,7 @@ namespace UniversityStats.API.Controllers
             if (groups == null)
             {
                 _logger.LogWarning($"No groups found for property type: {propertyType}.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation($"Successfully fetched total groups for property type: {propertyType}.");
@@ -118,7 +118,7 @@ namespace UniversityStats.API.Controllers
             if (facultiesSpecialties == null)
             {
                 _logger.LogWarning($"No faculties or specialties found for university: {nameUniversity}.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation($"Successfully fetched faculties and specialties for university: {nameUniversity}.");
@@ -138,7 +138,7 @@ namespace UniversityStats.API.Controllers
             if (data == null)
             {
                 _logger.LogWarning("No data found for properties and buildings.");
-                return NotFound();
+                return NoContent();
             }
 
             _logger.LogInformation("Successfully fetched total departments, faculties, and specialties by property type and building owner.");

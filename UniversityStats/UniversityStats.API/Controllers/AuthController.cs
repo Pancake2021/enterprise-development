@@ -5,7 +5,6 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using UniversityStats.Infrastructure.Identity;
-using UniversityStats.API.Models;
 
 namespace UniversityStats.API.Controllers;
 
@@ -95,4 +94,18 @@ public class AuthController : ControllerBase
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
+}
+
+public class RegisterModel
+{
+    public required string Email { get; set; }
+    public required string Password { get; set; }
+    public required string FirstName { get; set; }
+    public required string LastName { get; set; }
+}
+
+public class LoginModel
+{
+    public required string Email { get; set; }
+    public required string Password { get; set; }
 }

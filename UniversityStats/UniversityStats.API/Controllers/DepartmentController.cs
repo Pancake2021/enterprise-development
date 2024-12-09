@@ -32,7 +32,7 @@ public class DepartmentController : ControllerBase
     {
         var department = await _departmentService.GetDepartmentByIdAsync(id);
         if (department == null)
-            return NotFound();
+            return NoContent();
         return Ok(department);
     }
 
@@ -85,7 +85,7 @@ public class DepartmentController : ControllerBase
     {
         var result = await _departmentService.DeleteDepartmentAsync(id);
         if (!result)
-            return NotFound();
+            return NoContent();
         return NoContent();
     }
 }

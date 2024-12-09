@@ -20,7 +20,7 @@ public class FacultyController : ControllerBase
     {
         var faculty = await _facultyService.GetFacultyByIdAsync(id);
         if (faculty == null)
-            return NotFound();
+            return NoContent();
         return Ok(faculty);
     }
 
@@ -53,7 +53,7 @@ public class FacultyController : ControllerBase
     {
         var result = await _facultyService.DeleteFacultyAsync(id);
         if (!result)
-            return NotFound();
+            return NoContent();
         return NoContent();
     }
 }
