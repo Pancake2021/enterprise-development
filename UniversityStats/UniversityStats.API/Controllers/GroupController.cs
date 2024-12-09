@@ -6,7 +6,8 @@ namespace UniversityStats.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class GroupController : ControllerBase
+public class GroupController(
+    GroupService groupService) : ControllerBase
 {
     private readonly GroupService _groupService;
 

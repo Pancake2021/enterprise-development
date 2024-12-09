@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;  // Для логирования
 using UniversityStats.API.Dto;
 using UniversityStats.API.Services;
@@ -10,7 +10,9 @@ namespace UniversityStats.API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class QueryController : ControllerBase
+    public class QueryController(
+        QueryService service, 
+        ILogger<QueryController> logger) : ControllerBase
     {
         private readonly QueryService _service;
         private readonly ILogger<QueryController> _logger;  // Логер для контроллера

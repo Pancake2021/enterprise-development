@@ -9,18 +9,10 @@ namespace UniversityStats.API.Controllers;
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class DepartmentController : ControllerBase
+public class DepartmentController(
+    DepartmentService departmentService) : ControllerBase
 {
-    private readonly DepartmentService _departmentService;
-
-    /// <summary>
-    /// Constructor for DepartmentController
-    /// </summary>
-    /// <param name="departmentService">Department's service</param>
-    public DepartmentController(DepartmentService departmentService)
-    {
-        _departmentService = departmentService;
-    }
+    private readonly DepartmentService _departmentService = departmentService;
 
     /// <summary>
     /// Find department by department's id

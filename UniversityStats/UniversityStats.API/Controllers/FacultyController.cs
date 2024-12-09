@@ -6,14 +6,10 @@ namespace UniversityStats.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class FacultyController : ControllerBase
+public class FacultyController(
+    FacultyService facultyService) : ControllerBase
 {
-    private readonly FacultyService _facultyService;
-
-    public FacultyController(FacultyService facultyService)
-    {
-        _facultyService = facultyService;
-    }
+    private readonly FacultyService _facultyService = facultyService;
 
     [HttpGet("{id}")]
     public async Task<ActionResult<Faculty>> GetFaculty(int id)

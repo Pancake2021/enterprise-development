@@ -10,12 +10,16 @@ namespace UniversityStats.API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class UniversityController : ControllerBase
+    public class UniversityController(
+        UniversityService service, 
+        ILogger<UniversityController> logger) : ControllerBase
     {
         private readonly UniversityService _service;
         private readonly ILogger<UniversityController> _logger;
 
-        public UniversityController(UniversityService service, ILogger<UniversityController> logger)
+        public UniversityController(
+            UniversityService service, 
+            ILogger<UniversityController> logger)
         {
             _service = service;
             _logger = logger;

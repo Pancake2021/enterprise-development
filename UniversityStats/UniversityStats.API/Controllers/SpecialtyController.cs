@@ -6,11 +6,13 @@ namespace UniversityStats.API.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class SpecialtyController : ControllerBase
+public class SpecialtyController(
+    SpecialtyService specialtyService) : ControllerBase
 {
     private readonly SpecialtyService _specialtyService;
 
-    public SpecialtyController(SpecialtyService specialtyService)
+    public SpecialtyController(
+        SpecialtyService specialtyService) 
     {
         _specialtyService = specialtyService;
     }

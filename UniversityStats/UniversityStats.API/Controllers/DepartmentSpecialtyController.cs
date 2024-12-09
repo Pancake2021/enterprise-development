@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;  // Для логирования
 using UniversityStats.API.Dto;
 using UniversityStats.API.Services;
@@ -10,13 +10,17 @@ namespace UniversityStats.API.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class DepartmentSpecialtyController : ControllerBase
+    public class DepartmentSpecialtyController(
+        DepartmentSpecialtyService service, 
+        ILogger<DepartmentSpecialtyController> logger) : ControllerBase
     {
         private readonly DepartmentSpecialtyService _service;
         private readonly ILogger<DepartmentSpecialtyController> _logger;  // Логер для контроллера
 
         // Конструктор с внедрением зависимостей
-        public DepartmentSpecialtyController(DepartmentSpecialtyService service, ILogger<DepartmentSpecialtyController> logger)
+        public DepartmentSpecialtyController(
+            DepartmentSpecialtyService service, 
+            ILogger<DepartmentSpecialtyController> logger)
         {
             _service = service;
             _logger = logger;
