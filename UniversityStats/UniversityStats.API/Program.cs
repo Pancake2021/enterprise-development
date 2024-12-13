@@ -64,7 +64,7 @@ builder.Services.AddScoped<IUniversityService, UniversityService>();
 builder.Services.AddScoped<IDepartmentSpecialtyService, DepartmentSpecialtyService>();
 builder.Services.AddScoped<IQueryService, QueryService>();
 
-builder.Services.AddScoped<Database>();
+builder.Services.AddScoped<DatabaseSeeder>();
 
 builder.Services.AddAutoMapper(typeof(Mapping));
 

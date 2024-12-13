@@ -27,7 +27,7 @@ public class UniversityStatsContext : DbContext
     /// Universities colections
     /// </summary>
     public DbSet<University> University { get; set; }
-    private Database _seed = null!;
+    private DatabaseSeeder _seed = null!;
     private readonly ILogger<UniversityStatsContext> _logger;
 
     /// <summary>
@@ -58,7 +58,7 @@ public class UniversityStatsContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        _seed = new Database();
+        _seed = new DatabaseSeeder();
 
         modelBuilder.Entity<Department>().HasData(_seed.DepartmentsList);
 

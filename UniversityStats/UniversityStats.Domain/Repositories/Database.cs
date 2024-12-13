@@ -3,9 +3,9 @@ using UniversityStats.Domain.Entity;
 namespace UniversityStats.Domain.Repositories;
 
 /// <summary>
-/// Class for saving database
+/// Class for seeding initial data into the database
 /// </summary>
-public class Database
+public class DatabaseSeeder
 {
     /// <summary>
     /// List of (department specialty)
@@ -35,7 +35,7 @@ public class Database
     /// <summary>
     /// Constructor for class
     /// </summary>
-    public Database()
+    public DatabaseSeeder()
     {
         UniversityList =
             [
