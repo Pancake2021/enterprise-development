@@ -1,6 +1,7 @@
-﻿using UniversityStats.Domain.Entity;
+using UniversityStats.Domain.Entity;
 using UniversityStats.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace UniversityStats.Domain;
 
@@ -27,13 +28,26 @@ public class UniversityStatsContext : DbContext
     /// </summary>
     public DbSet<University> University { get; set; }
     private Database _seed = null!;
+    private readonly ILogger<UniversityStatsContext> _logger;
+
     /// <summary>
     /// Database creating
     /// </summary>
     /// <param name="dbContextOptions">option</param>
-    public UniversityStatsContext(DbContextOptions dbContextOptions) : base(dbContextOptions)
+    /// <param name="logger">Logger for database context</param>
+    public UniversityStatsContext(DbContextOptions dbContextOptions, ILogger<UniversityStatsContext> logger) : base(dbContextOptions)
     {
-        Database.EnsureCreated();
+        _logger = logger;
+        try 
+        {
+            Database.EnsureCreated();
+            _logger.LogInformation("Database ensured created successfully");
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error occurred while creating database");
+            throw;
+        }
     }
 
     /// <summary>

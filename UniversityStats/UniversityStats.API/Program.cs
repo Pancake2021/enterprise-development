@@ -19,7 +19,20 @@ builder.Services.AddDbContext<UniversityStatsContext>(options =>
 {
     var connectionString = builder.Configuration.GetConnectionString(nameof(UniversityStats));
     var serverVersion = new MySqlServerVersion(new Version(8, 0, 39));
-    options.UseMySql(connectionString, serverVersion);
+    
+    options.UseMySql(connectionString, serverVersion, 
+        mysqlOptions => 
+        {
+            mysqlOptions.EnableRetryOnFailure(
+                maxRetryCount: 5,
+                maxRetryDelay: TimeSpan.FromSeconds(30),
+                errorNumbersToAdd: null);
+        })
+    #if DEBUG
+        .EnableSensitiveDataLogging()
+        .EnableDetailedErrors()
+    #endif
+    ;
 });
 
 builder.Services.AddCors(options =>
