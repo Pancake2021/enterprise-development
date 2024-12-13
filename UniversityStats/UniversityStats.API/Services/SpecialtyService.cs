@@ -1,55 +1,28 @@
-using UniversityStats.Infrastructure.Entities;
-using UniversityStats.Infrastructure.Repositories.Interfaces;
+using AutoMapper;
+using UniversityStats.API.Dto;
+using UniversityStats.API.Services.Interfaces;
+using UniversityStats.Domain.Entity;
+using UniversityStats.Domain.Repositories;
 
 namespace UniversityStats.API.Services;
 
 /// <summary>
 /// Class for specialty's service
 /// </summary>
-public class SpecialtyService
+public class SpecialtyService : ISpecialtyService
 {
-    private readonly ISpecialtyRepository _specialtyRepository;
-
-    public SpecialtyService(ISpecialtyRepository specialtyRepository)
-    {
-        _specialtyRepository = specialtyRepository;
-    }
+    private readonly SpecialtyRepository _repository;
+    private readonly IMapper _mapper;
 
     /// <summary>
-    /// Method get list of specialties
+    /// Constructor for SpecialtyService
     /// </summary>
-    /// <returns>List of specialties</returns>
-    public async Task<IEnumerable<Specialty>> GetAllSpecialtiesAsync()
+    /// <param name="repository">Specialty's repository</param>
+    /// <param name="mapper">Automapper's object for mapping 2 objects SpecialtyDto and Specialty</param>
+    public SpecialtyService(SpecialtyRepository repository, IMapper mapper)
     {
-        return await _specialtyRepository.GetAllAsync();
-    }
-
-    /// <summary>
-    /// Method get specialty by specialty's id
-    /// </summary>
-    /// <param name="id">Specialty's id</param>
-    /// <returns>Specialty's information or null</returns>
-    public async Task<Specialty?> GetSpecialtyByIdAsync(int id)
-    {
-        return await _specialtyRepository.GetByIdAsync(id);
-    }
-
-    /// <summary>
-    /// Method create specialty in database
-    /// </summary>
-    /// <param name="specialty">Specialty's information</param>
-    public async Task<Specialty> CreateSpecialtyAsync(Specialty specialty)
-    {
-        return await _specialtyRepository.AddAsync(specialty);
-    }
-
-    /// <summary>
-    /// Method update specialty
-    /// </summary>
-    /// <param name="specialty">Specialty's information</param>
-    public async Task<Specialty> UpdateSpecialtyAsync(Specialty specialty)
-    {
-        return await _specialtyRepository.UpdateAsync(specialty);
+        _repository = repository;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -57,8 +30,31 @@ public class SpecialtyService
     /// </summary>
     /// <param name="id">Specialty's id</param>
     /// <returns>True or False</returns>
-    public async Task<bool> DeleteSpecialtyAsync(int id)
-    {
-        return await _specialtyRepository.DeleteAsync(id);
-    }
+    public void Delete(string specialtyId) => _repository.Delete(specialtyId);
+
+    /// <summary>
+    /// Method get list of specialties
+    /// </summary>
+    /// <returns>List of specialties</returns>
+    public IEnumerable<SpecialtyDto> GetAll() => _repository.GetAll().Select(_mapper.Map<SpecialtyDto>);
+
+    /// <summary>
+    /// Method get specialty by specialty's id
+    /// </summary>
+    /// <param name="id">Specialty's id</param>
+    /// <returns>Specialty's information or null</returns>
+    public SpecialtyDto GetById(string specialtyId) => _mapper.Map<SpecialtyDto>(_repository.GetById(specialtyId));
+
+    /// <summary>
+    /// Method post specialty to database
+    /// </summary>
+    /// <param name="dtoData">Specialty's information</param>
+    public void Post(SpecialtyDto specialty) => _repository.Post(_mapper.Map<Specialty>(specialty));
+
+    /// <summary>
+    /// Method put specialty by specialty's id
+    /// </summary>
+    /// <param name="dtoData">Specialty's information</param>
+    /// <returns>True or False</returns>
+    public void Put(SpecialtyDto specialty) => _repository.Put(_mapper.Map<Specialty>(specialty)); 
 }

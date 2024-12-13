@@ -1,0 +1,122 @@
+﻿@inject IUniversityStatsWrapper UniversityStatsApi
+@inject NavigationManager NavManager
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Universities</h4>
+            </Column>
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <Button Color="Color.Primary" Clicked="OpenCreateModal">Create</Button>
+            </Column>
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <DataGrid TItem="UniversityDto"
+                  Data="Universities"
+                  Responsive
+                  Striped>
+            <DataGridColumns>
+                <DataGridColumn Width="150px"
+                                TItem="UniversityDto"
+                                Field="@nameof(UniversityDto.RegistrationNumber)"
+                                Caption="Action">
+                    <DisplayTemplate>
+                        <Dropdown>
+                            <DropdownToggle Color="Color.Primary">
+                                Action
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem Clicked="() => OpenEditPageAsync(context)">
+                                    Edit
+                                </DropdownItem>
+                                <DropdownItem Clicked="() => DeleteUniversityAsync(context)">
+                                    Delete
+                                </DropdownItem>
+                            </DropdownMenu>
+                           
+                        </Dropdown>
+                    </DisplayTemplate>
+                </DataGridColumn>
+                <DataGridColumn TItem="UniversityDto"
+                                Field="@nameof(UniversityDto.RegistrationNumber)"
+                                Caption="Registration number">
+                </DataGridColumn>
+                <DataGridColumn TItem="UniversityDto"
+                                Field="@nameof(UniversityDto.NameUniversity)"
+                                Caption="Name">
+                </DataGridColumn>
+                <DataGridColumn TItem="UniversityDto"
+                                Field="@nameof(UniversityDto.Address)"
+                                Caption="Address">
+                </DataGridColumn>
+                <DataGridColumn TItem="UniversityDto"
+                                Field="@nameof(UniversityDto.PropertyType)"
+                                Caption="Property type">
+                </DataGridColumn>
+                <DataGridColumn TItem="UniversityDto"
+                                Field="@nameof(UniversityDto.BuildingOwnership)"
+                                Caption="Building ownership">
+                </DataGridColumn>
+                <DataGridColumn TItem="UniversityDto"
+                                Field="@nameof(UniversityDto.RectorFullName)"
+                                Caption="Rector's name">
+                </DataGridColumn>
+                <DataGridColumn TItem="UniversityDto"
+                                Field="@nameof(UniversityDto.Degree)"
+                                Caption="Degree">
+                </DataGridColumn>
+                <DataGridColumn TItem="UniversityDto"
+                                Field="@nameof(UniversityDto.Title)"
+                                Caption="Title">
+                </DataGridColumn>
+
+            </DataGridColumns>
+        </DataGrid>
+    </CardBody>
+</Card>
+
+<UniversityCreateModal @ref="UniversityCreateModal" OnUniversityAdded="@HandleUniversityAdded" />
+
+@code {
+    [Parameter]
+    public EventCallback OnDataChanged { get; set; }
+
+    private ICollection<UniversityDto> Universities { get; set; } = [];
+    private UniversityCreateModal UniversityCreateModal { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshUniversityCollection();
+        await base.OnInitializedAsync();
+    }
+
+    private void OpenEditPageAsync(UniversityDto context)
+    {
+        NavManager.NavigateTo($"universities/{context.RegistrationNumber}");
+    }
+
+    private async Task DeleteUniversityAsync(UniversityDto context)
+    {
+        var result = await UniversityStatsApi.DeleteUniversity(context.RegistrationNumber);
+        if (result == "University was deleted")
+        {
+            await RefreshUniversityCollection();
+            await OnDataChanged.InvokeAsync();
+        }
+    }
+
+    private async Task HandleUniversityAdded()
+    {
+        await RefreshUniversityCollection();
+        await OnDataChanged.InvokeAsync();
+    }
+
+    private async Task OpenCreateModal() => await UniversityCreateModal.Show();
+
+    private async Task RefreshUniversityCollection()
+    {
+        Universities = await UniversityStatsApi.GetAllUniversities();
+    }
+}

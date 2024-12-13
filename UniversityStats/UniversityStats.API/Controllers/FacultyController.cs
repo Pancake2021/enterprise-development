@@ -1,55 +1,86 @@
+using UniversityStats.API.Dto;
+using UniversityStats.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using UniversityStats.API.Services;
-using UniversityStats.Infrastructure.Entities;
 
 namespace UniversityStats.API.Controllers;
 
-[ApiController]
+/// <summary>
+/// Controller responsible for managing faculty-related operations in the university statistics system.
+/// Provides endpoints for retrieving, creating, updating, and deleting faculty information.
+/// </summary>
+/// <param name="service">An instance of IFacultyService used for performing faculty-related business logic.</param>
 [Route("api/[controller]")]
-public class FacultyController(
-    FacultyService facultyService) : ControllerBase
+[ApiController]
+public class FacultyController(IFacultyService service) : ControllerBase
 {
-    private readonly FacultyService _facultyService = facultyService;
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Faculty>> GetFaculty(int id)
+    /// <summary>
+    /// Retrieves a list of all faculties in the system.
+    /// </summary>
+    /// <returns>An HTTP 200 OK response containing a collection of faculty data transfer objects.</returns>
+    /// <response code="200">Successfully retrieved the list of faculties.</response>
+    [HttpGet]
+    public ActionResult<IEnumerable<FacultyDto>> Get()
     {
-        var faculty = await _facultyService.GetFacultyByIdAsync(id);
+        return Ok(service.GetAll());
+    }
+
+    /// <summary>
+    /// Retrieves a specific faculty by its unique identifier.
+    /// </summary>
+    /// <param name="facultyId">The unique identifier of the faculty to retrieve.</param>
+    /// <returns>An HTTP response containing the faculty details or a not found status.</returns>
+    /// <response code="200">Successfully retrieved the faculty details.</response>
+    /// <response code="204">No faculty found with the specified identifier.</response>
+    [HttpGet("{facultyId}")]
+    public ActionResult<FacultyDto> Get(string facultyId)
+    {
+        var faculty = service.GetById(facultyId);
+
         if (faculty == null)
             return NoContent();
+
         return Ok(faculty);
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Faculty>>> GetAllFaculties()
-    {
-        var faculties = await _facultyService.GetAllFacultiesAsync();
-        return Ok(faculties);
-    }
-
+    /// <summary>
+    /// Adds a new faculty to the university statistics database.
+    /// </summary>
+    /// <param name="faculty">The faculty data transfer object containing faculty information.</param>
+    /// <returns>An HTTP response with the created faculty details.</returns>
+    /// <response code="200">Successfully added the new faculty.</response>
     [HttpPost]
-    public async Task<ActionResult<Faculty>> CreateFaculty([FromBody] Faculty faculty)
+    public ActionResult<FacultyDto> Post([FromBody] FacultyDto faculty)
     {
-        var createdFaculty = await _facultyService.CreateFacultyAsync(faculty);
-        return CreatedAtAction(nameof(GetFaculty), new { id = createdFaculty.Id }, createdFaculty);
+        service.Post(faculty);
+        
+        return Ok(faculty);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<Faculty>> UpdateFaculty(int id, [FromBody] Faculty faculty)
+    /// <summary>
+    /// Corrects faculty's information in the university statistics database.
+    /// </summary>
+    /// <param name="faculty">The faculty data transfer object containing updated faculty information.</param>
+    /// <returns>An HTTP response indicating whether the update was successful.</returns>
+    /// <response code="200">Successfully updated the faculty information.</response>
+    [HttpPut]
+    public ActionResult<FacultyDto> Put([FromBody] FacultyDto faculty)
     {
-        if (id != faculty.Id)
-            return BadRequest();
+        service.Put(faculty);
 
-        var updatedFaculty = await _facultyService.UpdateFacultyAsync(faculty);
-        return Ok(updatedFaculty);
+        return Ok(faculty);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteFaculty(int id)
+    /// <summary>
+    /// Deletes a faculty's information from the university statistics database.
+    /// </summary>
+    /// <param name="facultyId">The unique identifier of the faculty to delete.</param>
+    /// <returns>An HTTP response indicating whether the deletion was successful.</returns>
+    /// <response code="200">Successfully deleted the faculty.</response>
+    [HttpDelete("{facultyId}")]
+    public ActionResult<string> Delete(string facultyId)
     {
-        var result = await _facultyService.DeleteFacultyAsync(id);
-        if (!result)
-            return NoContent();
-        return NoContent();
+        service.Delete(facultyId);
+
+        return Ok(facultyId);
     }
 }

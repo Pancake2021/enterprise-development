@@ -1,0 +1,1588 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "UniversityStats.API",
+    "version": "1.0"
+  },
+  "paths": {
+    "/api/Department": {
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Return list of departments",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DepartmentDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DepartmentDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DepartmentDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Add department to database",
+        "requestBody": {
+          "description": "Department's information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Correct department's informations",
+        "requestBody": {
+          "description": "Department's information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Department/{departmentId}": {
+      "get": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Find department by department's id",
+        "parameters": [
+          {
+            "name": "departmentId",
+            "in": "path",
+            "description": "Department's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Department"
+        ],
+        "summary": "Delete department's information by department's id",
+        "parameters": [
+          {
+            "name": "departmentId",
+            "in": "path",
+            "description": "Department's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DepartmentSpecialty": {
+      "get": {
+        "tags": [
+          "DepartmentSpecialty"
+        ],
+        "summary": "Return list of (department specialty)",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "DepartmentSpecialty"
+        ],
+        "summary": "Post (Department specialty) to database",
+        "requestBody": {
+          "description": "(Department specialty)'s information in format DTO",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "DepartmentSpecialty"
+        ],
+        "summary": "Correct (department specialty)'s information by specialty's id",
+        "requestBody": {
+          "description": "(Department specialty)'s information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/DepartmentSpecialty/{specialtyId}": {
+      "get": {
+        "tags": [
+          "DepartmentSpecialty"
+        ],
+        "summary": "Find (department specialty)'s information by specialty's id",
+        "parameters": [
+          {
+            "name": "specialtyId",
+            "in": "path",
+            "description": "Specialty's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DepartmentSpecialtyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "DepartmentSpecialty"
+        ],
+        "summary": "Delete (department specialty) by specialty's id",
+        "parameters": [
+          {
+            "name": "specialtyId",
+            "in": "path",
+            "description": "Specialty's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Faculty": {
+      "get": {
+        "tags": [
+          "Faculty"
+        ],
+        "summary": "Return list of faculties",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FacultyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FacultyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FacultyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Faculty"
+        ],
+        "summary": "Post faculty's information to database",
+        "requestBody": {
+          "description": "Faculty's information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacultyDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacultyDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacultyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacultyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacultyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacultyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Faculty"
+        ],
+        "summary": "Correct faculty's information by faculty's id",
+        "requestBody": {
+          "description": "Faculty's information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacultyDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacultyDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/FacultyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacultyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacultyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacultyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Faculty/{facultyId}": {
+      "get": {
+        "tags": [
+          "Faculty"
+        ],
+        "summary": "Find faculty's information by faculty's id",
+        "parameters": [
+          {
+            "name": "facultyId",
+            "in": "path",
+            "description": "Faculty's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacultyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacultyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/FacultyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Faculty"
+        ],
+        "summary": "Delete faculty by faculty's id",
+        "parameters": [
+          {
+            "name": "facultyId",
+            "in": "path",
+            "description": "Faculty's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Query/Universities": {
+      "get": {
+        "tags": [
+          "Query"
+        ],
+        "summary": "Return list of university's information with registration number",
+        "parameters": [
+          {
+            "name": "registrationNumber",
+            "in": "query",
+            "description": "Registration number",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Query/Departments": {
+      "get": {
+        "tags": [
+          "Query"
+        ],
+        "summary": "Count total departments in every university",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UniversityAndDepartmentsDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UniversityAndDepartmentsDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UniversityAndDepartmentsDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Query/Top5Specialties": {
+      "get": {
+        "tags": [
+          "Query"
+        ],
+        "summary": "Find 5 specialties with the highest number of groups",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpecialtyAndGroupsDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpecialtyAndGroupsDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpecialtyAndGroupsDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Query/Properties": {
+      "get": {
+        "tags": [
+          "Query"
+        ],
+        "summary": "Count total of groups with property type",
+        "parameters": [
+          {
+            "name": "propertyType",
+            "in": "query",
+            "description": "Property type",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PropertyAndGroupsDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PropertyAndGroupsDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PropertyAndGroupsDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Query/FacultiesSpecialties": {
+      "get": {
+        "tags": [
+          "Query"
+        ],
+        "summary": "Return list of faculties and specialties available in university",
+        "parameters": [
+          {
+            "name": "nameUniversity",
+            "in": "query",
+            "description": "University's name",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FacultyAndSpecialtyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FacultyAndSpecialtyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/FacultyAndSpecialtyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Query/PropertiesBuildings": {
+      "get": {
+        "tags": [
+          "Query"
+        ],
+        "summary": "Count total of departments, faculties and specialties by attributes property type and building owner",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PropertyAndBuildingDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PropertyAndBuildingDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PropertyAndBuildingDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Specialty": {
+      "get": {
+        "tags": [
+          "Specialty"
+        ],
+        "summary": "Return list of specialties",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpecialtyDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpecialtyDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/SpecialtyDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Specialty"
+        ],
+        "summary": "Post specialty's information to database",
+        "requestBody": {
+          "description": "Specialty's information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecialtyDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecialtyDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecialtyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecialtyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecialtyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecialtyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Specialty"
+        ],
+        "summary": "Correct specialty's information by specialty's id",
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecialtyDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecialtyDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/SpecialtyDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecialtyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecialtyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecialtyDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/Specialty/{specialtyId}": {
+      "get": {
+        "tags": [
+          "Specialty"
+        ],
+        "summary": "Return specialty's information by specialty's id",
+        "parameters": [
+          {
+            "name": "specialtyId",
+            "in": "path",
+            "description": "Specialty's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecialtyDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecialtyDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SpecialtyDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Specialty"
+        ],
+        "summary": "Delete specialty by specialty's id",
+        "parameters": [
+          {
+            "name": "specialtyId",
+            "in": "path",
+            "description": "Specialty's id",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/University": {
+      "get": {
+        "tags": [
+          "University"
+        ],
+        "summary": "Return list of universities",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UniversityDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UniversityDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/UniversityDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "University"
+        ],
+        "summary": "Post university's information to database",
+        "requestBody": {
+          "description": "University's information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UniversityDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UniversityDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UniversityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "University"
+        ],
+        "summary": "Correct university's information by id",
+        "requestBody": {
+          "description": "University's information",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UniversityDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UniversityDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/UniversityDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/University/{registrationNumber}": {
+      "get": {
+        "tags": [
+          "University"
+        ],
+        "summary": "Return university's information by registration number",
+        "parameters": [
+          {
+            "name": "registrationNumber",
+            "in": "path",
+            "description": "University's registration number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UniversityDto"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "University"
+        ],
+        "summary": "Delete university's information by registration number",
+        "parameters": [
+          {
+            "name": "registrationNumber",
+            "in": "path",
+            "description": "Registration number",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "DepartmentDto": {
+        "type": "object",
+        "properties": {
+          "facultyId": {
+            "type": "string",
+            "description": "Faculty's id",
+            "nullable": true
+          },
+          "nameDepartment": {
+            "type": "string",
+            "description": "Department's name",
+            "nullable": true
+          },
+          "departmentId": {
+            "type": "string",
+            "description": "Department's id",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Class data transfer about department's information"
+      },
+      "DepartmentSpecialtyDto": {
+        "type": "object",
+        "properties": {
+          "departmentId": {
+            "type": "string",
+            "description": "Department's id",
+            "nullable": true
+          },
+          "specialtyId": {
+            "type": "string",
+            "description": "Specialty's id",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Class for data transfer about information of department and specialty"
+      },
+      "FacultyAndSpecialtyDto": {
+        "type": "object",
+        "properties": {
+          "nameUniversity": {
+            "type": "string",
+            "description": "University's name",
+            "nullable": true
+          },
+          "nameFaculty": {
+            "type": "string",
+            "description": "Faculty's name",
+            "nullable": true
+          },
+          "nameDepartment": {
+            "type": "string",
+            "description": "Department's name",
+            "nullable": true
+          },
+          "nameSpecialty": {
+            "type": "string",
+            "description": "Specialty's name",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Class for data transfer about information of departments, faculties and specialties in university"
+      },
+      "FacultyDto": {
+        "type": "object",
+        "properties": {
+          "facultyId": {
+            "type": "string",
+            "description": "Faculty's id",
+            "nullable": true
+          },
+          "nameFaculty": {
+            "type": "string",
+            "description": "Faculty's name",
+            "nullable": true
+          },
+          "registrationNumber": {
+            "type": "string",
+            "description": "University's registration number",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Class for data transfer about faculty's information"
+      },
+      "PropertyAndBuildingDto": {
+        "type": "object",
+        "properties": {
+          "propertyType": {
+            "type": "string",
+            "description": "Property type",
+            "nullable": true
+          },
+          "buildingOwnership": {
+            "type": "string",
+            "description": "Building ownership",
+            "nullable": true
+          },
+          "totalSpecialties": {
+            "type": "integer",
+            "description": "Total specialties",
+            "format": "int32"
+          },
+          "totalFaculties": {
+            "type": "integer",
+            "description": "Total faculties",
+            "format": "int32"
+          },
+          "totalDepartments": {
+            "type": "integer",
+            "description": "Total departments",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Class for data transfer about total specialties, faculties and departments by property type and building ownership"
+      },
+      "PropertyAndGroupsDto": {
+        "type": "object",
+        "properties": {
+          "registrationNumber": {
+            "type": "string",
+            "description": "University's registration number",
+            "nullable": true
+          },
+          "nameUniversity": {
+            "type": "string",
+            "description": "University's name",
+            "nullable": true
+          },
+          "propertyType": {
+            "type": "string",
+            "description": "Property type",
+            "nullable": true
+          },
+          "totalGroups": {
+            "type": "integer",
+            "description": "Total Groups",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Class for data transfer about information total groups by property type in every university"
+      },
+      "SpecialtyAndGroupsDto": {
+        "type": "object",
+        "properties": {
+          "nameSpecialty": {
+            "type": "string",
+            "description": "Specialty's name",
+            "nullable": true
+          },
+          "totalGroups": {
+            "type": "integer",
+            "description": "Total groups",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "class for data transfer about information total groups in every specialty"
+      },
+      "SpecialtyDto": {
+        "type": "object",
+        "properties": {
+          "specialtyId": {
+            "type": "string",
+            "description": "Specialty's id",
+            "nullable": true
+          },
+          "nameSpecialty": {
+            "type": "string",
+            "description": "Specialty's name",
+            "nullable": true
+          },
+          "numberOfGroups": {
+            "type": "integer",
+            "description": "Total groups in specialty",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Class for data transfer about specialty's information"
+      },
+      "UniversityAndDepartmentsDto": {
+        "type": "object",
+        "properties": {
+          "nameUniversity": {
+            "type": "string",
+            "description": "University's name",
+            "nullable": true
+          },
+          "registrationNumber": {
+            "type": "string",
+            "description": "University's registration number",
+            "nullable": true
+          },
+          "totalDepartments": {
+            "type": "integer",
+            "description": "Total departments",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Class for data transfer about total departments in every university"
+      },
+      "UniversityDto": {
+        "type": "object",
+        "properties": {
+          "registrationNumber": {
+            "type": "string",
+            "description": "University's registration number",
+            "nullable": true
+          },
+          "nameUniversity": {
+            "type": "string",
+            "description": "University's name",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "description": "University's address",
+            "nullable": true
+          },
+          "propertyType": {
+            "type": "string",
+            "description": "University's property type",
+            "nullable": true
+          },
+          "buildingOwnership": {
+            "type": "string",
+            "description": "University's building owner",
+            "nullable": true
+          },
+          "rectorFullName": {
+            "type": "string",
+            "description": "Rector's name",
+            "nullable": true
+          },
+          "degree": {
+            "type": "string",
+            "description": "Rector's degree",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "description": "Rector's tittle",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Class for data transfer about university's information"
+      }
+    }
+  }
+}

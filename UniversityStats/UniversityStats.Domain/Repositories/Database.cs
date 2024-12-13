@@ -1,4 +1,4 @@
-﻿using UniversityStats.Domain.Entity;
+using UniversityStats.Domain.Entity;
 
 namespace UniversityStats.Domain.Repositories;
 
@@ -33,7 +33,7 @@ public class Database
     public List<University> UniversityList { get; set; }
 
     /// <summary>
-    /// Contructor for class
+    /// Constructor for class
     /// </summary>
     public Database()
     {
@@ -48,7 +48,7 @@ public class Database
                     BuildingOwnership = "Federal",
                     RectorFullName = "Ivan Yefimovich Petrov",
                     Degree = "PhD",
-                    Tittle = "Professor"
+                    Title = "Professor"
                 },
                 new University
                 {
@@ -59,7 +59,7 @@ public class Database
                     BuildingOwnership = "Private",
                     RectorFullName = "Anna Ivanova Vladimirovna",
                     Degree = "Doctor",
-                    Tittle = "Professor"
+                    Title = "Professor"
                 },
                 new University
                 {
@@ -70,7 +70,7 @@ public class Database
                     BuildingOwnership = "Private",
                     RectorFullName = "Marina Vasilievna Smirnova",
                     Degree = "MA",
-                    Tittle = "Associate Professor"
+                    Title = "Associate Professor"
                 },
                 new University
                 {
@@ -81,7 +81,7 @@ public class Database
                     BuildingOwnership = "Municipal",
                     RectorFullName = "Olga Petrova",
                     Degree = "PhD",
-                    Tittle = "Professor"
+                    Title = "Professor"
                 },
                 new University
                 {
@@ -92,7 +92,7 @@ public class Database
                     BuildingOwnership = "Municipal",
                     RectorFullName = "Nikolai Vasilyevich Sergeev",
                     Degree = "PhD",
-                    Tittle = "Professor"
+                    Title = "Professor"
                 },
                 new University
                 {
@@ -103,7 +103,7 @@ public class Database
                     BuildingOwnership = "Municipal",
                     RectorFullName = "Tatiana Nikolaevna Fedorova",
                     Degree = "PhD",
-                    Tittle = "Professor"
+                    Title = "Professor"
                 },
                 new University
                 {
@@ -114,7 +114,7 @@ public class Database
                     BuildingOwnership = "Federal",
                     RectorFullName = "Sergey Sergeevich Kozlov",
                     Degree = "PhD",
-                    Tittle = "Professor"
+                    Title = "Professor"
                 }
             ];
 
@@ -140,24 +140,24 @@ public class Database
 
         DepartmentsList =
             [
-                new Department{FacultyId = "1001", NameDepartment = "Department of Software Engineering", DepartmentId = "1001-DSE"},
-                new Department{FacultyId = "1001", NameDepartment = "Department of Information", DepartmentId = "1001-DI"},
-                new Department{FacultyId = "1002", NameDepartment = "Department of Robotics", DepartmentId = "1002-DR"},
-                new Department{FacultyId = "1003", NameDepartment = "Department of Finance", DepartmentId = "1003-DF"},
-                new Department{FacultyId = "1004", NameDepartment = "Department of Languages", DepartmentId = "1004-DL"},
-                new Department{FacultyId = "2001", NameDepartment = "Department of Surgery", DepartmentId = "2001-DS"},
-                new Department{FacultyId = "2002", NameDepartment = "Department of Pharmacy", DepartmentId = "2002-DP"},
-                new Department{FacultyId = "3001", NameDepartment = "Department of Crop Production", DepartmentId = "3001-DCP"},
-                new Department{FacultyId = "4001", NameDepartment = "Department of Painting", DepartmentId = "4001-DP"},
-                new Department{FacultyId = "4001", NameDepartment = "Department of Drawing", DepartmentId = "4001-DD"},
-                new Department{FacultyId = "4002", NameDepartment = "Department of Languages", DepartmentId = "4002-DL"},
-                new Department{FacultyId = "4003", NameDepartment = "Department of Sports Physiologys", DepartmentId = "4003-DSP"},
-                new Department{FacultyId = "5001", NameDepartment = "Department of Law", DepartmentId = "5001-DL"},
-                new Department{FacultyId = "6001", NameDepartment = "Department of Information", DepartmentId = "6001-DI"},
-                new Department{FacultyId = "6002", NameDepartment = "Department of Science Education", DepartmentId = "6002-DSE"},
-                new Department{FacultyId = "6003", NameDepartment = "Department of Languages", DepartmentId = "6003-DL"},
-                new Department{FacultyId = "6004", NameDepartment = "Department of Finance", DepartmentId = "6004-DF"},
-                new Department{FacultyId = "7001", NameDepartment = "Department of Sports Physiologys", DepartmentId = "7001-DSP"},
+                new Department{FacultyId = "1001", NameDepartment = "Department of Software Engineering", DepartmentId = "1001-DSE", RegistrationNumber = "REG-1001-DSE"},
+                new Department{FacultyId = "1001", NameDepartment = "Department of Information", DepartmentId = "1001-DI", RegistrationNumber = "REG-1001-DI"},
+                new Department{FacultyId = "1002", NameDepartment = "Department of Robotics", DepartmentId = "1002-DR", RegistrationNumber = "REG-1002-DR"},
+                new Department{FacultyId = "1003", NameDepartment = "Department of Finance", DepartmentId = "1003-DF", RegistrationNumber = "REG-1003-DF"},
+                new Department{FacultyId = "1004", NameDepartment = "Department of Languages", DepartmentId = "1004-DL", RegistrationNumber = "REG-1004-DL"},
+                new Department{FacultyId = "2001", NameDepartment = "Department of Surgery", DepartmentId = "2001-DS", RegistrationNumber = "REG-2001-DS"},
+                new Department{FacultyId = "2002", NameDepartment = "Department of Pharmacy", DepartmentId = "2002-DP", RegistrationNumber = "REG-2002-DP"},
+                new Department{FacultyId = "3001", NameDepartment = "Department of Crop Production", DepartmentId = "3001-DCP", RegistrationNumber = "REG-3001-DCP"},
+                new Department{FacultyId = "4001", NameDepartment = "Department of Painting", DepartmentId = "4001-DP", RegistrationNumber = "REG-4001-DP"},
+                new Department{FacultyId = "4001", NameDepartment = "Department of Drawing", DepartmentId = "4001-DD", RegistrationNumber = "REG-4001-DD"},
+                new Department{FacultyId = "4002", NameDepartment = "Department of Languages", DepartmentId = "4002-DL", RegistrationNumber = "REG-4002-DL"},
+                new Department{FacultyId = "4003", NameDepartment = "Department of Sports Physiologys", DepartmentId = "4003-DSP", RegistrationNumber = "REG-4003-DSP"},
+                new Department{FacultyId = "5001", NameDepartment = "Department of Law", DepartmentId = "5001-DL", RegistrationNumber = "REG-5001-DL"},
+                new Department{FacultyId = "6001", NameDepartment = "Department of Information", DepartmentId = "6001-DI", RegistrationNumber = "REG-6001-DI"},
+                new Department{FacultyId = "6002", NameDepartment = "Department of Science Education", DepartmentId = "6002-DSE", RegistrationNumber = "REG-6002-DSE"},
+                new Department{FacultyId = "6003", NameDepartment = "Department of Languages", DepartmentId = "6003-DL", RegistrationNumber = "REG-6003-DL"},
+                new Department{FacultyId = "6004", NameDepartment = "Department of Finance", DepartmentId = "6004-DF", RegistrationNumber = "REG-6004-DF"},
+                new Department{FacultyId = "7001", NameDepartment = "Department of Sports Physiologys", DepartmentId = "7001-DSP", RegistrationNumber = "REG-7001-DSP"},
             ];
 
         SpecialtyList =

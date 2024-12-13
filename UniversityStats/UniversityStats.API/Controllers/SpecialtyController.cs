@@ -1,55 +1,86 @@
+using UniversityStats.API.Dto;
+using UniversityStats.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using UniversityStats.API.Services;
-using UniversityStats.Infrastructure.Entities;
 
 namespace UniversityStats.API.Controllers;
 
-[ApiController]
+/// <summary>
+/// Controller responsible for managing specialty-related operations in the university statistics system.
+/// Provides endpoints for retrieving, creating, updating, and deleting specialty information.
+/// </summary>
+/// <param name="service">An instance of ISpecialtyService used for performing specialty-related business logic.</param>
 [Route("api/[controller]")]
-public class SpecialtyController(
-    SpecialtyService specialtyService) : ControllerBase
+[ApiController]
+public class SpecialtyController(ISpecialtyService service) : ControllerBase
 {
-    private readonly SpecialtyService _specialtyService = specialtyService;
-
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Specialty>> GetSpecialty(int id)
+    /// <summary>
+    /// Retrieves a list of all specialties in the system.
+    /// </summary>
+    /// <returns>An HTTP 200 OK response containing a collection of specialty data transfer objects.</returns>
+    /// <response code="200">Successfully retrieved the list of specialties.</response>
+    [HttpGet]
+    public ActionResult<IEnumerable<SpecialtyDto>> Get()
     {
-        var specialty = await _specialtyService.GetSpecialtyByIdAsync(id);
+        return Ok(service.GetAll());
+    }
+
+    /// <summary>
+    /// Retrieves a specific specialty by its unique identifier.
+    /// </summary>
+    /// <param name="specialtyId">The unique identifier of the specialty to retrieve.</param>
+    /// <returns>An HTTP response containing the specialty details or a not found status.</returns>
+    /// <response code="200">Successfully retrieved the specialty details.</response>
+    /// <response code="204">No specialty found with the specified identifier.</response>
+    [HttpGet("{specialtyId}")]
+    public ActionResult<SpecialtyDto> Get(string specialtyId)
+    {
+        var specialty = service.GetById(specialtyId);
+
         if (specialty == null)
             return NoContent();
+
         return Ok(specialty);
     }
 
-    [HttpGet]
-    public async Task<ActionResult<IEnumerable<Specialty>>> GetAllSpecialties()
-    {
-        var specialties = await _specialtyService.GetAllSpecialtiesAsync();
-        return Ok(specialties);
-    }
-
+    /// <summary>
+    /// Adds a new specialty to the university statistics database.
+    /// </summary>
+    /// <param name="specialty">The specialty data transfer object containing specialty information.</param>
+    /// <returns>An HTTP response with the created specialty details.</returns>
+    /// <response code="200">Successfully added the new specialty.</response>
     [HttpPost]
-    public async Task<ActionResult<Specialty>> CreateSpecialty([FromBody] Specialty specialty)
+    public ActionResult<SpecialtyDto> Post([FromBody] SpecialtyDto specialty)
     {
-        var createdSpecialty = await _specialtyService.CreateSpecialtyAsync(specialty);
-        return CreatedAtAction(nameof(GetSpecialty), new { id = createdSpecialty.Id }, createdSpecialty);
+        service.Post(specialty);
+        
+        return Ok(specialty);
     }
 
-    [HttpPut("{id}")]
-    public async Task<ActionResult<Specialty>> UpdateSpecialty(int id, [FromBody] Specialty specialty)
+    /// <summary>
+    /// Corrects specialty's information in the university statistics database.
+    /// </summary>
+    /// <param name="specialty">The specialty data transfer object containing updated specialty information.</param>
+    /// <returns>An HTTP response indicating whether the update was successful.</returns>
+    /// <response code="200">Successfully updated the specialty information.</response>
+    [HttpPut]
+    public ActionResult<SpecialtyDto> Put([FromBody] SpecialtyDto specialty)
     {
-        if (id != specialty.Id)
-            return BadRequest();
+        service.Put(specialty);
 
-        var updatedSpecialty = await _specialtyService.UpdateSpecialtyAsync(specialty);
-        return Ok(updatedSpecialty);
+        return Ok(specialty);
     }
 
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteSpecialty(int id)
+    /// <summary>
+    /// Deletes a specialty's information from the university statistics database.
+    /// </summary>
+    /// <param name="specialtyId">The unique identifier of the specialty to delete.</param>
+    /// <returns>An HTTP response indicating whether the deletion was successful.</returns>
+    /// <response code="200">Successfully deleted the specialty.</response>
+    [HttpDelete("{specialtyId}")]
+    public ActionResult<string> Delete(string specialtyId)
     {
-        var result = await _specialtyService.DeleteSpecialtyAsync(id);
-        if (!result)
-            return NoContent();
-        return NoContent();
+        service.Delete(specialtyId);
+
+        return Ok(specialtyId);
     }
 }

@@ -1,0 +1,85 @@
+﻿@inject IUniversityStatsWrapper UniversityStatsApi
+@inject IJSRuntime JsRuntime
+
+<Modal @ref="UniversityModal">
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>New University</ModalTitle>
+                <CloseButton Clicked="CloseUniversityModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <Field>
+                    <FieldLabel>Registration Number</FieldLabel>
+                    <TextEdit @bind-Text="@NewUniversity.RegistrationNumber" />
+                </Field>
+                <Field>
+                    <FieldLabel>Name</FieldLabel>
+                    <TextEdit @bind-Text="@NewUniversity.NameUniversity" />
+                </Field>
+                <Field>
+                    <FieldLabel>Address</FieldLabel>
+                    <TextEdit @bind-Text="@NewUniversity.Address" />
+                </Field>
+                <Field>
+                    <FieldLabel>Property type</FieldLabel>
+                    <TextEdit @bind-Text="@NewUniversity.PropertyType" />
+                </Field>
+                <Field>
+                    <FieldLabel>Building ownership</FieldLabel>
+                    <TextEdit @bind-Text="@NewUniversity.BuildingOwnership" />
+                </Field>
+                <Field>
+                    <FieldLabel>Rector's name</FieldLabel>
+                    <TextEdit @bind-Text="@NewUniversity.RectorFullName" />
+                </Field>
+                <Field>
+                    <FieldLabel>Degree</FieldLabel>
+                    <TextEdit @bind-Text="@NewUniversity.Degree" />
+                </Field>
+                <Field>
+                    <FieldLabel>Title</FieldLabel>
+                    <TextEdit @bind-Text="@NewUniversity.Title" />
+                </Field>
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="CloseUniversityModalAsync">Cancel</Button>
+                <Button Color="Color.Primary" Clicked="CreateUniversityAsync">Create</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public EventCallback OnUniversityAdded { get; set; }
+
+    private Modal UniversityModal { get; set; } = new();
+
+    private UniversityDto NewUniversity { get; set; } = new();
+
+    public async Task Show() => await UniversityModal.Show();
+
+    private async Task CloseUniversityModalAsync() => await UniversityModal.Hide();
+
+    private async Task CreateUniversityAsync()
+    {
+        if (string.IsNullOrWhiteSpace(NewUniversity.RegistrationNumber) ||
+        string.IsNullOrWhiteSpace(NewUniversity.NameUniversity) ||
+        string.IsNullOrWhiteSpace(NewUniversity.Address) ||
+        string.IsNullOrWhiteSpace(NewUniversity.PropertyType) ||
+        string.IsNullOrWhiteSpace(NewUniversity.BuildingOwnership) ||
+        string.IsNullOrWhiteSpace(NewUniversity.RectorFullName) ||
+        string.IsNullOrWhiteSpace(NewUniversity.Degree) ||
+        string.IsNullOrWhiteSpace(NewUniversity.Title))
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Please fill in all required fields.");
+            return;
+        }
+        await UniversityStatsApi.Post(NewUniversity);
+        await UniversityModal.Hide();
+        await OnUniversityAdded.InvokeAsync();
+    }
+}

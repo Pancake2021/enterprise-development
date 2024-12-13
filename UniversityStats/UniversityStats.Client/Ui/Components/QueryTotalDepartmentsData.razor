@@ -1,0 +1,63 @@
+﻿@inject IUniversityStatsWrapper UniversityStatsApi
+
+<Modal @ref="DepartmentsModal">
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Top five specialties</ModalTitle>
+                <CloseButton Clicked="CloseDepartmentsModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <DataGrid TItem="UniversityAndDepartmentsDto"
+                          Data="Datas"
+                          Responsive
+                          Striped>
+                    <DataGridColumns>
+                        <DataGridColumn TItem="UniversityAndDepartmentsDto"
+                                        Field="@nameof(UniversityAndDepartmentsDto.RegistrationNumber)"
+                                        Caption="Registration number">
+                        </DataGridColumn>
+                        <DataGridColumn TItem="UniversityAndDepartmentsDto"
+                                        Field="@nameof(UniversityAndDepartmentsDto.NameUniversity)"
+                                        Caption="Name">
+                        </DataGridColumn>
+                        <DataGridColumn TItem="UniversityAndDepartmentsDto"
+                                        Field="@nameof(UniversityAndDepartmentsDto.TotalDepartments)"
+                                        Caption="Total of departments">
+                        </DataGridColumn>
+                    </DataGridColumns>
+
+                </DataGrid>
+
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="CloseDepartmentsModalAsync">Cancel</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public EventCallback OnDepartmentsAdded { get; set; }
+
+    private ICollection<UniversityAndDepartmentsDto> Datas { get; set; } = [];
+    private Modal DepartmentsModal { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshDataCollection();
+        await base.OnInitializedAsync();
+    }
+
+    public async Task Show() => await DepartmentsModal.Show();
+
+    private async Task CloseDepartmentsModalAsync() => await DepartmentsModal.Hide();
+
+    private async Task RefreshDataCollection()
+    {
+        Datas = await UniversityStatsApi.TotalDepartmentsInUniversity();
+    }
+}

@@ -1,97 +1,49 @@
-﻿using UniversityStats.Domain.Entity;
+using UniversityStats.Domain.Entity;
+using Microsoft.EntityFrameworkCore;
 
-namespace UniversityStats.Domain.Repositories
+namespace UniversityStats.Domain.Repositories;
+
+public class DepartmentRepository(UniversityStatsContext educationDepartmentContext) : IRepository<Department>
 {
-    /// <summary>
-    /// Repository for managing operations related to the Department entity.
-    /// Implements the <see cref="IRepository{Department}"/> interface.
-    /// </summary>
-    public class DepartmentRepository : IRepository<Department>
+    public bool Delete(string registrationNumber)
     {
-        private readonly Database database;
+        var value = GetByRegistrationNumber(registrationNumber);
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="DepartmentRepository"/> class.
-        /// </summary>
-        /// <param name="database">The database instance to interact with.</param>
-        public DepartmentRepository(Database database)
-        {
-            this.database = database;
-        }
+        if (value == null)
+            return false;
 
-        /// <summary>
-        /// Deletes a Department by its ID.
-        /// If the department is found, it will be removed from the list.
-        /// </summary>
-        /// <param name="id">The ID of the department to delete.</param>
-        /// <returns>
-        /// <c>true</c> if the department was successfully deleted; otherwise, <c>false</c>.
-        /// </returns>
-        public bool Delete(string id)
-        {
-            var value = GetById(id);
+        educationDepartmentContext.Department.Remove(value);
+        educationDepartmentContext.SaveChanges();
 
-            // If the department is not found, return false.
-            if (value == null)
-                return false;
+        return true;
+    }
 
-            // Remove the department from the list.
-            database.DepartmentsList.Remove(value);
+    public IEnumerable<Department> GetAll() => educationDepartmentContext.Department;
 
-            return true;
-        }
+    public Department? GetById(string id) => educationDepartmentContext.Department.FirstOrDefault(a => a.DepartmentId == id);
 
-        /// <summary>
-        /// Retrieves all departments from the database.
-        /// </summary>
-        /// <returns>An <see cref="IEnumerable{Department}"/> of all departments.</returns>
-        public IEnumerable<Department> GetAll()
-        {
-            return database.DepartmentsList;
-        }
+    public Department? GetByRegistrationNumber(string registrationNumber) => 
+        educationDepartmentContext.Department.FirstOrDefault(d => d.RegistrationNumber == registrationNumber);
 
-        /// <summary>
-        /// Retrieves a department by its ID.
-        /// </summary>
-        /// <param name="id">The ID of the department to retrieve.</param>
-        /// <returns>
-        /// A <see cref="Department"/> object if found; otherwise, <c>null</c>.
-        /// </returns>
-        public Department? GetById(string id)
-        {
-            return database.DepartmentsList.Find(a => a.DepartmentId == id);
-        }
+    public void Post(Department data)
+    {
+        educationDepartmentContext.Department.Add(data);
+        educationDepartmentContext.SaveChanges();
+    }
 
-        /// <summary>
-        /// Adds a new department to the database.
-        /// </summary>
-        /// <param name="data">The department data to add.</param>
-        public void Post(Department data)
-        {
-            database.DepartmentsList.Add(data);
-        }
+    public bool Put(Department data)
+    {
+        var oldValue = GetByRegistrationNumber(data.RegistrationNumber) ?? GetById(data.DepartmentId);
 
-        /// <summary>
-        /// Updates an existing department with new data.
-        /// </summary>
-        /// <param name="data">The updated department data.</param>
-        /// <returns>
-        /// <c>true</c> if the department was successfully updated; otherwise, <c>false</c>.
-        /// </returns>
-        public bool Put(Department data)
-        {
-            var oldValue = GetById(data.DepartmentId);
+        if (oldValue == null)
+            return false;
 
-            // If the department to update is not found, return false.
-            if (oldValue == null)
-                return false;
+        educationDepartmentContext.Entry(oldValue).State = EntityState.Detached;
 
-            // Update the department's properties.
-            oldValue.NameDepartment = data.NameDepartment;
-            oldValue.DepartmentId = data.DepartmentId;
-            oldValue.FacultyId = data.FacultyId;
+        educationDepartmentContext.Entry(data).State = EntityState.Modified;
 
-            return true;
-        }
+        educationDepartmentContext.SaveChanges();
+
+        return true;
     }
 }

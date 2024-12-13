@@ -1,83 +1,76 @@
+using UniversityStats.API.Dto;
+using UniversityStats.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using UniversityStats.API.Services;
-using UniversityStats.Infrastructure.Entities;
 
 namespace UniversityStats.API.Controllers;
 
 /// <summary>
-/// Class for department's controller
+/// Controller responsible for managing department-related operations in the university statistics system.
+/// Provides endpoints for retrieving, creating, updating, and deleting department information.
 /// </summary>
-[ApiController]
+/// <param name="service">An instance of IDepartmentService used for performing department-related business logic.</param>
 [Route("api/[controller]")]
-public class DepartmentController(
-    DepartmentService departmentService) : ControllerBase
+[ApiController]
+public class DepartmentController(IDepartmentService service) : ControllerBase
 {
-    private readonly DepartmentService _departmentService = departmentService;
-
     /// <summary>
-    /// Find department by department's id
+    /// Retrieves a list of all departments in the university system.
     /// </summary>
-    /// <param name="id">Department's id</param>
-    /// <returns>Department's information</returns>
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Department>> GetDepartment(int id)
-    {
-        var department = await _departmentService.GetDepartmentByIdAsync(id);
-        if (department == null)
-            return NoContent();
-        return Ok(department);
-    }
-
-    /// <summary>
-    /// Return list of departments
-    /// </summary>
-    /// <returns> List of departments</returns>
+    /// <returns>An HTTP 200 OK response containing a collection of department data transfer objects.</returns>
+    /// <response code="200">Successfully retrieved the list of departments.</response>
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Department>>> GetAllDepartments()
+    public IActionResult GetAll() => Ok(service.GetAll());
+
+    /// <summary>
+    /// Retrieves a specific department by its registration number.
+    /// </summary>
+    /// <param name="registrationNumber">The registration number of the department to retrieve.</param>
+    /// <returns>An HTTP response containing the department details or a not found status.</returns>
+    /// <response code="200">Successfully retrieved the department details.</response>
+    /// <response code="404">No department found with the specified registration number.</response>
+    [HttpGet("{registrationNumber}")]
+    public IActionResult GetByRegistrationNumber(string registrationNumber)
     {
-        var departments = await _departmentService.GetAllDepartmentsAsync();
-        return Ok(departments);
+        var department = service.GetByRegistrationNumber(registrationNumber);
+        return department != null ? Ok(department) : NotFound();
     }
 
     /// <summary>
-    /// Add department to database
+    /// Adds a new department to the university statistics database.
     /// </summary>
-    /// <param name="department">Department's information</param>
-    /// <returns>Success or not</returns>
+    /// <param name="department">The department data transfer object containing department information.</param>
+    /// <returns>An HTTP response with the created department details.</returns>
+    /// <response code="201">Successfully added the new department.</response>
     [HttpPost]
-    public async Task<ActionResult<Department>> CreateDepartment([FromBody] Department department)
+    public IActionResult Post([FromBody] DepartmentDto department)
     {
-        var createdDepartment = await _departmentService.CreateDepartmentAsync(department);
-        return CreatedAtAction(nameof(GetDepartment), new { id = createdDepartment.Id }, createdDepartment);
+        service.Post(department);
+        return CreatedAtAction(nameof(GetByRegistrationNumber), new { registrationNumber = department.RegistrationNumber }, department);
     }
 
     /// <summary>
-    /// Correct department's informations
+    /// Corrects department's information in the university statistics database.
     /// </summary>
-    /// <param name="id">Department's id</param>
-    /// <param name="department">Department's information</param>
-    /// <returns>Success or not</returns>
-    [HttpPut("{id}")]
-    public async Task<ActionResult<Department>> UpdateDepartment(int id, [FromBody] Department department)
+    /// <param name="department">The department data transfer object containing updated department information.</param>
+    /// <returns>An HTTP response indicating whether the update was successful.</returns>
+    /// <response code="204">Successfully updated the department information.</response>
+    [HttpPut]
+    public IActionResult Put([FromBody] DepartmentDto department)
     {
-        if (id != department.Id)
-            return BadRequest();
-
-        var updatedDepartment = await _departmentService.UpdateDepartmentAsync(department);
-        return Ok(updatedDepartment);
+        service.Put(department);
+        return NoContent();
     }
 
     /// <summary>
-    /// Delete department's information by department's id
+    /// Deletes a department's information from the university statistics database.
     /// </summary>
-    /// <param name="id">Department's id</param>
-    /// <returns>Success or not</returns>
-    [HttpDelete("{id}")]
-    public async Task<ActionResult> DeleteDepartment(int id)
+    /// <param name="registrationNumber">The registration number of the department to delete.</param>
+    /// <returns>An HTTP response indicating whether the deletion was successful.</returns>
+    /// <response code="204">Successfully deleted the department.</response>
+    [HttpDelete("{registrationNumber}")]
+    public IActionResult Delete(string registrationNumber)
     {
-        var result = await _departmentService.DeleteDepartmentAsync(id);
-        if (!result)
-            return NoContent();
+        service.Delete(registrationNumber);
         return NoContent();
     }
 }

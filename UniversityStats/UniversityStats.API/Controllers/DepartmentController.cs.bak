@@ -1,0 +1,90 @@
+using Microsoft.AspNetCore.Mvc;
+using UniversityStats.API.Dto;
+using UniversityStats.API.Services;
+
+namespace UniversityStats.API.Controllers;
+
+/// <summary>
+/// Controller responsible for managing department-related operations in the university statistics system.
+/// Provides endpoints for retrieving, creating, and managing department information.
+/// </summary>
+/// <param name="service">An instance of DepartmentService used for performing department-related business logic.</param>
+[Route("api/[controller]")]
+[ApiController]
+public class DepartmentController(DepartmentService service) : ControllerBase
+{
+    /// <summary>
+    /// Retrieves a list of all departments in the university system.
+    /// </summary>
+    /// <returns>An HTTP 200 OK response containing a collection of department data transfer objects.</returns>
+    /// <response code="200">Successfully retrieved the list of departments.</response>
+    [HttpGet]
+    public ActionResult<IEnumerable<DepartmentDto>> Get()
+    {
+        return Ok(service.GetAll());
+    }
+
+    /// <summary>
+    /// Retrieves a specific department by its unique identifier.
+    /// </summary>
+    /// <param name="departmentId">The unique identifier of the department to retrieve.</param>
+    /// <returns>An HTTP response containing the department details or a not found status.</returns>
+    /// <response code="200">Successfully retrieved the department details.</response>
+    /// <response code="404">No department found with the specified identifier.</response>
+    [HttpGet("{departmentId}")]
+    public ActionResult<DepartmentDto> Get(string departmentId)
+    {
+        var department = service.GetById(departmentId);
+
+        if (department == null)
+            return NotFound();
+
+        return Ok(department);
+    }
+
+    /// <summary>
+    /// Adds a new department to the university statistics database.
+    /// </summary>
+    /// <param name="department">The department data transfer object containing department information.</param>
+    /// <returns>An HTTP response with the created department details.</returns>
+    /// <response code="200">Successfully added the new department.</response>
+    [HttpPost]
+    public ActionResult<DepartmentDto> Post([FromBody] DepartmentDto department)
+    {
+        service.Post(department);
+        
+        return Ok(department);
+    }
+
+    /// <summary>
+    /// Corrects department's information in the university statistics database.
+    /// </summary>
+    /// <param name="department">The department data transfer object containing updated department information.</param>
+    /// <returns>An HTTP response indicating whether the update was successful.</returns>
+    /// <response code="200">Successfully updated the department information.</response>
+    /// <response code="404">No department found with the specified identifier.</response>
+    [HttpPut]
+    public ActionResult<DepartmentDto> Put([FromBody] DepartmentDto department)
+    {
+        if (!service.Put(department))
+            return NotFound();
+
+        return Ok(department);
+    }
+
+    /// <summary>
+    /// Deletes a department's information from the university statistics database.
+    /// </summary>
+    /// <param name="departmentId">The unique identifier of the department to delete.</param>
+    /// <returns>An HTTP response indicating whether the deletion was successful.</returns>
+    /// <response code="200">Successfully deleted the department.</response>
+    /// <response code="404">No department found with the specified identifier.</response>
+    [HttpDelete("{departmentId}")]
+    public ActionResult<string> Delete(string departmentId)
+    {
+        if (!service.Delete(departmentId))
+            return NotFound();
+
+        return Ok("Department was deleted");
+    }
+}

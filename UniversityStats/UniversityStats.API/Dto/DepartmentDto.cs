@@ -1,5 +1,3 @@
-﻿namespace UniversityStats.API.Dto;
-
 /// <summary>
 /// Class data transfer about department's information
 /// </summary>
@@ -19,4 +17,9 @@ public class DepartmentDto
     /// Department's id
     /// </summary>
     public required string DepartmentId { get; set; }
+
+    /// <summary>
+    /// Department's registration number
+    /// </summary>
+    public required string RegistrationNumber { get; set; }
 }

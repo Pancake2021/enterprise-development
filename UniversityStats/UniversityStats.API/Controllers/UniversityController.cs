@@ -1,125 +1,86 @@
+using UniversityStats.API.Dto;
+using UniversityStats.API.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using UniversityStats.API.Services;
-using UniversityStats.Infrastructure.Entities;
 
-namespace UniversityStats.API.Controllers
+namespace UniversityStats.API.Controllers;
+
+/// <summary>
+/// Controller responsible for managing university-related operations in the university statistics system.
+/// Provides endpoints for retrieving, creating, updating, and deleting university information.
+/// </summary>
+/// <param name="service">An instance of IUniversityService used for performing university-related business logic.</param>
+[Route("api/[controller]")]
+[ApiController]
+public class UniversityController(IUniversityService service) : ControllerBase
 {
     /// <summary>
-    /// Class for university's controller
+    /// Retrieves a list of all universities in the system.
     /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
-    public class UniversityController(
-        UniversityService service, 
-        ILogger<UniversityController> logger) : ControllerBase
+    /// <returns>An HTTP 200 OK response containing a collection of university data transfer objects.</returns>
+    /// <response code="200">Successfully retrieved the list of universities.</response>
+    [HttpGet]
+    public ActionResult<IEnumerable<UniversityDto>> Get()
     {
-        private readonly UniversityService _service = service;
-        private readonly ILogger<UniversityController> _logger = logger;
+        return Ok(service.GetAll());
+    }
 
-        /// <summary>
-        /// Return list of universities
-        /// </summary>
-        /// <returns>List of universities</returns>
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<University>>> GetAll()
-        {
-            _logger.LogInformation("Fetching list of universities.");
-            var universities = await _service.GetAllUniversitiesAsync();
+    /// <summary>
+    /// Retrieves a specific university by its registration number.
+    /// </summary>
+    /// <param name="registrationNumber">The unique registration number of the university to retrieve.</param>
+    /// <returns>An HTTP response containing the university details or a not found status.</returns>
+    /// <response code="200">Successfully retrieved the university details.</response>
+    /// <response code="204">No university found with the specified registration number.</response>
+    [HttpGet("{registrationNumber}")]
+    public ActionResult<UniversityDto> Get(string registrationNumber)
+    {
+        var university = service.GetByRegistrationNumber(registrationNumber);
 
-            if (!universities.Any())
-            {
-                _logger.LogWarning("No universities found.");
-                return NoContent();
-            }
-
-            _logger.LogInformation("Successfully fetched list of universities.");
-            return Ok(universities);
-        }
-
-        /// <summary>
-        /// Return university's information by id
-        /// </summary>
-        /// <param name="id">University's id</param>
-        /// <returns>University's information</returns>
-        [HttpGet("{id}")]
-        public async Task<ActionResult<University>> GetById(int id)
-        {
-            _logger.LogInformation($"Fetching university information for id: {id}.");
-            var university = await _service.GetUniversityByIdAsync(id);
-
-            if (university == null)
-            {
-                _logger.LogWarning($"University with id {id} not found.");
-                return NoContent();
-            }
-
-            _logger.LogInformation($"Successfully fetched university with id: {id}.");
-            return Ok(university);
-        }
-
-        /// <summary>
-        /// Post university's information to database
-        /// </summary>
-        /// <param name="university">University's information</param>
-        /// <returns>Created university</returns>
-        [HttpPost]
-        public async Task<ActionResult<University>> Create([FromBody] University university)
-        {
-            _logger.LogInformation("Creating new university.");
-            var createdUniversity = await _service.CreateUniversityAsync(university);
-
-            _logger.LogInformation($"University with id {createdUniversity.Id} was successfully created.");
-            return CreatedAtAction(nameof(GetById), new { id = createdUniversity.Id }, createdUniversity);
-        }
-
-        /// <summary>
-        /// Update university's information
-        /// </summary>
-        /// <param name="id">University's id</param>
-        /// <param name="university">University's information</param>
-        /// <returns>Updated university</returns>
-        [HttpPut("{id}")]
-        public async Task<ActionResult<University>> Update(int id, [FromBody] University university)
-        {
-            if (id != university.Id)
-            {
-                _logger.LogWarning("Id in URL does not match id in body.");
-                return BadRequest();
-            }
-
-            _logger.LogInformation($"Updating university with id: {id}.");
-            var updatedUniversity = await _service.UpdateUniversityAsync(university);
-
-            if (updatedUniversity == null)
-            {
-                _logger.LogWarning($"University with id {id} not found for update.");
-                return NoContent();
-            }
-
-            _logger.LogInformation($"University with id {id} was successfully updated.");
-            return Ok(updatedUniversity);
-        }
-
-        /// <summary>
-        /// Delete university's information
-        /// </summary>
-        /// <param name="id">University's id</param>
-        /// <returns>Success or not</returns>
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(int id)
-        {
-            _logger.LogInformation($"Attempting to delete university with id: {id}.");
-            var result = await _service.DeleteUniversityAsync(id);
-
-            if (!result)
-            {
-                _logger.LogWarning($"University with id {id} not found for deletion.");
-                return NoContent();
-            }
-
-            _logger.LogInformation($"University with id {id} was successfully deleted.");
+        if (university == null)
             return NoContent();
-        }
+
+        return Ok(university);
+    }
+
+    /// <summary>
+    /// Adds a new university to the university statistics database.
+    /// </summary>
+    /// <param name="university">The university data transfer object containing university information.</param>
+    /// <returns>An HTTP response with the created university details.</returns>
+    /// <response code="200">Successfully added the new university.</response>
+    [HttpPost]
+    public ActionResult<UniversityDto> Post([FromBody] UniversityDto university)
+    {
+        service.Post(university);
+        
+        return Ok(university);
+    }
+
+    /// <summary>
+    /// Corrects university's information in the university statistics database.
+    /// </summary>
+    /// <param name="university">The university data transfer object containing updated university information.</param>
+    /// <returns>An HTTP response indicating whether the update was successful.</returns>
+    /// <response code="200">Successfully updated the university information.</response>
+    [HttpPut]
+    public ActionResult<UniversityDto> Put([FromBody] UniversityDto university)
+    {
+        service.Put(university);
+
+        return Ok(university);
+    }
+
+    /// <summary>
+    /// Deletes a university's information from the university statistics database.
+    /// </summary>
+    /// <param name="registrationNumber">The unique registration number of the university to delete.</param>
+    /// <returns>An HTTP response indicating whether the deletion was successful.</returns>
+    /// <response code="200">Successfully deleted the university.</response>
+    [HttpDelete("{registrationNumber}")]
+    public ActionResult<string> Delete(string registrationNumber)
+    {
+        service.Delete(registrationNumber);
+
+        return Ok(registrationNumber);
     }
 }

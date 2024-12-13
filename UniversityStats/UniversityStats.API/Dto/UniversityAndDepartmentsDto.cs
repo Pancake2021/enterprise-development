@@ -1,4 +1,4 @@
-﻿namespace UniversityStats.API.Dto;
+namespace UniversityStats.API.Dto;
 
 /// <summary>
 /// Class for data transfer about total departments in every university
@@ -6,18 +6,17 @@
 public class UniversityAndDepartmentsDto
 {
     /// <summary>
-    /// University's name
-    /// </summary>
-    public required string NameUniversity { get; set; }
-
-    /// <summary>
     /// University's registration number
     /// </summary>
-    public required string RegistrationNumber { get; set; }
+    public string RegistrationNumber { get; set; } = string.Empty;
+
+    /// <summary>
+    /// University's name
+    /// </summary>
+    public string UniversityName { get; set; } = string.Empty;
 
     /// <summary>
     /// Total departments
     /// </summary>
-    public required int TotalDepartments { get; set; }
+    public int TotalDepartments { get; set; }
 }
-

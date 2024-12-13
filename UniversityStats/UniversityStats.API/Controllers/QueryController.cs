@@ -1,143 +1,122 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;  // Для логирования
 using UniversityStats.API.Dto;
-using UniversityStats.API.Services;
+using UniversityStats.API.Services.Interfaces;
 
-namespace UniversityStats.API.Controllers
+namespace UniversityStats.API.Controllers;
+
+/// <summary>
+/// Controller responsible for managing search-related operations in the university statistics system.
+/// Provides endpoints for searching universities, departments, faculties, and specialties.
+/// </summary>
+[ApiController]
+[Route("api/[controller]")]
+public class QueryController : ControllerBase
 {
-    /// <summary>
-    /// Class for Query's controller
-    /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
-    public class QueryController(
-        QueryService service, 
-        ILogger<QueryController> logger) : ControllerBase
+    private readonly IQueryService _service;
+
+    public QueryController(IQueryService service)
     {
-        private readonly QueryService _service = service;
-        private readonly ILogger<QueryController> _logger = logger;
-
-        /// <summary>
-        /// Return list of university's information with registration number
-        /// </summary>
-        /// <param name="registrationNumber">Registration number</param>
-        /// <returns>University's information with registration number</returns>
-        [HttpGet("Universities")]
-        public ActionResult<UniversityDto> InfoUniversityByRegistration(string registrationNumber)
-        {
-            _logger.LogInformation($"Fetching university info for registration number: {registrationNumber}.");
-            var university = _service.InfoUniversityByRegistration(registrationNumber);
-
-            if (university == null)
-            {
-                _logger.LogWarning($"University with registration number {registrationNumber} not found.");
-                return NoContent();
-            }
-
-            _logger.LogInformation($"Successfully fetched university info for registration number: {registrationNumber}.");
-            return Ok(university);
-        }
-
-        /// <summary>
-        /// Count total departments in every university
-        /// </summary>
-        /// <returns>List of objects mentioned in format json</returns>
-        [HttpGet("Departments")]
-        public ActionResult<UniversityAndDepartmentsDto> TotalDepartmentsInUniversity()
-        {
-            _logger.LogInformation("Fetching total number of departments in universities.");
-            var departments = _service.TotalDepartmentsInUniversity();
-
-            if (departments == null)
-            {
-                _logger.LogWarning("No departments found.");
-                return NoContent();
-            }
-
-            _logger.LogInformation("Successfully fetched total departments in universities.");
-            return Ok(departments);
-        }
-
-        /// <summary>
-        /// Find 5 specialties with the highest number of groups
-        /// </summary>
-        /// <returns>List of objects mentioned in format json</returns>
-        [HttpGet("Top5Specialties")]
-        public ActionResult<SpecialtyAndGroupsDto> TopFiveSpecialties()
-        {
-            _logger.LogInformation("Fetching top 5 specialties with highest number of groups.");
-            var specialties = _service.TopFiveSpecialties();
-
-            if (specialties == null)
-            {
-                _logger.LogWarning("No specialties found.");
-                return NoContent();
-            }
-
-            _logger.LogInformation("Successfully fetched top 5 specialties.");
-            return Ok(specialties);
-        }
-
-        /// <summary>
-        /// Count total of groups with property type
-        /// </summary>
-        /// <param name="propertyType">Property type</param>
-        /// <returns>List of objects mentioned in format json</returns>
-        [HttpGet("Properties")]
-        public ActionResult<PropertyAndGroupsDto> TotalGroupsByProperty(string propertyType)
-        {
-            _logger.LogInformation($"Fetching total groups by property type: {propertyType}.");
-            var groups = _service.TotalGroupsByProperty(propertyType);
-
-            if (groups == null)
-            {
-                _logger.LogWarning($"No groups found for property type: {propertyType}.");
-                return NoContent();
-            }
-
-            _logger.LogInformation($"Successfully fetched total groups for property type: {propertyType}.");
-            return Ok(groups);
-        }
-
-        /// <summary>
-        /// Return list of faculties and specialties available in university
-        /// </summary>
-        /// <param name="nameUniversity">University's name</param>
-        /// <returns>List of objects mentioned in format json</returns>
-        [HttpGet("FacultiesSpecialties")]
-        public ActionResult<FacultyAndSpecialtyDto> InfoFacultiesSpecialties(string nameUniversity)
-        {
-            _logger.LogInformation($"Fetching faculties and specialties for university: {nameUniversity}.");
-            var facultiesSpecialties = _service.InfoFacultiesSpecialties(nameUniversity);
-
-            if (facultiesSpecialties == null)
-            {
-                _logger.LogWarning($"No faculties or specialties found for university: {nameUniversity}.");
-                return NoContent();
-            }
-
-            _logger.LogInformation($"Successfully fetched faculties and specialties for university: {nameUniversity}.");
-            return Ok(facultiesSpecialties);
-        }
-
-        /// <summary>
-        /// Count total of departments, faculties and specialties by attributes property type and building owner
-        /// </summary>
-        /// <returns>List of objects mentioned in format json</returns>
-        [HttpGet("PropertiesBuildings")]
-        public ActionResult<PropertyAndBuildingDto> TotalDepartmentsFacultiesSpecialtiesByPropertyBuilding()
-        {
-            _logger.LogInformation("Fetching total departments, faculties, and specialties by property type and building owner.");
-            var data = _service.TotalDepartmentsFacultiesSpecialtiesByPropertyBuilding();
-
-            if (data == null)
-            {
-                _logger.LogWarning("No data found for properties and buildings.");
-                return NoContent();
-            }
-
-            _logger.LogInformation("Successfully fetched total departments, faculties, and specialties by property type and building owner.");
-            return Ok(data);
-        }
+        _service = service;
     }
+
+    /// <summary>
+    /// Retrieves information about a university by its registration number.
+    /// </summary>
+    /// <param name="registrationNumber">Registration number of the university</param>
+    /// <returns>An HTTP response containing information about the university.</returns>
+    /// <response code="200">Successfully retrieved university information.</response>
+    /// <response code="404">University not found.</response>
+    [HttpGet("university-by-registration/{registrationNumber}")]
+    public IActionResult InfoUniversityByRegistration(string registrationNumber)
+    {
+        var university = _service.InfoUniversityByRegistration(registrationNumber);
+        return university != null ? Ok(university) : NotFound();
+    }
+
+    /// <summary>
+    /// Retrieves the total number of departments in a university.
+    /// </summary>
+    /// <returns>An HTTP response containing the total number of departments.</returns>
+    /// <response code="200">Successfully retrieved total departments.</response>
+    [HttpGet("total-departments-in-university")]
+    public IActionResult TotalDepartmentsInUniversity() => 
+        Ok(_service.TotalDepartmentsInUniversity());
+
+    /// <summary>
+    /// Retrieves the top five specialties.
+    /// </summary>
+    /// <returns>An HTTP response containing the top five specialties.</returns>
+    /// <response code="200">Successfully retrieved top five specialties.</response>
+    [HttpGet("top-five-specialties")]
+    public IActionResult TopFiveSpecialties() => 
+        Ok(_service.TopFiveSpecialties());
+
+    /// <summary>
+    /// Retrieves the total number of groups by a specified property.
+    /// </summary>
+    /// <param name="propertyType">Type of property to filter by</param>
+    /// <returns>An HTTP response containing the total number of groups.</returns>
+    /// <response code="200">Successfully retrieved total groups.</response>
+    [HttpGet("total-groups-by-property/{propertyType}")]
+    public IActionResult TotalGroupsByProperty(string propertyType) => 
+        Ok(_service.TotalGroupsByProperty(propertyType));
+
+    /// <summary>
+    /// Retrieves information about faculties and specialties for a specified university.
+    /// </summary>
+    /// <param name="nameUniversity">Name of the university</param>
+    /// <returns>An HTTP response containing information about faculties and specialties.</returns>
+    /// <response code="200">Successfully retrieved faculties and specialties information.</response>
+    [HttpGet("faculties-specialties/{nameUniversity}")]
+    public IActionResult InfoFacultiesSpecialties(string nameUniversity) => 
+        Ok(_service.InfoFacultiesSpecialties(nameUniversity));
+
+    /// <summary>
+    /// Retrieves the total number of departments, faculties, and specialties by a specified property.
+    /// </summary>
+    /// <returns>An HTTP response containing the total number of departments, faculties, and specialties.</returns>
+    /// <response code="200">Successfully retrieved total departments, faculties, and specialties.</response>
+    [HttpGet("departments-faculties-specialties-by-property")]
+    public IActionResult TotalDepartmentsFacultiesSpecialtiesByPropertyBuilding() => 
+        Ok(_service.TotalDepartmentsFacultiesSpecialtiesByPropertyBuilding());
+
+    /// <summary>
+    /// Searches for universities based on a query string.
+    /// </summary>
+    /// <param name="query">Search query string</param>
+    /// <returns>An HTTP response containing a collection of universities matching the query.</returns>
+    /// <response code="200">Successfully retrieved matching universities.</response>
+    [HttpGet("search-universities")]
+    public IActionResult SearchUniversities([FromQuery] string query) => 
+        Ok(_service.SearchUniversities(query));
+
+    /// <summary>
+    /// Searches for departments based on a query string.
+    /// </summary>
+    /// <param name="query">Search query string</param>
+    /// <returns>An HTTP response containing a collection of departments matching the query.</returns>
+    /// <response code="200">Successfully retrieved matching departments.</response>
+    [HttpGet("search-departments")]
+    public IActionResult SearchDepartments([FromQuery] string query) => 
+        Ok(_service.SearchDepartments(query));
+
+    /// <summary>
+    /// Searches for faculties based on a query string.
+    /// </summary>
+    /// <param name="query">Search query string</param>
+    /// <returns>An HTTP response containing a collection of faculties matching the query.</returns>
+    /// <response code="200">Successfully retrieved matching faculties.</response>
+    [HttpGet("search-faculties")]
+    public IActionResult SearchFaculties([FromQuery] string query) => 
+        Ok(_service.SearchFaculties(query));
+
+    /// <summary>
+    /// Searches for specialties based on a query string.
+    /// </summary>
+    /// <param name="query">Search query string</param>
+    /// <returns>An HTTP response containing a collection of specialties matching the query.</returns>
+    /// <response code="200">Successfully retrieved matching specialties.</response>
+    [HttpGet("search-specialties")]
+    public IActionResult SearchSpecialties([FromQuery] string query) => 
+        Ok(_service.SearchSpecialties(query));
 }

@@ -1,70 +1,63 @@
-using UniversityStats.Infrastructure.Entities;
-using UniversityStats.Infrastructure.Repositories.Interfaces;
+using AutoMapper;
+using UniversityStats.API.Dto;
+using UniversityStats.API.Services.Interfaces;
+using UniversityStats.Domain.Entity;
+using UniversityStats.Domain.Repositories;
 
 namespace UniversityStats.API.Services;
 
 /// <summary>
 /// Class for department's service
 /// </summary>
-public class DepartmentService
+public class DepartmentService : IDepartmentService
 {
-    private readonly IDepartmentRepository _departmentRepository;
+    private readonly DepartmentRepository _repository;
+    private readonly IMapper _mapper;
 
     /// <summary>
     /// Constructor for DepartmentService
     /// </summary>
-    /// <param name="departmentRepository">Department's repository</param>
-    public DepartmentService(IDepartmentRepository departmentRepository)
+    /// <param name="repository">Department's repository</param>
+    /// <param name="mapper">Mapper for mapping entities</param>
+    public DepartmentService(DepartmentRepository repository, IMapper mapper)
     {
-        _departmentRepository = departmentRepository;
-    }
-
-    /// <summary>
-    /// Method get department by department's id
-    /// </summary>
-    /// <param name="id">Department's id</param>
-    /// <returns>Department's information or null</returns>
-    public async Task<Department?> GetDepartmentByIdAsync(int id)
-    {
-        return await _departmentRepository.GetByIdAsync(id);
+        _repository = repository;
+        _mapper = mapper;
     }
 
     /// <summary>
     /// Method get list of departments
     /// </summary>
     /// <returns>List of departments</returns>
-    public async Task<IEnumerable<Department>> GetAllDepartmentsAsync()
-    {
-        return await _departmentRepository.GetAllAsync();
-    }
+    public IEnumerable<DepartmentDto> GetAll() => 
+        _repository.GetAll().Select(_mapper.Map<Department, DepartmentDto>);
+
+    /// <summary>
+    /// Method get department by department's registration number
+    /// </summary>
+    /// <param name="registrationNumber">Department's registration number</param>
+    /// <returns>Department's information or null</returns>
+    public DepartmentDto? GetByRegistrationNumber(string registrationNumber) => 
+        _mapper.Map<DepartmentDto>(_repository.GetByRegistrationNumber(registrationNumber));
 
     /// <summary>
     /// Method post department to database
     /// </summary>
     /// <param name="department">Department's information</param>
-    /// <returns>Department's information</returns>
-    public async Task<Department> CreateDepartmentAsync(Department department)
-    {
-        return await _departmentRepository.AddAsync(department);
-    }
+    public void Post(DepartmentDto department) => 
+        _repository.Post(_mapper.Map<Department>(department));
 
     /// <summary>
-    /// Method put department by department's id
+    /// Method put department by department's registration number
     /// </summary>
     /// <param name="department">Department's information</param>
-    /// <returns>Department's information</returns>
-    public async Task<Department> UpdateDepartmentAsync(Department department)
-    {
-        return await _departmentRepository.UpdateAsync(department);
-    }
+    public void Put(DepartmentDto department) => 
+        _repository.Put(_mapper.Map<Department>(department));
 
     /// <summary>
-    /// Method delete department by department's id
+    /// Method delete department by department's registration number
     /// </summary>
-    /// <param name="id">Department's id</param>
-    /// <returns>True or False</returns>
-    public async Task<bool> DeleteDepartmentAsync(int id)
-    {
-        return await _departmentRepository.DeleteAsync(id);
-    }
+    /// <param name="registrationNumber">Department's registration number</param>
+    public void Delete(string registrationNumber) => 
+        _repository.Delete(registrationNumber);
 }

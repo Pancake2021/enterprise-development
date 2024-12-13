@@ -1,116 +1,86 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;  // Для логирования
 using UniversityStats.API.Dto;
-using UniversityStats.API.Services;
+using UniversityStats.API.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
-namespace UniversityStats.API.Controllers
+namespace UniversityStats.API.Controllers;
+
+/// <summary>
+/// Controller responsible for managing department specialty-related operations in the university statistics system.
+/// Provides endpoints for retrieving, creating, updating, and deleting department specialty information.
+/// </summary>
+/// <param name="service">An instance of IDepartmentSpecialtyService used for performing department specialty-related business logic.</param>
+[Route("api/[controller]")]
+[ApiController]
+public class DepartmentSpecialtyController(IDepartmentSpecialtyService service) : ControllerBase
 {
     /// <summary>
-    /// Class for (department specialty)'s controller
+    /// Retrieves a list of all department specialties in the system.
     /// </summary>
-    [Route("api/[controller]")]
-    [ApiController]
-    public class DepartmentSpecialtyController(
-        DepartmentSpecialtyService service, 
-        ILogger<DepartmentSpecialtyController> logger) : ControllerBase
+    /// <returns>An HTTP 200 OK response containing a collection of department specialty data transfer objects.</returns>
+    /// <response code="200">Successfully retrieved the list of department specialties.</response>
+    [HttpGet]
+    public ActionResult<IEnumerable<DepartmentSpecialtyDto>> Get()
     {
-        private readonly DepartmentSpecialtyService _service = service;
-        private readonly ILogger<DepartmentSpecialtyController> _logger = logger;
+        return Ok(service.GetAll());
+    }
 
-        /// <summary>
-        /// Return list of (department specialty)
-        /// </summary>
-        /// <returns> List of (department specialty)</returns>
-        [HttpGet]
-        public ActionResult<IEnumerable<DepartmentSpecialtyDto>> Get()
-        {
-            _logger.LogInformation("Fetching list of all department specialties.");  // Логируем начало операции
-            var departmentSpecialties = _service.GetAll();
+    /// <summary>
+    /// Retrieves a specific department specialty by its unique identifier.
+    /// </summary>
+    /// <param name="departmentSpecialtyId">The unique identifier of the department specialty to retrieve.</param>
+    /// <returns>An HTTP response containing the department specialty details or a not found status.</returns>
+    /// <response code="200">Successfully retrieved the department specialty details.</response>
+    /// <response code="204">No department specialty found with the specified identifier.</response>
+    [HttpGet("{departmentSpecialtyId}")]
+    public ActionResult<DepartmentSpecialtyDto> Get(string departmentSpecialtyId)
+    {
+        var departmentSpecialty = service.GetById(departmentSpecialtyId);
 
-            if (departmentSpecialties == null || !departmentSpecialties.Any())
-            {
-                _logger.LogWarning("No department specialties found.");  // Логируем предупреждение, если не найдены данные
-                return NoContent();
-            }
+        if (departmentSpecialty == null)
+            return NoContent();
 
-            _logger.LogInformation("Successfully fetched all department specialties.");  // Логируем успешное выполнение
-            return Ok(departmentSpecialties);
-        }
+        return Ok(departmentSpecialty);
+    }
 
-        /// <summary>
-        /// Find (department specialty)'s information by specialty's id
-        /// </summary>
-        /// <param name="specialtyId">Specialty's id</param>
-        /// <returns>(department specialty)'s information</returns>
-        [HttpGet("{specialtyId}")]
-        public ActionResult<DepartmentSpecialtyDto> Get(string specialtyId)
-        {
-            _logger.LogInformation($"Fetching department specialty with id: {specialtyId}.");  // Логируем начало операции
-            var departmentSpecialty = _service.GetById(specialtyId);
+    /// <summary>
+    /// Adds a new department specialty to the university statistics database.
+    /// </summary>
+    /// <param name="departmentSpecialty">The department specialty data transfer object containing department specialty information.</param>
+    /// <returns>An HTTP response with the created department specialty details.</returns>
+    /// <response code="200">Successfully added the new department specialty.</response>
+    [HttpPost]
+    public ActionResult<DepartmentSpecialtyDto> Post([FromBody] DepartmentSpecialtyDto departmentSpecialty)
+    {
+        service.Post(departmentSpecialty);
+        
+        return Ok(departmentSpecialty);
+    }
 
-            if (departmentSpecialty == null)
-            {
-                _logger.LogWarning($"Department specialty with id: {specialtyId} not found.");  // Логируем, если не найдено
-                return NoContent();
-            }
+    /// <summary>
+    /// Corrects department specialty's information in the university statistics database.
+    /// </summary>
+    /// <param name="departmentSpecialty">The department specialty data transfer object containing updated department specialty information.</param>
+    /// <returns>An HTTP response indicating whether the update was successful.</returns>
+    /// <response code="200">Successfully updated the department specialty information.</response>
+    [HttpPut]
+    public ActionResult<DepartmentSpecialtyDto> Put([FromBody] DepartmentSpecialtyDto departmentSpecialty)
+    {
+        service.Put(departmentSpecialty);
 
-            _logger.LogInformation($"Successfully fetched department specialty with id: {specialtyId}.");  // Логируем успех
-            return Ok(departmentSpecialty);
-        }
+        return Ok(departmentSpecialty);
+    }
 
-        /// <summary>
-        /// Add (department specialty) to database
-        /// </summary>
-        /// <param name="departmentSpecialty">(Department specialty)'s information in format DTO</param>
-        /// <returns>Success or not</returns>
-        [HttpPost]
-        public ActionResult<DepartmentSpecialtyDto> Post([FromBody] DepartmentSpecialtyDto departmentSpecialty)
-        {
-            _logger.LogInformation("Adding new department specialty to the database.");
-            _service.Post(departmentSpecialty);
+    /// <summary>
+    /// Deletes a department specialty's information from the university statistics database.
+    /// </summary>
+    /// <param name="departmentSpecialtyId">The unique identifier of the department specialty to delete.</param>
+    /// <returns>An HTTP response indicating whether the deletion was successful.</returns>
+    /// <response code="200">Successfully deleted the department specialty.</response>
+    [HttpDelete("{departmentSpecialtyId}")]
+    public ActionResult<string> Delete(string departmentSpecialtyId)
+    {
+        service.Delete(departmentSpecialtyId);
 
-            _logger.LogInformation("Department specialty added successfully.");
-            return Ok(departmentSpecialty);
-        }
-
-        /// <summary>
-        /// Correct (department specialty)'s information by specialty's id
-        /// </summary>
-        /// <param name="departmentSpecialty">(Department specialty)'s information</param>
-        /// <returns>Success or not</returns>
-        [HttpPut]
-        public ActionResult<DepartmentSpecialtyDto> Put([FromBody] DepartmentSpecialtyDto departmentSpecialty)
-        {
-            _logger.LogInformation($"Updating department specialty with id: {departmentSpecialty.SpecialtyId}");  // Исправляем на правильное свойство
-
-            if (!_service.Put(departmentSpecialty))
-            {
-                _logger.LogWarning($"Department specialty with id: {departmentSpecialty.SpecialtyId} not found for update.");  // Исправляем на правильное свойство
-                return NoContent();
-            }
-
-            _logger.LogInformation($"Successfully updated department specialty with id: {departmentSpecialty.SpecialtyId}.");  // Исправляем на правильное свойство
-            return Ok(departmentSpecialty);
-        }
-
-        /// <summary>
-        /// Delete (department specialty) by specialty's id
-        /// </summary>
-        /// <param name="specialtyId">Specialty's id</param>
-        /// <returns>Success or not</returns>
-        [HttpDelete("{specialtyId}")]
-        public ActionResult<string> Delete(string specialtyId)
-        {
-            _logger.LogInformation($"Deleting department specialty with id: {specialtyId}");
-
-            if (!_service.Delete(specialtyId))
-            {
-                _logger.LogWarning($"Department specialty with id: {specialtyId} not found for deletion.");
-                return NoContent();
-            }
-
-            _logger.LogInformation($"Successfully deleted department specialty with id: {specialtyId}");
-            return Ok("Department specialty was deleted");
-        }
+        return Ok("Department specialty was deleted");
     }
 }

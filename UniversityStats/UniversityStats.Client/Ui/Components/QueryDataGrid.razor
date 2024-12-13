@@ -1,0 +1,50 @@
+﻿@inject IUniversityStatsWrapper UniversityStatsApi
+@inject NavigationManager NavManager
+
+<Card>
+    <CardHeader>
+        <Row Class="justify-content-between">
+            <Column ColumnSize="ColumnSize.IsAuto">
+                <h4>Universities</h4>
+            </Column>   
+        </Row>
+    </CardHeader>
+    <CardBody>
+        <Table>
+            <TableHeader>
+                <TableRow>
+                    <TableHeaderCell>Action</TableHeaderCell>
+                    <TableHeaderCell>Task</TableHeaderCell>
+                </TableRow>
+            </TableHeader>
+            <TableBody>
+                <TableRow>
+                    <TableRowHeader><Button Color="Color.Primary" Clicked="OpenTopFiveModal">Execute</Button></TableRowHeader>
+                    <TableRowCell>Find 5 specialties with the highest number of groups</TableRowCell>
+                </TableRow>
+                <TableRow>
+                    <TableRowHeader><Button Color="Color.Primary" Clicked="OpenDepartmentsModal">Execute</Button></TableRowHeader>
+                    <TableRowCell>Count total departments in every university</TableRowCell>
+                </TableRow>
+            </TableBody>
+        </Table>
+    </CardBody>
+</Card>
+
+<QueryTopFiveData @ref="TopFiveModal" OnTopFiveAdded="@HandleOnTopFiveAdded" />
+<QueryTotalDepartmentsData @ref="DepartmentsModal" OnDepartmentsAdded="@HandleDepartmentsAdded" />
+
+@code {
+    [Parameter]
+    public EventCallback OnDataChanged { get; set; }
+
+    private QueryTopFiveData TopFiveModal { get; set; } = new();
+    private QueryTotalDepartmentsData DepartmentsModal { get; set; } = new();
+
+    private async Task OpenTopFiveModal() => await TopFiveModal.Show();
+    private async Task OpenDepartmentsModal() => await DepartmentsModal.Show();
+
+    private async Task HandleOnTopFiveAdded() => await OnDataChanged.InvokeAsync();
+    private async Task HandleDepartmentsAdded() => await OnDataChanged.InvokeAsync();
+
+}

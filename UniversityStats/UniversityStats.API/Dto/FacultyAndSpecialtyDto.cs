@@ -1,4 +1,4 @@
-﻿namespace UniversityStats.API.Dto;
+namespace UniversityStats.API.Dto;
 
 /// <summary>
 /// Class for data transfer about information of departments, faculties and specialties in university
@@ -8,20 +8,15 @@ public class FacultyAndSpecialtyDto
     /// <summary>
     /// University's name
     /// </summary>
-    public required string NameUniversity { get; set; }
+    public string NameUniversity { get; set; } = string.Empty;
 
     /// <summary>
     /// Faculty's name
     /// </summary>
-    public required string NameFaculty { get; set; }
-
-    /// <summary>
-    /// Department's name
-    /// </summary>
-    public required string NameDepartment { get; set; }
+    public string NameFaculty { get; set; } = string.Empty;
 
     /// <summary>
     /// Specialty's name
     /// </summary>
-    public required string NameSpecialty { get; set; }
+    public string NameSpecialty { get; set; } = string.Empty;
 }

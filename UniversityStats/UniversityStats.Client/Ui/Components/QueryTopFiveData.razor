@@ -1,0 +1,59 @@
+﻿@inject IUniversityStatsWrapper UniversityStatsApi
+
+<Modal @ref="TopFiveModal">
+    <ModalContent Centered>
+        <Form>
+            <ModalHeader>
+                <ModalTitle>Top five specialties</ModalTitle>
+                <CloseButton Clicked="CloseTopFiveModalAsync" />
+            </ModalHeader>
+
+            <ModalBody>
+                <DataGrid TItem="SpecialtyAndGroupsDto"
+                      Data="Datas"
+                      Responsive
+                      Striped>
+                      <DataGridColumns>
+                        <DataGridColumn TItem="SpecialtyAndGroupsDto"
+                                        Field="@nameof(SpecialtyAndGroupsDto.NameSpecialty)"
+                                        Caption="Specialty">
+                        </DataGridColumn>
+                        <DataGridColumn TItem="SpecialtyAndGroupsDto"
+                                        Field="@nameof(SpecialtyAndGroupsDto.TotalGroups)"
+                                        Caption="Total of groups">
+                        </DataGridColumn>
+                      </DataGridColumns>
+                
+                  </DataGrid>
+            
+            </ModalBody>
+
+            <ModalFooter>
+                <Button Color="Color.Secondary" Clicked="CloseTopFiveModalAsync">Cancel</Button>
+            </ModalFooter>
+        </Form>
+    </ModalContent>
+</Modal>
+
+@code {
+    [Parameter]
+    public EventCallback OnTopFiveAdded { get; set; }
+
+    private ICollection<SpecialtyAndGroupsDto> Datas { get; set; } = [];
+    private Modal TopFiveModal { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await RefreshDataCollection();
+        await base.OnInitializedAsync();
+    }
+
+    public async Task Show() => await TopFiveModal.Show();
+
+    private async Task CloseTopFiveModalAsync() => await TopFiveModal.Hide();
+
+    private async Task RefreshDataCollection()
+    {
+        Datas = await UniversityStatsApi.TopFiveSpecialties();
+    }
+}
