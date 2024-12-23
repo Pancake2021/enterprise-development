@@ -41,101 +41,134 @@ public class DatabaseSeeder
             [
                 new University
                 {
-                    RegistrationNumber = "UNI001",
-                    NameUniversity = "University of Technology and Economics",
-                    Address = "34 Tech Street",
-                    PropertyType = "Municipal",
-                    BuildingOwnership = "Federal",
-                    RectorFullName = "Ivan Yefimovich Petrov",
-                    Degree = "PhD",
-                    Title = "Professor"
+                    RegistrationNumber = "REG_UNIV_001",
+                    NameUniversity = "Московский государственный университет имени М.В. Ломоносова",
+                    Address = "119991, Москва, Ленинские горы, д. 1",
+                    PropertyType = "Государственный",
+                    BuildingOwnership = "Федеральная",
+                    RectorFullName = "Садовничий Виктор Антонович",
+                    Degree = "Доктор физико-математических наук",
+                    Title = "Профессор"
                 },
                 new University
                 {
-                    RegistrationNumber = "UNI002",
-                    NameUniversity = "Medical University",
-                    Address = "456 Health Road",
-                    PropertyType = "Private",
-                    BuildingOwnership = "Private",
-                    RectorFullName = "Anna Ivanova Vladimirovna",
-                    Degree = "Doctor",
-                    Title = "Professor"
+                    RegistrationNumber = "REG_UNIV_002",
+                    NameUniversity = "Санкт-Петербургский государственный университет",
+                    Address = "199034, Санкт-Петербург, Университетская набережная, д. 7/9",
+                    PropertyType = "Государственный",
+                    BuildingOwnership = "Федеральная",
+                    RectorFullName = "Кропачев Николай Михайлович",
+                    Degree = "Доктор юридических наук",
+                    Title = "Профессор"
                 },
                 new University
                 {
-                    RegistrationNumber = "UNI004",
-                    NameUniversity = "University of Arts",
-                    Address = "654 Art Boulevard",
-                    PropertyType = "Private",
-                    BuildingOwnership = "Private",
-                    RectorFullName = "Marina Vasilievna Smirnova",
-                    Degree = "MA",
-                    Title = "Associate Professor"
+                    RegistrationNumber = "REG_UNIV_003",
+                    NameUniversity = "Московский физико-технический институт",
+                    Address = "141701, Московская область, Долгопрудный, Институтский пер., д. 9",
+                    PropertyType = "Государственный",
+                    BuildingOwnership = "Федеральная",
+                    RectorFullName = "Кудрявцев Николай Николаевич",
+                    Degree = "Доктор физико-математических наук",
+                    Title = "Профессор"
                 },
                 new University
                 {
-                    RegistrationNumber = "UNI003",
-                    NameUniversity = "Pedagogical University",
-                    Address = "321 Education Street",
-                    PropertyType = "Municipal",
-                    BuildingOwnership = "Municipal",
-                    RectorFullName = "Olga Petrova",
-                    Degree = "PhD",
-                    Title = "Professor"
+                    RegistrationNumber = "REG_UNIV_004",
+                    NameUniversity = "Национальный исследовательский университет «Высшая школа экономики»",
+                    Address = "101000, Москва, ул. Мясницкая, д. 20",
+                    PropertyType = "Государственный",
+                    BuildingOwnership = "Федеральная",
+                    RectorFullName = "Кузьминов Ярослав Иванович",
+                    Degree = "Доктор экономических наук",
+                    Title = "Профессор"
                 },
                 new University
                 {
-                    RegistrationNumber = "UNI005",
-                    NameUniversity = "Law University",
-                    Address = "852 Justice Boulevard",
-                    PropertyType = "Private",
-                    BuildingOwnership = "Municipal",
-                    RectorFullName = "Nikolai Vasilyevich Sergeev",
-                    Degree = "PhD",
-                    Title = "Professor"
+                    RegistrationNumber = "REG_UNIV_005",
+                    NameUniversity = "Московский технический университет связи и информатики",
+                    Address = "111024, Москва, ул. Авиамоторная, д. 8А",
+                    PropertyType = "Государственный",
+                    BuildingOwnership = "Федеральная",
+                    RectorFullName = "Бабков Валерий Иванович",
+                    Degree = "Доктор технических наук",
+                    Title = "Профессор"
                 },
                 new University
                 {
-                    RegistrationNumber = "UNI006",
-                    NameUniversity = "University of Foreign Languages",
-                    Address = "741 Pology Street",
-                    PropertyType = "Municipal",
-                    BuildingOwnership = "Municipal",
-                    RectorFullName = "Tatiana Nikolaevna Fedorova",
-                    Degree = "PhD",
-                    Title = "Professor"
+                    RegistrationNumber = "REG_UNIV_006",
+                    NameUniversity = "Санкт-Петербургский политехнический университет Петра Великого",
+                    Address = "195251, Санкт-Петербург, ул. Политехническая, д. 29",
+                    PropertyType = "Государственный",
+                    BuildingOwnership = "Федеральная",
+                    RectorFullName = "Рудской Андрей Иванович",
+                    Degree = "Доктор технических наук",
+                    Title = "Профессор"
                 },
                 new University
                 {
-                    RegistrationNumber = "UNI007",
-                    NameUniversity = "Sports University",
-                    Address = "963 Lenin Prospekt",
-                    PropertyType = "Municipal",
-                    BuildingOwnership = "Federal",
-                    RectorFullName = "Sergey Sergeevich Kozlov",
-                    Degree = "PhD",
-                    Title = "Professor"
+                    RegistrationNumber = "REG_UNIV_007",
+                    NameUniversity = "Новосибирский государственный университет",
+                    Address = "630090, Новосибирск, ул. Пирогова, д. 2",
+                    PropertyType = "Государственный",
+                    BuildingOwnership = "Федеральная",
+                    RectorFullName = "Федорук Михаил Петрович",
+                    Degree = "Доктор физико-математических наук",
+                    Title = "Профессор"
+                },
+                new University
+                {
+                    RegistrationNumber = "REG_UNIV_008",
+                    NameUniversity = "Казанский федеральный университет",
+                    Address = "420008, Казань, ул. Кремлевская, д. 18",
+                    PropertyType = "Государственный",
+                    BuildingOwnership = "Федеральная",
+                    RectorFullName = "Гафуров Ильшат Рафкатович",
+                    Degree = "Доктор экономических наук",
+                    Title = "Профессор"
+                },
+                new University
+                {
+                    RegistrationNumber = "REG_UNIV_009",
+                    NameUniversity = "Уральский федеральный университет",
+                    Address = "620002, Екатеринбург, ул. Мира, д. 19",
+                    PropertyType = "Государственный",
+                    BuildingOwnership = "Федеральная",
+                    RectorFullName = "Кокшаров Виктор Анатольевич",
+                    Degree = "Доктор экономических наук",
+                    Title = "Профессор"
+                },
+                new University
+                {
+                    RegistrationNumber = "REG_UNIV_010",
+                    NameUniversity = "Дальневосточный федеральный университет",
+                    Address = "690922, Владивосток, о. Русский, кампус ДВФУ",
+                    PropertyType = "Государственный",
+                    BuildingOwnership = "Федеральная",
+                    RectorFullName = "Кузьмин Никита Сергеевич",
+                    Degree = "Доктор технических наук",
+                    Title = "Профессор"
                 }
             ];
 
         FacultyList =
             [
-                new Faculty{FacultyId = "1001", NameFaculty = "Faculty of Information Technology", RegistrationNumber = "UNI001"},
-                new Faculty{FacultyId = "1002", NameFaculty = "Faculty of Mechanical Engineering", RegistrationNumber = "UNI001"},
-                new Faculty{FacultyId = "1003", NameFaculty = "Faculty of Finance and Banking", RegistrationNumber = "UNI001"},
-                new Faculty{FacultyId = "1004", NameFaculty = "Faculty of Translation", RegistrationNumber = "UNI001"},
-                new Faculty{FacultyId = "2001", NameFaculty = "Faculty of Medicine", RegistrationNumber = "UNI002"},
-                new Faculty{FacultyId = "2002", NameFaculty = "Faculty of Agronomy", RegistrationNumber = "UNI002"},
-                new Faculty{FacultyId = "3001", NameFaculty = "Faculty of Pedagogye", RegistrationNumber = "UNI003"},
-                new Faculty{FacultyId = "4001", NameFaculty = "Faculty of Fine Arts", RegistrationNumber = "UNI004"},
-                new Faculty{FacultyId = "4002", NameFaculty = "Faculty of Translation", RegistrationNumber = "UNI004"},
-                new Faculty{FacultyId = "4003", NameFaculty = "Faculty of Sports Science", RegistrationNumber = "UNI004"},
-                new Faculty{FacultyId = "5001", NameFaculty = "Faculty of International Law", RegistrationNumber = "UNI005"},
-                new Faculty{FacultyId = "6001", NameFaculty = "Faculty of Information Technology" , RegistrationNumber = "UNI006"},
-                new Faculty{FacultyId = "6002", NameFaculty = "Faculty of Pedagogye", RegistrationNumber = "UNI006"},
-                new Faculty{FacultyId = "6003", NameFaculty = "Faculty of Translation", RegistrationNumber = "UNI006"},
-                new Faculty{FacultyId = "6004", NameFaculty = "Faculty of Finance and Banking", RegistrationNumber = "UNI006"},
-                new Faculty{FacultyId = "7001", NameFaculty = "Faculty of Sports Science", RegistrationNumber = "UNI007"}
+                new Faculty{FacultyId = "1001", NameFaculty = "Faculty of Information Technology", RegistrationNumber = "REG_UNIV_001"},
+                new Faculty{FacultyId = "1002", NameFaculty = "Faculty of Mechanical Engineering", RegistrationNumber = "REG_UNIV_001"},
+                new Faculty{FacultyId = "1003", NameFaculty = "Faculty of Finance and Banking", RegistrationNumber = "REG_UNIV_001"},
+                new Faculty{FacultyId = "1004", NameFaculty = "Faculty of Translation", RegistrationNumber = "REG_UNIV_001"},
+                new Faculty{FacultyId = "2001", NameFaculty = "Faculty of Medicine", RegistrationNumber = "REG_UNIV_002"},
+                new Faculty{FacultyId = "2002", NameFaculty = "Faculty of Agronomy", RegistrationNumber = "REG_UNIV_002"},
+                new Faculty{FacultyId = "3001", NameFaculty = "Faculty of Pedagogye", RegistrationNumber = "REG_UNIV_003"},
+                new Faculty{FacultyId = "4001", NameFaculty = "Faculty of Fine Arts", RegistrationNumber = "REG_UNIV_004"},
+                new Faculty{FacultyId = "4002", NameFaculty = "Faculty of Translation", RegistrationNumber = "REG_UNIV_004"},
+                new Faculty{FacultyId = "4003", NameFaculty = "Faculty of Sports Science", RegistrationNumber = "REG_UNIV_004"},
+                new Faculty{FacultyId = "5001", NameFaculty = "Faculty of International Law", RegistrationNumber = "REG_UNIV_005"},
+                new Faculty{FacultyId = "6001", NameFaculty = "Faculty of Information Technology" , RegistrationNumber = "REG_UNIV_006"},
+                new Faculty{FacultyId = "6002", NameFaculty = "Faculty of Pedagogye", RegistrationNumber = "REG_UNIV_006"},
+                new Faculty{FacultyId = "6003", NameFaculty = "Faculty of Translation", RegistrationNumber = "REG_UNIV_006"},
+                new Faculty{FacultyId = "6004", NameFaculty = "Faculty of Finance and Banking", RegistrationNumber = "REG_UNIV_006"},
+                new Faculty{FacultyId = "7001", NameFaculty = "Faculty of Sports Science", RegistrationNumber = "REG_UNIV_007"}
             ];
 
         DepartmentsList =

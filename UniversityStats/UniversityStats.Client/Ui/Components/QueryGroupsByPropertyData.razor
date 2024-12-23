@@ -1,0 +1,82 @@
+@using UniversityStats.API.Dto
+@inject IUniversityStatsWrapper UniversityStatsApi
+
+<Modal @ref="Modal">
+    <ModalContent>
+        <ModalHeader>
+            <ModalTitle>Groups by Property Type</ModalTitle>
+            <CloseButton Clicked="@HideModal" />
+        </ModalHeader>
+        <ModalBody>
+            <Validations @ref="validations" Mode="ValidationMode.Auto">
+                <Validation Validator="@ValidatePropertyType">
+                    <Field>
+                        <FieldLabel>Property Type</FieldLabel>
+                        <TextEdit @bind-Text="@PropertyType" Placeholder="Enter property type">
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+                <Button Color="Color.Primary" Clicked="@FindGroupsByProperty">Find Groups</Button>
+            </Validations>
+
+            @if (GroupsByProperty != null && GroupsByProperty.Any())
+            {
+                <Card Margin="Margin.Is4.FromTop">
+                    <CardHeader>Groups by Property Type</CardHeader>
+                    <CardBody>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHeaderCell>University Name</TableHeaderCell>
+                                    <TableHeaderCell>Groups Count</TableHeaderCell>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                @foreach (var item in GroupsByProperty)
+                                {
+                                    <TableRow>
+                                        <TableRowCell>@item.UniversityName</TableRowCell>
+                                        <TableRowCell>@item.GroupsCount</TableRowCell>
+                                    </TableRow>
+                                }
+                            </TableBody>
+                        </Table>
+                    </CardBody>
+                </Card>
+            }
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+@code {
+    private Modal Modal { get; set; }
+    private Validations validations { get; set; }
+
+    private string PropertyType { get; set; }
+    private ICollection<PropertyAndGroupsDto> GroupsByProperty { get; set; }
+
+    [Parameter]
+    public EventCallback OnGroupsByPropertyAdded { get; set; }
+
+    public async Task Show() => await Modal.Show();
+    public async Task HideModal() => await Modal.Hide();
+
+    private void ValidatePropertyType(ValidatorEventArgs e)
+    {
+        e.Status = string.IsNullOrWhiteSpace(PropertyType) 
+            ? ValidationStatus.Error 
+            : ValidationStatus.Success;
+    }
+
+    private async Task FindGroupsByProperty()
+    {
+        if (await validations.ValidateAll())
+        {
+            GroupsByProperty = await UniversityStatsApi.TotalGroupsByProperty(PropertyType);
+            await OnGroupsByPropertyAdded.InvokeAsync();
+        }
+    }
+}

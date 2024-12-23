@@ -34,6 +34,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\UniversityStats.API\UniversityStats.API.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <OpenApiReference Include="Api\swagger.json" CodeGenerator="NSwagCSharp" ClassName="UniversityStatsApi" Namespace="UniversityStats.Client.Api" GenerateExceptionClasses="true" />
   </ItemGroup>
 

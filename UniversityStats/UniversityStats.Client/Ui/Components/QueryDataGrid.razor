@@ -1,4 +1,4 @@
-﻿@inject IUniversityStatsWrapper UniversityStatsApi
+@inject IUniversityStatsWrapper UniversityStatsApi
 @inject NavigationManager NavManager
 
 <Card>
@@ -26,6 +26,22 @@
                     <TableRowHeader><Button Color="Color.Primary" Clicked="OpenDepartmentsModal">Execute</Button></TableRowHeader>
                     <TableRowCell>Count total departments in every university</TableRowCell>
                 </TableRow>
+                <TableRow>
+                    <TableRowHeader><Button Color="Color.Primary" Clicked="OpenUniversityInfoModal">Execute</Button></TableRowHeader>
+                    <TableRowCell>Get information about a specific university by registration number</TableRowCell>
+                </TableRow>
+                <TableRow>
+                    <TableRowHeader><Button Color="Color.Primary" Clicked="OpenFacultiesSpecialtiesModal">Execute</Button></TableRowHeader>
+                    <TableRowCell>Get information about faculties, departments, and specialties of a university</TableRowCell>
+                </TableRow>
+                <TableRow>
+                    <TableRowHeader><Button Color="Color.Primary" Clicked="OpenDepartmentsFacultiesSpecialtiesModal">Execute</Button></TableRowHeader>
+                    <TableRowCell>Get total departments, faculties, and specialties by property type</TableRowCell>
+                </TableRow>
+                <TableRow>
+                    <TableRowHeader><Button Color="Color.Primary" Clicked="OpenGroupsByPropertyModal">Execute</Button></TableRowHeader>
+                    <TableRowCell>Get universities with groups by property type</TableRowCell>
+                </TableRow>
             </TableBody>
         </Table>
     </CardBody>
@@ -33,6 +49,10 @@
 
 <QueryTopFiveData @ref="TopFiveModal" OnTopFiveAdded="@HandleOnTopFiveAdded" />
 <QueryTotalDepartmentsData @ref="DepartmentsModal" OnDepartmentsAdded="@HandleDepartmentsAdded" />
+<QueryUniversityInfoData @ref="UniversityInfoModal" OnUniversityInfoAdded="@HandleUniversityInfoAdded" />
+<QueryFacultiesSpecialtiesData @ref="FacultiesSpecialtiesModal" OnFacultiesSpecialtiesAdded="@HandleFacultiesSpecialtiesAdded" />
+<QueryDepartmentsFacultiesSpecialtiesData @ref="DepartmentsFacultiesSpecialtiesModal" OnDepartmentsFacultiesSpecialtiesAdded="@HandleDepartmentsFacultiesSpecialtiesAdded" />
+<QueryGroupsByPropertyData @ref="GroupsByPropertyModal" OnGroupsByPropertyAdded="@HandleGroupsByPropertyAdded" />
 
 @code {
     [Parameter]
@@ -40,11 +60,22 @@
 
     private QueryTopFiveData TopFiveModal { get; set; } = new();
     private QueryTotalDepartmentsData DepartmentsModal { get; set; } = new();
+    private QueryUniversityInfoData UniversityInfoModal { get; set; } = new();
+    private QueryFacultiesSpecialtiesData FacultiesSpecialtiesModal { get; set; } = new();
+    private QueryDepartmentsFacultiesSpecialtiesData DepartmentsFacultiesSpecialtiesModal { get; set; } = new();
+    private QueryGroupsByPropertyData GroupsByPropertyModal { get; set; } = new();
 
     private async Task OpenTopFiveModal() => await TopFiveModal.Show();
     private async Task OpenDepartmentsModal() => await DepartmentsModal.Show();
+    private async Task OpenUniversityInfoModal() => await UniversityInfoModal.Show();
+    private async Task OpenFacultiesSpecialtiesModal() => await FacultiesSpecialtiesModal.Show();
+    private async Task OpenDepartmentsFacultiesSpecialtiesModal() => await DepartmentsFacultiesSpecialtiesModal.Show();
+    private async Task OpenGroupsByPropertyModal() => await GroupsByPropertyModal.Show();
 
     private async Task HandleOnTopFiveAdded() => await OnDataChanged.InvokeAsync();
     private async Task HandleDepartmentsAdded() => await OnDataChanged.InvokeAsync();
-
+    private async Task HandleUniversityInfoAdded() => await OnDataChanged.InvokeAsync();
+    private async Task HandleFacultiesSpecialtiesAdded() => await OnDataChanged.InvokeAsync();
+    private async Task HandleDepartmentsFacultiesSpecialtiesAdded() => await OnDataChanged.InvokeAsync();
+    private async Task HandleGroupsByPropertyAdded() => await OnDataChanged.InvokeAsync();
 }

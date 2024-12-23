@@ -1,0 +1,82 @@
+@using UniversityStats.API.Dto
+@inject IUniversityStatsWrapper UniversityStatsApi
+
+<Modal @ref="Modal">
+    <ModalContent>
+        <ModalHeader>
+            <ModalTitle>University Faculties and Specialties</ModalTitle>
+            <CloseButton Clicked="@HideModal" />
+        </ModalHeader>
+        <ModalBody>
+            <Validations @ref="validations" Mode="ValidationMode.Auto">
+                <Validation Validator="@ValidateUniversityName">
+                    <Field>
+                        <FieldLabel>University Name</FieldLabel>
+                        <TextEdit @bind-Text="@UniversityName" Placeholder="Enter university name">
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+                <Button Color="Color.Primary" Clicked="@FindFacultiesSpecialties">Find Information</Button>
+            </Validations>
+
+            @if (FacultiesSpecialties != null && FacultiesSpecialties.Any())
+            {
+                <Card Margin="Margin.Is4.FromTop">
+                    <CardHeader>Faculties and Specialties</CardHeader>
+                    <CardBody>
+                        @{
+                            var groupedByFaculty = FacultiesSpecialties
+                                .GroupBy(f => f.NameFaculty)
+                                .ToList();
+                        }
+                        @foreach (var facultyGroup in groupedByFaculty)
+                        {
+                            <Card Margin="Margin.Is2.FromBottom">
+                                <CardHeader>@facultyGroup.Key</CardHeader>
+                                <CardBody>
+                                    <Paragraph>
+                                        <strong>Specialties:</strong>
+                                        @string.Join(", ", facultyGroup.Select(f => f.NameSpecialty).Distinct())
+                                    </Paragraph>
+                                </CardBody>
+                            </Card>
+                        }
+                    </CardBody>
+                </Card>
+            }
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+@code {
+    private Modal Modal { get; set; }
+    private Validations validations { get; set; }
+
+    private string UniversityName { get; set; }
+    private ICollection<FacultyAndSpecialtyDto> FacultiesSpecialties { get; set; }
+
+    [Parameter]
+    public EventCallback OnFacultiesSpecialtiesAdded { get; set; }
+
+    public async Task Show() => await Modal.Show();
+    public async Task HideModal() => await Modal.Hide();
+
+    private void ValidateUniversityName(ValidatorEventArgs e)
+    {
+        e.Status = string.IsNullOrWhiteSpace(UniversityName) 
+            ? ValidationStatus.Error 
+            : ValidationStatus.Success;
+    }
+
+    private async Task FindFacultiesSpecialties()
+    {
+        if (await validations.ValidateAll())
+        {
+            FacultiesSpecialties = await UniversityStatsApi.InfoFacultiesSpecialties(UniversityName);
+            await OnFacultiesSpecialtiesAdded.InvokeAsync();
+        }
+    }
+}

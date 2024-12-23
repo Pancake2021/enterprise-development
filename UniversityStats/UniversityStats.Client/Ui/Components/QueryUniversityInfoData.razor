@@ -1,0 +1,73 @@
+@using UniversityStats.API.Dto
+@inject IUniversityStatsWrapper UniversityStatsApi
+
+<Modal @ref="Modal">
+    <ModalContent>
+        <ModalHeader>
+            <ModalTitle>University Information</ModalTitle>
+            <CloseButton Clicked="@HideModal" />
+        </ModalHeader>
+        <ModalBody>
+            <Validations @ref="validations" Mode="ValidationMode.Auto">
+                <Validation Validator="@ValidateRegistrationNumber">
+                    <Field>
+                        <FieldLabel>University Registration Number</FieldLabel>
+                        <TextEdit @bind-Text="@RegistrationNumber" Placeholder="Enter registration number">
+                            <Feedback>
+                                <ValidationError />
+                            </Feedback>
+                        </TextEdit>
+                    </Field>
+                </Validation>
+                <Button Color="Color.Primary" Clicked="@FindUniversityInfo">Find University</Button>
+            </Validations>
+
+            @if (UniversityInfo != null)
+            {
+                <Card Margin="Margin.Is4.FromTop">
+                    <CardHeader>University Details</CardHeader>
+                    <CardBody>
+                        <Paragraph>Name: @UniversityInfo.NameUniversity</Paragraph>
+                        <Paragraph>Registration Number: @UniversityInfo.RegistrationNumber</Paragraph>
+                        <Paragraph>Property Type: @UniversityInfo.PropertyType</Paragraph>
+                        <Paragraph>Building Ownership: @UniversityInfo.BuildingOwnership</Paragraph>
+                        <Paragraph>Address: @UniversityInfo.Address</Paragraph>
+                        <Paragraph>Rector: @UniversityInfo.RectorFullName</Paragraph>
+                        <Paragraph>Degree: @UniversityInfo.Degree</Paragraph>
+                        <Paragraph>Title: @UniversityInfo.Title</Paragraph>
+                    </CardBody>
+                </Card>
+            }
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+@code {
+    private Modal Modal { get; set; }
+    private Validations validations { get; set; }
+
+    private string RegistrationNumber { get; set; }
+    private UniversityDto UniversityInfo { get; set; }
+
+    [Parameter]
+    public EventCallback OnUniversityInfoAdded { get; set; }
+
+    public async Task Show() => await Modal.Show();
+    public async Task HideModal() => await Modal.Hide();
+
+    private void ValidateRegistrationNumber(ValidatorEventArgs e)
+    {
+        e.Status = string.IsNullOrWhiteSpace(RegistrationNumber) 
+            ? ValidationStatus.Error 
+            : ValidationStatus.Success;
+    }
+
+    private async Task FindUniversityInfo()
+    {
+        if (await validations.ValidateAll())
+        {
+            UniversityInfo = await UniversityStatsApi.InfoUniversityByRegistration(RegistrationNumber);
+            await OnUniversityInfoAdded.InvokeAsync();
+        }
+    }
+}

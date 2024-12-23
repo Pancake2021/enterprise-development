@@ -1,0 +1,62 @@
+@using UniversityStats.API.Dto
+@inject IUniversityStatsWrapper UniversityStatsApi
+
+<Modal @ref="Modal">
+    <ModalContent>
+        <ModalHeader>
+            <ModalTitle>Departments, Faculties, Specialties by Property</ModalTitle>
+            <CloseButton Clicked="@HideModal" />
+        </ModalHeader>
+        <ModalBody>
+            <Button Color="Color.Primary" Clicked="@FindDepartmentsFacultiesSpecialties">Get Information</Button>
+
+            @if (DepartmentsFacultiesSpecialties != null && DepartmentsFacultiesSpecialties.Any())
+            {
+                <Card Margin="Margin.Is4.FromTop">
+                    <CardHeader>Departments, Faculties, Specialties by Property</CardHeader>
+                    <CardBody>
+                        <Table>
+                            <TableHeader>
+                                <TableRow>
+                                    <TableHeaderCell>Property Type</TableHeaderCell>
+                                    <TableHeaderCell>Departments Count</TableHeaderCell>
+                                    <TableHeaderCell>Faculties Count</TableHeaderCell>
+                                    <TableHeaderCell>Specialties Count</TableHeaderCell>
+                                </TableRow>
+                            </TableHeader>
+                            <TableBody>
+                                @foreach (var item in DepartmentsFacultiesSpecialties)
+                                {
+                                    <TableRow>
+                                        <TableRowCell>@item.PropertyType</TableRowCell>
+                                        <TableRowCell>@item.DepartmentsCount</TableRowCell>
+                                        <TableRowCell>@item.FacultiesCount</TableRowCell>
+                                        <TableRowCell>@item.SpecialtiesCount</TableRowCell>
+                                    </TableRow>
+                                }
+                            </TableBody>
+                        </Table>
+                    </CardBody>
+                </Card>
+            }
+        </ModalBody>
+    </ModalContent>
+</Modal>
+
+@code {
+    private Modal Modal { get; set; }
+
+    private ICollection<PropertyAndBuildingDto> DepartmentsFacultiesSpecialties { get; set; }
+
+    [Parameter]
+    public EventCallback OnDepartmentsFacultiesSpecialtiesAdded { get; set; }
+
+    public async Task Show() => await Modal.Show();
+    public async Task HideModal() => await Modal.Hide();
+
+    private async Task FindDepartmentsFacultiesSpecialties()
+    {
+        DepartmentsFacultiesSpecialties = await UniversityStatsApi.TotalDepartmentsFacultiesSpecialtiesByPropertyBuilding();
+        await OnDepartmentsFacultiesSpecialtiesAdded.InvokeAsync();
+    }
+}
